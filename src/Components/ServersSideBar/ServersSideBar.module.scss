@@ -1,0 +1,67 @@
+.serverSideContainer {
+  .serversListContainer {
+    height: 100vh;
+    width: 72px;
+    background-color: #202225;
+    scroll-behavior: smooth;
+    overflow: auto;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+
+    .addBtnContainer {
+      transition: 0.25s ease-out;
+      width: 48px;
+      height: 48px;
+      background-color: #36393f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      margin: 8px 8px 8px 8px;
+      cursor: pointer;
+      .addBtn {
+        color: #43b581;
+        width: 18px;
+        height: 18px;
+      }
+    }
+    .addBtnContainer:hover {
+      background-color: #43b581;
+      transition: 0.25s ease-in;
+      .addBtn {
+        color: #fff;
+      }
+    }
+    .server {
+      width: 72px;
+      height: 48px;
+      padding: 8px 8px 8px 8px;
+      cursor: pointer;
+      .serverDisplayName {
+        position: absolute;
+        width: 60px;
+        height: auto;
+        color: #fff;
+        background-color: #111;
+        left: 75px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        z-index: 10000000000;
+      }
+      img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+      }
+    }
+    .server:hover {
+      background-color: #4c4c4c;
+    }
+  }
+}
+.serversListContainer::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}

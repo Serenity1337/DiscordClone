@@ -1,0 +1,44 @@
+.inputContainer {
+  label {
+    color: #8e9297;
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: block;
+    font-family: Whitney, Helvetica, sans-serif;
+  }
+  .selectionsContainer {
+    display: flex;
+
+    select {
+      margin-bottom: 8px;
+      padding: 10px;
+      height: 40px;
+      font-size: 16px;
+      box-sizing: border-box;
+      width: 100%;
+      border-radius: 3px;
+      background-color: rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      color: rgb(220, 221, 222);
+      outline: 0;
+      option {
+        border-radius: 3px;
+        background-color: rgba(0, 0, 0, 0.9);
+        border: 1px solid rgba(0, 0, 0, 0.9);
+        color: rgb(220, 221, 222);
+        outline: 0;
+      }
+    }
+    .days,
+    .years {
+      width: 100px;
+    }
+    .months {
+      width: 140px;
+      margin: 0px 38px;
+    }
+  }
+}

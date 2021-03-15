@@ -1,0 +1,102 @@
+{
+  "users": [
+    {
+      "birthday": {
+        "day": "17",
+        "month": "9",
+        "year": "2002"
+      },
+      "email": "123@gmail.com",
+      "username": "123",
+      "password": "123",
+      "id": 1
+    }
+  ],
+  "servers": [
+    {
+      "servername": "123123",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": []
+    },
+    {
+      "servername": "123123",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": []
+    },
+    {
+      "servername": "123123",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": []
+    },
+    {
+      "servername": "123123",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": []
+    },
+    {
+      "servername": "123123",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": []
+    },
+    {
+      "servername": "123123",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": []
+    },
+    {
+      "servername": "123123",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": []
+    },
+    {
+      "servername": "123123",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": []
+    },
+    {
+      "servername": "123123",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": []
+    },
+    {
+      "servername": "123123",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": []
+    },
+    {
+      "servername": "123123",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": []
+    },
+    {
+      "servername": "123123",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": []
+    },
+    {
+      "servername": "123123",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": []
+    },
+    {
+      "servername": "123123",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": []
+    }
+    
+  ]
+}
