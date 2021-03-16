@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import Register from './Pages/Register'
 import Login from './Pages/Login'
-import HomeApp from './Pages/HomeApp'
+import Channels from './Pages/Channels'
 import { UsersContext } from './Contexts/UsersContext'
 import { UserContext } from './Contexts/UserContext'
 import { ServersContext } from './Contexts/ServersContext'
@@ -35,7 +35,12 @@ function App() {
                 exact={true}
                 label='Login'
               />
-              <Route path='/app' component={HomeApp} exact={true} label='App' />
+              <Route
+                path='/channels/@me'
+                component={Channels}
+                exact={true}
+                label='Channels'
+              />
             </UserContext.Provider>
           </ServersContext.Provider>
         </UsersContext.Provider>

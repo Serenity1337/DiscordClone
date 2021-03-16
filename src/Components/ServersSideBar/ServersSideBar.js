@@ -14,10 +14,13 @@ export const ServersSideBar = (props) => {
     setdisplayState({ [index]: false })
     setpositionState(0)
   }
+  const toggleModalOn = () => {
+    props.setaddServerModalToggle(true)
+  }
   return (
     <div className={classes.serverSideContainer}>
       <div className={classes.serversListContainer}>
-        <div className={classes.addBtnContainer}>
+        <div className={classes.addBtnContainer} onClick={toggleModalOn}>
           <FaPlus className={classes.addBtn} />
         </div>
         {props.servers.map((server, index) => (

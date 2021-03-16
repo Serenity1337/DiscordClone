@@ -4,14 +4,16 @@ import ServersSideBar from '../../Components/ServersSideBar'
 import { ServersContext } from '../../Contexts/ServersContext'
 import { UserContext } from '../../Contexts/UserContext'
 import { UsersContext } from '../../Contexts/UsersContext'
-import classes from './HomeApp.module.scss'
+import AddServerModal from '../../Modals/AddServerModal'
+import classes from './Channels.module.scss'
 
-export const HomeApp = () => {
+export const Channels = () => {
   // getting the state
   const { user, setuser } = useContext(UserContext)
   const { users, setusers } = useContext(UsersContext)
   const { servers, setservers } = useContext(ServersContext)
   const [redirected, setredirected] = useState(false)
+  const [addServerModalToggle, setaddServerModalToggle] = useState(false)
 
   // check if logged in
   const loggedIn = () => {
@@ -100,7 +102,16 @@ export const HomeApp = () => {
         setuser={setuser}
         setusers={setusers}
         setservers={setservers}
+        setaddServerModalToggle={setaddServerModalToggle}
       />
+      {addServerModalToggle ? (
+        <AddServerModal
+          setaddServerModalToggle={setaddServerModalToggle}
+          servers={servers}
+          setservers={setservers}
+          user={user}
+        />
+      ) : null}
       <div>asdasd</div>
       {redirected ? <Redirect to='/login' /> : null}
     </div>

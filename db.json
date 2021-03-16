@@ -9,94 +9,17 @@
       "email": "123@gmail.com",
       "username": "123",
       "password": "123",
+      "friends": [],
       "id": 1
     }
   ],
   "servers": [
     {
-      "servername": "123123",
+      "servername": "12312asd",
       "avatar": "../../utils/imgs/catto.png",
       "owner": "123",
-      "members": []
-    },
-    {
-      "servername": "123123",
-      "avatar": "../../utils/imgs/catto.png",
-      "owner": "123",
-      "members": []
-    },
-    {
-      "servername": "123123",
-      "avatar": "../../utils/imgs/catto.png",
-      "owner": "123",
-      "members": []
-    },
-    {
-      "servername": "123123",
-      "avatar": "../../utils/imgs/catto.png",
-      "owner": "123",
-      "members": []
-    },
-    {
-      "servername": "123123",
-      "avatar": "../../utils/imgs/catto.png",
-      "owner": "123",
-      "members": []
-    },
-    {
-      "servername": "123123",
-      "avatar": "../../utils/imgs/catto.png",
-      "owner": "123",
-      "members": []
-    },
-    {
-      "servername": "123123",
-      "avatar": "../../utils/imgs/catto.png",
-      "owner": "123",
-      "members": []
-    },
-    {
-      "servername": "123123",
-      "avatar": "../../utils/imgs/catto.png",
-      "owner": "123",
-      "members": []
-    },
-    {
-      "servername": "123123",
-      "avatar": "../../utils/imgs/catto.png",
-      "owner": "123",
-      "members": []
-    },
-    {
-      "servername": "123123",
-      "avatar": "../../utils/imgs/catto.png",
-      "owner": "123",
-      "members": []
-    },
-    {
-      "servername": "123123",
-      "avatar": "../../utils/imgs/catto.png",
-      "owner": "123",
-      "members": []
-    },
-    {
-      "servername": "123123",
-      "avatar": "../../utils/imgs/catto.png",
-      "owner": "123",
-      "members": []
-    },
-    {
-      "servername": "123123",
-      "avatar": "../../utils/imgs/catto.png",
-      "owner": "123",
-      "members": []
-    },
-    {
-      "servername": "123123",
-      "avatar": "../../utils/imgs/catto.png",
-      "owner": "123",
-      "members": []
+      "members": [],
+      "id": 1
     }
-    
   ]
 }
