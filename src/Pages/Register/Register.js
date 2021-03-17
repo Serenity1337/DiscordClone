@@ -13,7 +13,6 @@ export const Register = () => {
   }
   const profileSubmitHandler = (event) => {
     event.preventDefault()
-    console.log(profile)
     if (
       !profile.email ||
       !profile.username ||
@@ -27,6 +26,7 @@ export const Register = () => {
     } else {
       if (profile.password === profile.rpassword) {
         let profileCopy = { ...profile }
+        profileCopy.friends = []
         delete profileCopy.rpassword
         seterror('')
         fetch('http://localhost:4000/users', {

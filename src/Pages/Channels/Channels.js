@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Redirect } from 'react-router'
+import FriendsListSideBar from '../../Components/FriendsListSideBar'
 import ServersSideBar from '../../Components/ServersSideBar'
 import { ServersContext } from '../../Contexts/ServersContext'
 import { UserContext } from '../../Contexts/UserContext'
@@ -14,7 +15,6 @@ export const Channels = () => {
   const { servers, setservers } = useContext(ServersContext)
   const [redirected, setredirected] = useState(false)
   const [addServerModalToggle, setaddServerModalToggle] = useState(false)
-
   // check if logged in
   const loggedIn = () => {
     const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
@@ -104,6 +104,7 @@ export const Channels = () => {
         setservers={setservers}
         setaddServerModalToggle={setaddServerModalToggle}
       />
+      <FriendsListSideBar user={user} setuser={setuser} />
       {addServerModalToggle ? (
         <AddServerModal
           setaddServerModalToggle={setaddServerModalToggle}
@@ -112,7 +113,7 @@ export const Channels = () => {
           user={user}
         />
       ) : null}
-      <div>asdasd</div>
+
       {redirected ? <Redirect to='/login' /> : null}
     </div>
   )
