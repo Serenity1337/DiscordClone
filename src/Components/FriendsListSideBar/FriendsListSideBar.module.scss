@@ -82,6 +82,16 @@
   }
 
   .friendsList {
+    scroll-behavior: smooth;
+    overflow: auto;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+    height: calc(100% - 33.55%);
+    // 68.75%
+    // height: 480px;
+    // 722.4
+    // 66.45
+    // 52
     a {
       text-decoration: none;
       .userContainer {
@@ -159,6 +169,71 @@
       }
     }
   }
+  .meUserContainer {
+    height: 52px;
+    background-color: #282a2e;
+    padding: 10px;
+    display: flex;
+    box-sizing: border-box;
+    justify-content: space-between;
+    .profileContainer {
+      display: flex;
+
+      .imgContainer {
+        cursor: pointer;
+        .offlineStatusIcon,
+        .onlineStatusIcon,
+        .busyStatusIcon {
+          position: relative;
+          top: -16px;
+          left: 20px;
+
+          border-radius: 50%;
+          width: 10px;
+          height: 10px;
+          border: 0;
+          border-radius: 50%;
+          background-color: #717c8a;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 3;
+          border: 3px solid #2f3136;
+
+          .innerCircle {
+            width: 5px;
+            height: 5px;
+            border: 0;
+            border-radius: 50%;
+            background-color: #2f3136;
+          }
+        }
+        .onlineStatusIcon {
+          background-color: #43b581;
+        }
+        .busyStatusIcon {
+          background-color: #e84444;
+          .innerLine {
+            width: 8px;
+            height: 2px;
+            background-color: #2f3136;
+          }
+        }
+      }
+      .userNameStatusContainer {
+        margin: 0px 0px 0px 15px;
+        color: #8e9297;
+      }
+    }
+    .settingsContainer {
+      display: flex;
+      align-items: center;
+      padding: 0px 10px 0px 0px;
+    }
+  }
+}
+.friendsList::-webkit-scrollbar {
+  display: none; // safari/chrome
 }
 .friendListSideContainer::-webkit-scrollbar {
   display: none; // safari/chrome

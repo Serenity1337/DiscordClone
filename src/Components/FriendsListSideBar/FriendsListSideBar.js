@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import classes from './FriendsListSideBar.module.scss'
-import { FaUserFriends } from 'react-icons/fa'
+import { FaUserFriends, FaMicrophone, FaHeadphones } from 'react-icons/fa'
+import { BsGearFill } from 'react-icons/bs'
 import Nitro from '../../utils/imgs/Nitro.js'
 import { Link, useLocation } from 'react-router-dom'
 import catto from '../../utils/imgs/catto.png'
@@ -11,12 +12,20 @@ export const FriendsListSideBar = (props) => {
   const [positionState, setpositionState] = useState(0)
 
   const displayName = (event, user, index) => {
-    setstatusMessageState({ [index]: true })
-    setpositionState(event.currentTarget.getBoundingClientRect().top + -40)
+    if (index) {
+      setstatusMessageState({ [index]: true })
+      setpositionState(event.currentTarget.getBoundingClientRect().top + -40)
+    } else {
+      setstatusMessageState(true)
+    }
   }
   const removeName = (event, user, index) => {
-    setstatusMessageState({ [index]: false })
-    setpositionState(0)
+    if (index) {
+      setstatusMessageState({ [index]: false })
+      setpositionState(0)
+    } else {
+      setstatusMessageState(false)
+    }
   }
 
   const renderStatus = (user, index) => {
@@ -104,6 +113,7 @@ export const FriendsListSideBar = (props) => {
             Friends
           </button>
         </Link>
+
         <Link to='/store'>
           <button
             type='button'
@@ -115,11 +125,56 @@ export const FriendsListSideBar = (props) => {
           </button>
         </Link>
       </div>
+
       <div className={classes.DMHeaderContainer}>
         <h2 className={classes.DMHeading}>Direct messages</h2>
         <button className={classes.createDmBtn}>+</button>
       </div>
       <div className={classes.friendsList}>{renderUsers()}</div>
+
+      <div className={classes.meUserContainer}>
+        <div className={classes.profileContainer}>
+          <div className={classes.imgContainer}>
+            <img
+              src={catto}
+              alt=''
+              style={{ width: '32px', height: '32px', borderRadius: '50%' }}
+            />
+            {renderStatus(props.user)}
+          </div>
+          <div className={classes.userNameStatusContainer}>
+            {props.user.username}
+            <div>#6660</div>
+          </div>
+        </div>
+        <div className={classes.settingsContainer}>
+          <FaMicrophone
+            style={{
+              fill: '#d9dadb',
+              cursor: 'pointer',
+              width: '15px',
+              height: '15px',
+            }}
+          />
+          <FaHeadphones
+            style={{
+              fill: '#d9dadb',
+              cursor: 'pointer',
+              width: '15px',
+              height: '15px',
+              margin: '0px 15px 0px 15px',
+            }}
+          />
+          <BsGearFill
+            style={{
+              fill: '#d9dadb',
+              cursor: 'pointer',
+              width: '15px',
+              height: '15px',
+            }}
+          />
+        </div>
+      </div>
     </div>
   )
 }
