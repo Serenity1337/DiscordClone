@@ -11,6 +11,7 @@ export const FriendsListSideBar = (props) => {
   const [statusMessageState, setstatusMessageState] = useState({})
   const [positionState, setpositionState] = useState(0)
 
+  // displays the mouseover text on server icons
   const displayName = (event, user, index) => {
     if (index) {
       setstatusMessageState({ [index]: true })
@@ -28,6 +29,7 @@ export const FriendsListSideBar = (props) => {
     }
   }
 
+  // renders the status icons on avatars
   const renderStatus = (user, index) => {
     if (user.status === 'offline') {
       return (
@@ -62,9 +64,10 @@ export const FriendsListSideBar = (props) => {
     }
   }
 
+  // renders the user's friendlist
   const renderUsers = () => {
     if (props.user.username) {
-      return props.user.friends.map((user, index) => (
+      return props.user.friends.accepted.map((user, index) => (
         <Link to={`${location.pathname}/${user.username}`}>
           <div className={classes.userContainer}>
             {statusMessageState[index] ? (
@@ -85,6 +88,7 @@ export const FriendsListSideBar = (props) => {
       ))
     }
   }
+
   return (
     <div className={classes.friendListSideContainer}>
       <div className={classes.filterEverything}>

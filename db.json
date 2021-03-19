@@ -9,169 +9,344 @@
       "email": "123@gmail.com",
       "username": "123",
       "password": "123",
-      "friends": 
-      [
-        {
-          "birthday": {
-            "day": "17",
-            "month": "9",
-            "year": "2002"
+      "friends": {
+        "pending": [
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "online",
+            "customStatus": ""
           },
-          "email": "123@gmail.com",
-          "username": "123",
-          "password": "123",
-          "friends": [],
-          "status": "online",
-          "customStatus": ""
-        },
-        {
-          "birthday": {
-            "day": "17",
-            "month": "9",
-            "year": "2002"
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "online",
+            "customStatus": ""
           },
-          "email": "123@gmail.com",
-          "username": "123",
-          "password": "123",
-          "friends": [],
-          "status": "online",
-          "customStatus": ""
-        },
-        {
-          "birthday": {
-            "day": "17",
-            "month": "9",
-            "year": "2002"
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "online",
+            "customStatus": ""
           },
-          "email": "123@gmail.com",
-          "username": "123",
-          "password": "123",
-          "friends": [],
-          "status": "online",
-          "customStatus": ""
-        },
-        {
-          "birthday": {
-            "day": "17",
-            "month": "9",
-            "year": "2002"
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "offline",
+            "customStatus": ""
           },
-          "email": "123@gmail.com",
-          "username": "123",
-          "password": "123",
-          "friends": [],
-          "status": "offline",
-          "customStatus": ""
-        },
-        {
-          "birthday": {
-            "day": "17",
-            "month": "9",
-            "year": "2002"
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "busy",
+            "customStatus": ""
           },
-          "email": "123@gmail.com",
-          "username": "123",
-          "password": "123",
-          "friends": [],
-          "status": "busy",
-          "customStatus": ""
-        },
-        {
-          "birthday": {
-            "day": "17",
-            "month": "9",
-            "year": "2002"
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "busy",
+            "customStatus": ""
           },
-          "email": "123@gmail.com",
-          "username": "123",
-          "password": "123",
-          "friends": [],
-          "status": "busy",
-          "customStatus": ""
-        },
-        {
-          "birthday": {
-            "day": "17",
-            "month": "9",
-            "year": "2002"
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "status": "offline",
+            "customStatus": "",
+            "friends": []
           },
-          "email": "123@gmail.com",
-          "username": "123",
-          "password": "123",
-          "status": "offline",
-          "customStatus": "",
-          "friends": []
-        },
-        {
-          "birthday": {
-            "day": "17",
-            "month": "9",
-            "year": "2002"
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "status": "online",
+            "customStatus": "",
+            "friends": []
           },
-          "email": "123@gmail.com",
-          "username": "123",
-          "password": "123",
-          "status": "online",
-          "customStatus": "",
-          "friends": []
-        },
-        {
-          "birthday": {
-            "day": "17",
-            "month": "9",
-            "year": "2002"
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "online",
+            "customStatus": ""
           },
-          "email": "123@gmail.com",
-          "username": "123",
-          "password": "123",
-          "friends": [],
-          "status": "online",
-          "customStatus": ""
-        },
-        {
-          "birthday": {
-            "day": "17",
-            "month": "9",
-            "year": "2002"
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "online",
+            "customStatus": ""
           },
-          "email": "123@gmail.com",
-          "username": "123",
-          "password": "123",
-          "friends": [],
-          "status": "online",
-          "customStatus": ""
-        },    
-        {
-          "birthday": {
-            "day": "17",
-            "month": "9",
-            "year": "2002"
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "online",
+            "customStatus": ""
           },
-          "email": "123@gmail.com",
-          "username": "123",
-          "password": "123",
-          "friends": [],
-          "status": "online",
-          "customStatus": ""
-        }
-        ,    
-        {
-          "birthday": {
-            "day": "17",
-            "month": "9",
-            "year": "2002"
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "online",
+            "customStatus": ""
+          }
+        ],
+        "accepted": [
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "online",
+            "customStatus": ""
           },
-          "email": "123@gmail.com",
-          "username": "123",
-          "password": "123",
-          "friends": [],
-          "status": "online",
-          "customStatus": ""
-        }
-      ],
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "online",
+            "customStatus": ""
+          },
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "online",
+            "customStatus": ""
+          },
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "offline",
+            "customStatus": ""
+          },
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "busy",
+            "customStatus": ""
+          },
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "busy",
+            "customStatus": ""
+          },
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "status": "offline",
+            "customStatus": "",
+            "friends": []
+          },
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "status": "online",
+            "customStatus": "",
+            "friends": []
+          },
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "online",
+            "customStatus": ""
+          },
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "online",
+            "customStatus": ""
+          },
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "online",
+            "customStatus": ""
+          },
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "friends": [],
+            "status": "online",
+            "customStatus": ""
+          }
+        ],
+        "blocked": [
+        ]
+      },
       "status": "online",
       "customStatus": "",
       "id": 1
+    },
+    {
+      "birthday": {
+        "day": "16",
+        "month": "10",
+        "year": "2003"
+      },
+      "email": "321@gmail.com",
+      "username": "321",
+      "password": "321",
+      "friends": {
+        "accepted": [],
+        "pending": []
+      },
+      "id": 2
     }
   ],
   "servers": [
@@ -188,6 +363,13 @@
       "owner": "123",
       "members": [],
       "id": 2
+    },
+    {
+      "servername": "35fdgdfg",
+      "avatar": "../../utils/imgs/catto.png",
+      "owner": "123",
+      "members": [],
+      "id": 3
     }
   ]
 }

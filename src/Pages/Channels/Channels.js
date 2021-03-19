@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Redirect } from 'react-router'
+import FriendsListMain from '../../Components/FriendsListMain'
 import FriendsListSideBar from '../../Components/FriendsListSideBar'
 import ServersSideBar from '../../Components/ServersSideBar'
 import { ServersContext } from '../../Contexts/ServersContext'
@@ -42,8 +43,6 @@ export const Channels = () => {
         .catch((e) => {
           console.log(e)
         })
-    } else {
-      setuser({})
     }
   }
   const getUsers = () => {
@@ -113,6 +112,7 @@ export const Channels = () => {
           user={user}
         />
       ) : null}
+      <FriendsListMain user={user} setuser={setuser} />
 
       {redirected ? <Redirect to='/login' /> : null}
     </div>

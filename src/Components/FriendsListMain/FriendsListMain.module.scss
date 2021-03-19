@@ -1,0 +1,199 @@
+.friendsListMainContainer {
+  background-color: #36393f;
+  height: 100vh;
+  width: -moz-available;
+  width: -webkit-fill-available;
+  width: fill-available;
+  scroll-behavior: smooth;
+  overflow: hidden;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  .friendsListMainNavContainer {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 48px;
+    // margin: 10px;
+    .friendsListMainNavigation {
+      display: flex;
+      align-items: center;
+      .friendsListMainHeading {
+        box-sizing: border-box;
+        font-size: 16px;
+        line-height: 10px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        cursor: default;
+        .verticalLine {
+          width: 1px;
+          height: 24px;
+          margin: 0px 0px 0px 15px;
+          background: hsla(0, 0%, 100%, 0.06);
+        }
+      }
+      li {
+        padding: 4px 8px;
+        margin: 0px 10px;
+        color: #b9bbbe;
+        cursor: pointer;
+      }
+      .addAFriendBtn,
+      .addAFriendBtn:hover {
+        background-color: #43b581;
+        color: #fff;
+        padding: 5px 8px;
+        border-radius: 5px;
+      }
+      li:hover {
+        background-color: #3a3e44;
+        color: #dcddde;
+      }
+      .active {
+        background-color: rgba(79, 84, 92, 0.16);
+        color: #fff;
+      }
+    }
+    .friendsListMainSecondaryNavigation {
+      .navIcon {
+        height: 24px;
+        width: 24px;
+        color: #b9bbbe;
+        margin: 0px 10px;
+      }
+      .verticalLine {
+        width: 1px;
+        height: 24px;
+        margin: 0px 10px 0px 15px;
+        background: hsla(0, 0%, 100%, 0.06);
+        display: inline-block;
+      }
+      .navIcon:hover {
+        color: #dcddde;
+        cursor: pointer;
+      }
+    }
+  }
+  .friendsHeading {
+    margin: 16px 20px 8px 34px;
+    color: #b9bbbe;
+    display: flex;
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    .horizontalLine {
+      height: 2px;
+      width: 8px;
+      background-color: #b9bbbe;
+      display: flex;
+      margin-top: 7px;
+      margin: 7px 5px 0px 5px;
+    }
+  }
+  .friendsList {
+    scroll-behavior: smooth;
+    overflow: scroll;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+    height: -moz-available;
+    height: -webkit-fill-available;
+    height: fill-available;
+    padding: 0px 25px 15px 25px;
+
+    a {
+      text-decoration: none;
+      .userContainer {
+        display: flex;
+        margin: 0px 10px 0px 10px;
+        padding: 20px 10px;
+        border-top: 1px solid hsla(0, 0%, 100%, 0.06);
+        justify-content: space-between;
+        .userProfile {
+          display: flex;
+          .friendListUserAvatar {
+            width: 32px;
+            height: 32px;
+            img {
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+            }
+          }
+          .friendUsername {
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+            margin: 0px 0px 0px 10px;
+            text-overflow: ellipsis;
+          }
+        }
+        .btnContainer {
+          display: flex;
+          .msgButton,
+          .optionsBtn {
+            width: 36px;
+            height: 36px;
+            margin-left: 10px;
+            background-color: #2f3136;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+          }
+        }
+        .offlineStatusIcon,
+        .onlineStatusIcon,
+        .busyStatusIcon {
+          position: relative;
+          top: -16px;
+          left: 20px;
+
+          border-radius: 50%;
+          width: 10px;
+          height: 10px;
+          border: 0;
+          border-radius: 50%;
+          background-color: #717c8a;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 3;
+          border: 3px solid #2f3136;
+
+          .innerCircle {
+            width: 5px;
+            height: 5px;
+            border: 0;
+            border-radius: 50%;
+            background-color: #2f3136;
+          }
+        }
+        .onlineStatusIcon {
+          background-color: #43b581;
+        }
+        .busyStatusIcon {
+          background-color: #e84444;
+          .innerLine {
+            width: 8px;
+            height: 2px;
+            background-color: #2f3136;
+          }
+        }
+      }
+      .userContainer:hover {
+        background-color: #3a3e44;
+        border: 0;
+        border-radius: 5px;
+      }
+    }
+  }
+}
+.friendsList::-webkit-scrollbar {
+  display: none; // safari/chrome
+}
+.friendsListMainContainer::-webkit-scrollbar {
+  display: none;
+}

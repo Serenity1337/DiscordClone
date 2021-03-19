@@ -2,6 +2,7 @@
   background-color: #2f3136;
   box-sizing: border-box;
   width: 240px;
+  min-width: 240px;
   padding: 0;
   margin: 0;
   height: 100vh;
@@ -10,6 +11,7 @@
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
   .filterEverything {
+    box-sizing: border-box;
     width: 220px;
     height: 28px;
     border-radius: 4px;
@@ -20,7 +22,6 @@
     line-height: 24px;
     padding: 0px 0px 0px 10px;
     margin: 10px;
-    box-sizing: border-box;
   }
   .friendsAndNitroNav {
     padding: 8px;
