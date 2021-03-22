@@ -75,7 +75,7 @@ export const Login = () => {
           Need an account? Register
         </Link>
         {error ? <div className={classes.error}> {error} </div> : null}
-        {redirected ? <Redirect to='/app' /> : null}
+        {redirected ? <Redirect to='/channels/@me' /> : null}
       </div>
     </div>
   )

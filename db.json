@@ -9,6 +9,42 @@
       "email": "123@gmail.com",
       "username": "123",
       "password": "123",
+      "tag": "#0001",
+      "friends": {
+        "pending": [
+          {
+            "birthday": {
+              "day": "15",
+              "month": "10",
+              "year": "2005"
+            },
+            "email": "321@gmail.com",
+            "username": "321",
+            "password": "321",
+            "status": "Outgoing friend request",
+            "setUserStatus": "",
+            "customStatus": "",
+            "tag": "#6337",
+            "id": 2
+          }
+        ],
+        "accepted": [],
+        "blocked": []
+      },
+      "status": "online",
+      "setUserStatus": "",
+      "customStatus": "",
+      "id": 1
+    },
+    {
+      "birthday": {
+        "day": "15",
+        "month": "10",
+        "year": "2005"
+      },
+      "email": "321@gmail.com",
+      "username": "321",
+      "password": "321",
       "friends": {
         "pending": [
           {
@@ -20,333 +56,41 @@
             "email": "123@gmail.com",
             "username": "123",
             "password": "123",
-            "friends": [],
-            "status": "online",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "online",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "online",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "offline",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "busy",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "busy",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "status": "offline",
+            "tag": "#0001",
+            "status": "incoming friend request",
+            "setUserStatus": "",
             "customStatus": "",
-            "friends": []
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "status": "online",
-            "customStatus": "",
-            "friends": []
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "online",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "online",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "online",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "online",
-            "customStatus": ""
+            "id": 1
           }
         ],
-        "accepted": [
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "online",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "online",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "online",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "offline",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "busy",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "busy",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "status": "offline",
-            "customStatus": "",
-            "friends": []
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "status": "online",
-            "customStatus": "",
-            "friends": []
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "online",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "online",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "online",
-            "customStatus": ""
-          },
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "friends": [],
-            "status": "online",
-            "customStatus": ""
-          }
-        ],
-        "blocked": [
-        ]
+        "accepted": [],
+        "blocked": []
       },
       "status": "online",
+      "setUserStatus": "",
       "customStatus": "",
-      "id": 1
+      "tag": "#6337",
+      "id": 2
     },
     {
       "birthday": {
-        "day": "16",
+        "day": "15",
         "month": "10",
-        "year": "2003"
+        "year": "2005"
       },
-      "email": "321@gmail.com",
-      "username": "321",
-      "password": "321",
+      "email": "1234@gmail.com",
+      "username": "1234",
+      "password": "1234",
       "friends": {
+        "pending": [],
         "accepted": [],
-        "pending": []
+        "blocked": []
       },
-      "id": 2
+      "status": "online",
+      "setUserStatus": "",
+      "customStatus": "",
+      "tag": "#7738",
+      "id": 3
     }
   ],
   "servers": [

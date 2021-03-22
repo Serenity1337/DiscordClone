@@ -17,6 +17,84 @@ function App() {
     servers,
     setservers,
   ])
+
+  // check if logged in
+  const loggedIn = () => {
+    const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
+    if (!userToken) {
+    } else {
+      return
+    }
+  }
+  const getUser = () => {
+    const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
+    if (userToken) {
+      fetch(`http://localhost:4000/users/${userToken.id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((header) => {
+          return header.json()
+        })
+        .then((response) => {
+          setuser(response)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
+  }
+  const getUsers = () => {
+    const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
+    fetch(`http://localhost:4000/users`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((header) => {
+        return header.json()
+      })
+      .then((response) => {
+        setusers(response)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
+  const getServers = () => {
+    const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
+    fetch(`http://localhost:4000/servers`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((header) => {
+        return header.json()
+      })
+      .then((response) => {
+        setservers(response)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
+  useEffect(() => {
+    getUser()
+    getUsers()
+    getServers()
+    loggedIn()
+    const interval = setInterval(() => {
+      getUser()
+      loggedIn()
+      getUsers()
+      getServers()
+    }, 10000)
+    return () => clearInterval(interval)
+  }, [])
   return (
     <div className='app'>
       <Switch>

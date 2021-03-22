@@ -16,82 +16,7 @@ export const Channels = () => {
   const { servers, setservers } = useContext(ServersContext)
   const [redirected, setredirected] = useState(false)
   const [addServerModalToggle, setaddServerModalToggle] = useState(false)
-  // check if logged in
-  const loggedIn = () => {
-    const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
-    if (!userToken) {
-      setredirected(true)
-    } else {
-      return
-    }
-  }
-  const getUser = () => {
-    const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
-    if (userToken) {
-      fetch(`http://localhost:4000/users/${userToken.id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((header) => {
-          return header.json()
-        })
-        .then((response) => {
-          setuser(response)
-        })
-        .catch((e) => {
-          console.log(e)
-        })
-    }
-  }
-  const getUsers = () => {
-    const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
-    fetch(`http://localhost:4000/users`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        setusers(response)
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-  }
-  const getServers = () => {
-    const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
-    fetch(`http://localhost:4000/servers`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        setservers(response)
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-  }
-  useEffect(() => {
-    getUser()
-    getUsers()
-    getServers()
-    loggedIn()
-    const interval = setInterval(() => {
-      getUser()
-      loggedIn()
-    }, 10000)
-    return () => clearInterval(interval)
-  }, [])
+
   return (
     <div className={classes.appContainer}>
       <ServersSideBar
@@ -112,7 +37,12 @@ export const Channels = () => {
           user={user}
         />
       ) : null}
-      <FriendsListMain user={user} setuser={setuser} />
+      <FriendsListMain
+        user={user}
+        setuser={setuser}
+        users={users}
+        setusers={setusers}
+      />
 
       {redirected ? <Redirect to='/login' /> : null}
     </div>

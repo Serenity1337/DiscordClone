@@ -13,20 +13,12 @@ export const FriendsListSideBar = (props) => {
 
   // displays the mouseover text on server icons
   const displayName = (event, user, index) => {
-    if (index) {
-      setstatusMessageState({ [index]: true })
-      setpositionState(event.currentTarget.getBoundingClientRect().top + -40)
-    } else {
-      setstatusMessageState(true)
-    }
+    setstatusMessageState({ [index]: true })
+    setpositionState(event.currentTarget.getBoundingClientRect().top + -40)
   }
   const removeName = (event, user, index) => {
-    if (index) {
-      setstatusMessageState({ [index]: false })
-      setpositionState(0)
-    } else {
-      setstatusMessageState(false)
-    }
+    setstatusMessageState({ [index]: false })
+    setpositionState(0)
   }
 
   // renders the status icons on avatars

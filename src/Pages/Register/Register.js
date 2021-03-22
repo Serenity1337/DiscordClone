@@ -1,11 +1,15 @@
 import classes from './Register.module.scss'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Dates from '../../Components/Dates'
 import { Link, Redirect } from 'react-router-dom'
+import { discordTag } from '../../utils/Functions'
+import { UsersContext } from '../../Contexts/UsersContext'
 
 export const Register = () => {
   const [profile, setprofile] = useState({ birthday: {} })
   const [error, seterror] = useState('')
+  const [redirected, setredirected] = useState(false)
+  const { users, setusers } = useContext(UsersContext)
   const profileHandler = (event) => {
     let profileCopy = { ...profile }
     profileCopy[event.target.name] = event.target.value
@@ -26,8 +30,13 @@ export const Register = () => {
     } else {
       if (profile.password === profile.rpassword) {
         let profileCopy = { ...profile }
-        profileCopy.friends = []
+        profileCopy.friends = { pending: [], accepted: [], blocked: [] }
+        profileCopy.status = 'online'
+        profileCopy.setUserStatus = ''
+        profileCopy.customStatus = ''
         delete profileCopy.rpassword
+        profileCopy.tag = discordTag()
+        const usersCopy = [...users, profileCopy]
         seterror('')
         fetch('http://localhost:4000/users', {
           method: 'POST',
@@ -43,7 +52,8 @@ export const Register = () => {
             if (response.error) {
               seterror(response.msg)
             }
-            ;<Redirect to='/login' />
+            setusers(usersCopy)
+            setredirected(true)
           })
       } else {
         seterror('Please make sure you repeat password correctly')
@@ -101,6 +111,7 @@ export const Register = () => {
           Already have an account?
         </Link>
         {error ? <div className={classes.error}> {error} </div> : null}
+        {redirected ? <Redirect to='/login' /> : null}
       </div>
     </div>
   )
