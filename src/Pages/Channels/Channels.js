@@ -16,7 +16,9 @@ export const Channels = () => {
   const { servers, setservers } = useContext(ServersContext)
   const [redirected, setredirected] = useState(false)
   const [addServerModalToggle, setaddServerModalToggle] = useState(false)
-
+  useEffect(() => {
+    console.log('asd')
+  }, [])
   return (
     <div className={classes.appContainer}>
       <ServersSideBar
@@ -43,8 +45,6 @@ export const Channels = () => {
         users={users}
         setusers={setusers}
       />
-
-      {redirected ? <Redirect to='/login' /> : null}
     </div>
   )
 }

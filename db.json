@@ -11,23 +11,7 @@
       "password": "123",
       "tag": "#0001",
       "friends": {
-        "pending": [
-          {
-            "birthday": {
-              "day": "15",
-              "month": "10",
-              "year": "2005"
-            },
-            "email": "321@gmail.com",
-            "username": "321",
-            "password": "321",
-            "status": "Outgoing friend request",
-            "setUserStatus": "",
-            "customStatus": "",
-            "tag": "#6337",
-            "id": 2
-          }
-        ],
+        "pending": [],
         "accepted": [],
         "blocked": []
       },
@@ -46,23 +30,7 @@
       "username": "321",
       "password": "321",
       "friends": {
-        "pending": [
-          {
-            "birthday": {
-              "day": "17",
-              "month": "9",
-              "year": "2002"
-            },
-            "email": "123@gmail.com",
-            "username": "123",
-            "password": "123",
-            "tag": "#0001",
-            "status": "incoming friend request",
-            "setUserStatus": "",
-            "customStatus": "",
-            "id": 1
-          }
-        ],
+        "pending": [],
         "accepted": [],
         "blocked": []
       },

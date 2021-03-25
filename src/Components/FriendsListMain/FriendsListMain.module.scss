@@ -110,6 +110,30 @@
         padding: 20px 10px;
         border-top: 1px solid hsla(0, 0%, 100%, 0.06);
         justify-content: space-between;
+        .profileModalContainer {
+          .profileModalChoice {
+            color: #b9bbbe;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            min-height: 32px;
+            padding: 6px 8px;
+            font-size: 14px;
+            border-radius: 5px;
+          }
+          .profileModalChoice:hover {
+            color: #fff;
+            background-color: #5c6fb1;
+          }
+        }
         .userProfile {
           display: flex;
           .friendListUserAvatar {
@@ -124,9 +148,16 @@
           .friendUsername {
             display: flex;
             align-items: center;
+            flex-direction: column;
             color: #ffffff;
             margin: 0px 0px 0px 10px;
             text-overflow: ellipsis;
+          }
+          .blockedStatus {
+            font-size: 12px;
+            color: #b9bbbe;
+            text-transform: capitalize;
+            margin: 5px 0px 0px 10px;
           }
         }
         .btnContainer {

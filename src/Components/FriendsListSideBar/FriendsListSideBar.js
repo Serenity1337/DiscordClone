@@ -140,7 +140,9 @@ export const FriendsListSideBar = (props) => {
           </div>
           <div className={classes.userNameStatusContainer}>
             {props.user.username}
-            <div>#6660</div>
+            <div style={{ fontSize: '12px', color: '#8e9297' }}>
+              {props.user.tag}
+            </div>
           </div>
         </div>
         <div className={classes.settingsContainer}>
