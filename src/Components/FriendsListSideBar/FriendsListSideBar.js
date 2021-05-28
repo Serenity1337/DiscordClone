@@ -3,13 +3,15 @@ import classes from './FriendsListSideBar.module.scss'
 import { FaUserFriends, FaMicrophone, FaHeadphones } from 'react-icons/fa'
 import { BsGearFill } from 'react-icons/bs'
 import Nitro from '../../utils/imgs/Nitro.js'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, Redirect, useLocation } from 'react-router-dom'
 import catto from '../../utils/imgs/catto.png'
 
 export const FriendsListSideBar = (props) => {
   const location = useLocation()
   const [statusMessageState, setstatusMessageState] = useState({})
   const [positionState, setpositionState] = useState(0)
+  const [redirected, setredirected] = useState(false)
+  const [redirectionLocation, setredirectionLocation] = useState('')
 
   // displays the mouseover text on server icons
   const displayName = (event, user, index) => {
@@ -21,6 +23,22 @@ export const FriendsListSideBar = (props) => {
     setpositionState(0)
   }
 
+  const redirectToADM = (user, index) => {
+    const loggedInUser = props.user
+    for (let index = 0; index < loggedInUser.DMS.length; index++) {
+      let directMessage = loggedInUser.DMS[index]
+      for (
+        let participantsIndex = 0;
+        participantsIndex < directMessage.participants.length;
+        participantsIndex++
+      ) {
+        if (user.username === directMessage.participants[participantsIndex]) {
+          setredirected(true)
+          setredirectionLocation(`${directMessage._id}`)
+        }
+      }
+    }
+  }
   // renders the status icons on avatars
   const renderStatus = (user, index) => {
     if (user.status === 'offline') {
@@ -60,7 +78,11 @@ export const FriendsListSideBar = (props) => {
   const renderUsers = () => {
     if (props.user.username) {
       return props.user.friends.accepted.map((user, index) => (
-        <Link to={`${location.pathname}/${user.username}`}>
+        <div
+          className={classes.userContainerContainer}
+          onClick={() => redirectToADM(user, index)}
+          key={index}
+        >
           <div className={classes.userContainer}>
             {statusMessageState[index] ? (
               <div
@@ -76,7 +98,7 @@ export const FriendsListSideBar = (props) => {
             </div>
             <div className={classes.friendUsername}>{user.username} </div>
           </div>
-        </Link>
+        </div>
       ))
     }
   }
@@ -173,6 +195,7 @@ export const FriendsListSideBar = (props) => {
           />
         </div>
       </div>
+      {redirected ? <Redirect to={`@me/${redirectionLocation}`} /> : null}
     </div>
   )
 }

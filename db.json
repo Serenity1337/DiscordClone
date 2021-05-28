@@ -11,13 +11,83 @@
       "password": "123",
       "tag": "#0001",
       "friends": {
-        "pending": [],
-        "accepted": [],
+        "pending": [
+          {
+            "birthday": {
+              "day": "15",
+              "month": "10",
+              "year": "2005"
+            },
+            "email": "321@gmail.com",
+            "username": "321",
+            "password": "321",
+            "status": "Outgoing friend request",
+            "setUserStatus": "",
+            "customStatus": "",
+            "DMS": [
+              {
+                "participants": [
+                  "123",
+                  "321"
+                ],
+                "_id": "93e51469-b0e4-4a68-ad48-0309d05793b7",
+                "messages": []
+              }
+            ],
+            "tag": "#6337",
+            "id": 2
+          }
+        ],
+        "accepted": [
+          {
+            "birthday": {
+              "day": "15",
+              "month": "10",
+              "year": "2005"
+            },
+            "email": "1234@gmail.com",
+            "username": "1234",
+            "password": "1234",
+            "status": "online",
+            "setUserStatus": "",
+            "customStatus": "",
+            "tag": "#7738",
+            "DMS": [
+              {
+                "participants": [
+                  "123",
+                  "1234"
+                ],
+                "_id": "8a6add38-dca1-437c-9e60-5852ecdb3ba2",
+                "messages": []
+              }
+            ],
+            "id": 3
+          }
+        ],
         "blocked": []
       },
       "status": "online",
       "setUserStatus": "",
       "customStatus": "",
+      "DMS": [
+        {
+          "participants": [
+            "123",
+            "321"
+          ],
+          "_id": "93e51469-b0e4-4a68-ad48-0309d05793b7",
+          "messages": []
+        },
+        {
+          "participants": [
+            "123",
+            "1234"
+          ],
+          "_id": "8a6add38-dca1-437c-9e60-5852ecdb3ba2",
+          "messages": []
+        }
+      ],
       "id": 1
     },
     {
@@ -30,13 +100,49 @@
       "username": "321",
       "password": "321",
       "friends": {
-        "pending": [],
+        "pending": [
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "tag": "#0001",
+            "status": "incoming friend request",
+            "setUserStatus": "",
+            "customStatus": "",
+            "DMS": [
+              {
+                "participants": [
+                  "123",
+                  "321"
+                ],
+                "_id": "93e51469-b0e4-4a68-ad48-0309d05793b7",
+                "messages": []
+              }
+            ],
+            "id": 1
+          }
+        ],
         "accepted": [],
         "blocked": []
       },
       "status": "online",
       "setUserStatus": "",
       "customStatus": "",
+      "DMS": [
+        {
+          "participants": [
+            "123",
+            "321"
+          ],
+          "_id": "93e51469-b0e4-4a68-ad48-0309d05793b7",
+          "messages": []
+        }
+      ],
       "tag": "#6337",
       "id": 2
     },
@@ -51,13 +157,49 @@
       "password": "1234",
       "friends": {
         "pending": [],
-        "accepted": [],
+        "accepted": [
+          {
+            "birthday": {
+              "day": "17",
+              "month": "9",
+              "year": "2002"
+            },
+            "email": "123@gmail.com",
+            "username": "123",
+            "password": "123",
+            "tag": "#0001",
+            "status": "online",
+            "setUserStatus": "",
+            "customStatus": "",
+            "DMS": [
+              {
+                "participants": [
+                  "123",
+                  "321"
+                ],
+                "_id": "93e51469-b0e4-4a68-ad48-0309d05793b7",
+                "messages": []
+              }
+            ],
+            "id": 1
+          }
+        ],
         "blocked": []
       },
       "status": "online",
       "setUserStatus": "",
       "customStatus": "",
       "tag": "#7738",
+      "DMS": [
+        {
+          "participants": [
+            "123",
+            "1234"
+          ],
+          "_id": "8a6add38-dca1-437c-9e60-5852ecdb3ba2",
+          "messages": []
+        }
+      ],
       "id": 3
     }
   ],

@@ -8,6 +8,7 @@ import { IoEllipsisVerticalSharp } from 'react-icons/io5'
 import { FiMessageSquare, FiUserX } from 'react-icons/fi'
 import { TiTick } from 'react-icons/ti'
 import { BsX } from 'react-icons/bs'
+import { v4 as uuidv4 } from 'uuid'
 // import { discordTag } from '../../utils/Functions'
 import NewDm from '../../utils/imgs/NewDm'
 import catto from '../../utils/imgs/catto.png'
@@ -29,6 +30,7 @@ export const FriendsListMain = (props) => {
   const [mouseCoordY, setmouseCoordY] = useState(0)
   const [modalProfileIndex, setmodalProfileIndex] = useState(0)
   // This useEffect filters online/blocked/all/pending users based on filter
+
   useEffect(() => {
     if (props.user.username) {
       if (friendStatusState.online === true) {
@@ -67,6 +69,7 @@ export const FriendsListMain = (props) => {
   // add a friend submit handler
   const addFriendHandler = (event) => {
     event.preventDefault()
+    const DMId = uuidv4()
 
     const loggedInUser = { ...props.user }
 
@@ -91,68 +94,105 @@ export const FriendsListMain = (props) => {
       const existsFriend = props.user.friends.accepted.filter(
         (acceptedUser) => acceptedUser.username === usernameCopy
       )
+      const existsBlocked = props.user.friends.blocked.filter(
+        (blockedUser) => blockedUser.userName === usernameCopy
+      )
       if (existsPending.length === 0) {
         if (existsFriend.length === 0) {
-          let foundUserCopy = { ...foundUser[0] }
-          delete foundUserCopy.friends
-          foundUserCopy.status = 'Outgoing friend request'
-          loggedInUser.friends.pending = [
-            ...loggedInUser.friends.pending,
-            foundUserCopy,
-          ]
-          const foundUserCopyCopy = { ...foundUser[0] }
-          let loggedInUserCopy = { ...props.user }
-          delete loggedInUserCopy.friends
-          loggedInUserCopy.status = 'incoming friend request'
-          foundUserCopyCopy.friends.pending = [
-            ...foundUserCopyCopy.friends.pending,
-            loggedInUserCopy,
-          ]
-          const loggedInUserIndex = props.users.findIndex(
-            (currentUser) => currentUser.username === loggedInUser.username
-          )
+          if (existsBlocked.length === 0) {
+            let foundUserCopy = { ...foundUser[0] }
+            delete foundUserCopy.friends
+            foundUserCopy.status = 'Outgoing friend request'
+            loggedInUser.friends.pending = [
+              ...loggedInUser.friends.pending,
+              foundUserCopy,
+            ]
+            const DMObj = {
+              participants: [
+                `${loggedInUser.username}`,
+                `${foundUserCopy.username}`,
+              ],
+              _id: `${DMId}`,
+              messages: [],
+            }
+            let foundDM = false
+            for (let index = 0; index < loggedInUser.DMS.length; index++) {
+              const findingDM = loggedInUser.DMS[index].participants.includes(
+                foundUserCopy.username
+              )
 
-          const foundUserIndex = props.users.findIndex(
-            (friendUser) => friendUser.username === foundUser[0].username
-          )
+              if (findingDM === true) foundDM = true
 
-          const usersCopy = [...props.users]
-          usersCopy[loggedInUserIndex] = loggedInUser
-          usersCopy[foundUserIndex] = foundUserCopyCopy
+              console.log('inside loop foundDM', foundDM)
+              // loggedInUser.DMS[index].participants.map((currUser) => {
+              //   if (currUser === foundUserCopy.username) {
+              //     console.log('testing')
+              //   }
+              // })
+            }
+            console.log('outside loop foundDM', foundDM)
+            console.log('test')
 
-          fetch(`http://localhost:4000/users/${loggedInUser.id}`, {
-            method: 'PUT',
-            body: JSON.stringify(loggedInUser),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-            .then((header) => {
-              return header.json()
-            })
-            .then((response) => {
-              if (response.error) {
-                seterrorState(response.msg)
-              }
-              props.setuser(loggedInUser)
-            })
+            const foundUserCopyCopy = { ...foundUser[0] }
+            let loggedInUserCopy = { ...props.user }
+            delete loggedInUserCopy.friends
+            loggedInUserCopy.status = 'incoming friend request'
+            foundUserCopyCopy.friends.pending = [
+              ...foundUserCopyCopy.friends.pending,
+              loggedInUserCopy,
+            ]
+            const loggedInUserIndex = props.users.findIndex(
+              (currentUser) => currentUser.username === loggedInUser.username
+            )
 
-          fetch(`http://localhost:4000/users/${foundUserCopyCopy.id}`, {
-            method: 'PUT',
-            body: JSON.stringify(foundUserCopyCopy),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-            .then((header) => {
-              return header.json()
+            const foundUserIndex = props.users.findIndex(
+              (friendUser) => friendUser.username === foundUser[0].username
+            )
+
+            const usersCopy = [...props.users]
+            usersCopy[loggedInUserIndex] = loggedInUser
+            usersCopy[foundUserIndex] = foundUserCopyCopy
+
+            if (!foundDM) {
+              loggedInUser.DMS = [...loggedInUser.DMS, DMObj]
+              foundUserCopyCopy.DMS = [...foundUserCopyCopy.DMS, DMObj]
+            }
+            fetch(`http://localhost:4000/users/${loggedInUser.id}`, {
+              method: 'PUT',
+              body: JSON.stringify(loggedInUser),
+              headers: {
+                'Content-Type': 'application/json',
+              },
             })
-            .then((response) => {
-              if (response.error) {
-                seterrorState(response.msg)
-              }
-              props.setusers(usersCopy)
+              .then((header) => {
+                return header.json()
+              })
+              .then((response) => {
+                if (response.error) {
+                  seterrorState(response.msg)
+                }
+                props.setuser(loggedInUser)
+              })
+
+            fetch(`http://localhost:4000/users/${foundUserCopyCopy.id}`, {
+              method: 'PUT',
+              body: JSON.stringify(foundUserCopyCopy),
+              headers: {
+                'Content-Type': 'application/json',
+              },
             })
+              .then((header) => {
+                return header.json()
+              })
+              .then((response) => {
+                if (response.error) {
+                  seterrorState(response.msg)
+                }
+                props.setusers(usersCopy)
+              })
+          } else {
+            seterrorState('You have already blocked this user.')
+          }
         } else {
           seterrorState(`You're already friends with that user!`)
         }
@@ -609,7 +649,7 @@ export const FriendsListMain = (props) => {
       // renders all friends regardless of the status
       if (friendStatusState.all || friendStatusState.online) {
         return filteredFriendsArr.map((user, index) => (
-          <Link to={`${location.pathname}/${user.username}`}>
+          <Link to={`${location.pathname}`}>
             <div
               className={classes.userContainer}
               onContextMenu={(event) =>
@@ -656,7 +696,7 @@ export const FriendsListMain = (props) => {
 
       if (friendStatusState.blocked) {
         return filteredFriendsArr.map((user, index) => (
-          <Link to={`${location.pathname}/${user.username}`}>
+          <Link to={`${location.pathname}`}>
             <div className={classes.userContainer}>
               <div className={classes.userProfile}>
                 <div className={classes.friendListUserAvatar}>
@@ -691,7 +731,7 @@ export const FriendsListMain = (props) => {
       // renders all pending user requests
       if (friendStatusState.pending && filteredFriendsArr.length > 0) {
         return filteredFriendsArr.map((user, index) => (
-          <Link to={`${location.pathname}/${user.username}`}>
+          <Link to={`${location.pathname}`}>
             <div className={classes.userContainer}>
               <div className={classes.userProfile}>
                 <div className={classes.friendListUserAvatar}>

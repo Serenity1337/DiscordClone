@@ -36,6 +36,7 @@ export const Register = () => {
         profileCopy.customStatus = ''
         delete profileCopy.rpassword
         profileCopy.tag = discordTag()
+        profileCopy.DMS = []
         const usersCopy = [...users, profileCopy]
         seterror('')
         fetch('http://localhost:4000/users', {

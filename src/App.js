@@ -7,16 +7,17 @@ import Channels from './Pages/Channels'
 import { UsersContext } from './Contexts/UsersContext'
 import { UserContext } from './Contexts/UserContext'
 import { ServersContext } from './Contexts/ServersContext'
+import DirectMessaging from './Pages/DirectMessaging'
 function App() {
   const [user, setuser] = useState({})
   const [users, setusers] = useState([])
   const [servers, setservers] = useState([])
   const userValue = useMemo(() => ({ user, setuser }), [user, setuser])
   const usersValue = useMemo(() => ({ users, setusers }), [users, setusers])
-  const ServersValue = useMemo(() => ({ servers, setservers }), [
-    servers,
-    setservers,
-  ])
+  const ServersValue = useMemo(
+    () => ({ servers, setservers }),
+    [servers, setservers]
+  )
 
   // check if logged in
   const loggedIn = () => {
@@ -119,6 +120,16 @@ function App() {
                 exact={true}
                 label='Channels'
               />
+              {user.DMS
+                ? user.DMS.map((dm) => (
+                    <Route
+                      path={`/channels/@me/${dm._id}`}
+                      render={() => <DirectMessaging dm={dm} />}
+                      exact={true}
+                      label='DirectMessaging'
+                    />
+                  ))
+                : null}
             </UserContext.Provider>
           </ServersContext.Provider>
         </UsersContext.Provider>
