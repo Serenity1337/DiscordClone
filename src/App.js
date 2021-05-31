@@ -121,10 +121,10 @@ function App() {
                 label='Channels'
               />
               {user.DMS
-                ? user.DMS.map((dm) => (
+                ? user.DMS.map((dm, dmIndex) => (
                     <Route
                       path={`/channels/@me/${dm._id}`}
-                      render={() => <DirectMessaging dm={dm} />}
+                      render={() => <DirectMessaging dm={(dm, dmIndex)} />}
                       exact={true}
                       label='DirectMessaging'
                     />

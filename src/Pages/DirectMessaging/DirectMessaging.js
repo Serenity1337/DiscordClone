@@ -42,6 +42,7 @@ export const DirectMessaging = (props) => {
         users={users}
         dm={props.dm}
         setusers={setusers}
+        dmIndex={props.dmIndex}
       />
     </div>
   )
