@@ -9,11 +9,31 @@ import { BiHelpCircle } from 'react-icons/bi'
 import catto from '../../utils/imgs/catto.png'
 import dateFormat from 'dateformat'
 import { v4 as uuidv4 } from 'uuid'
+import { io } from 'socket.io-client'
 
 export const DMMain = (props) => {
+  const socket = io('http://localhost:8080')
   let now = new Date()
   const [friend, setFriend] = useState({})
   const [msg, setMsg] = useState('')
+  const [msgs, setMsgs] = useState([])
+  const [DM, setDM] = useState({})
+
+  useEffect(() => {
+    if (DM) {
+      console.log(props)
+      socket.emit('dm room', `${DM._id}`)
+    }
+  }, [DM])
+
+  socket.on('receive-message', (message) => {
+    if (DM.messages) {
+      let dmCopy = { ...DM }
+      let dmCopyMsgArr = [...dmCopy.messages, message]
+      dmCopy.messages = dmCopyMsgArr
+      setDM(dmCopy)
+    }
+  })
   useEffect(() => {
     if (
       props.dm.participants &&
@@ -26,10 +46,13 @@ export const DMMain = (props) => {
       const loggedInUserFriend = props.users.filter(
         (friendObject) => friendObject.username === loggedInUserFriendString[0]
       )
-      console.log(loggedInUserFriend)
       setFriend(loggedInUserFriend[0])
     }
-  }, [props.dm.participants || props.user.username || props.users.length > 0])
+  }, [props.users])
+
+  useEffect(() => {
+    setDM(props.dm)
+  }, [props.dm])
 
   const msgInputHandler = (event) => {
     setMsg(event.target.value)
@@ -37,6 +60,9 @@ export const DMMain = (props) => {
 
   const msgFormHandler = (event) => {
     event.preventDefault()
+    const foundFriendDMIndex = friend.DMS.findIndex(
+      (DM) => DM._id === props.dm._id
+    )
     const msgId = uuidv4()
     const msgObject = {}
     let currDate = dateFormat(now, 'mm/dd/yyyy hh:MM TT')
@@ -45,30 +71,58 @@ export const DMMain = (props) => {
     msgObject.sender = props.user.username
     msgObject.msg = msg
 
-    const foundLoggedInUserIndex = props.users.findIndex(
-      (currUser) => currUser.username === props.user.username
-    )
-
     let loggedInUser = props.user
-    loggedInUser.DMS[props.dmIndex] = msgObject
-    console.log(props.users)
-    console.log(foundLoggedInUserIndex)
-    // fetch(`http://localhost:4000/users/${foundUserCopyCopy.id}`, {
-    //           method: 'PUT',
-    //           body: JSON.stringify(foundUserCopyCopy),
-    //           headers: {
-    //             'Content-Type': 'application/json',
-    //           },
-    //         })
-    //           .then((header) => {
-    //             return header.json()
-    //           })
-    //           .then((response) => {
-    //             if (response) {
-    //               props.setusers(usersCopy)
-    //             }
 
-    //           })
+    loggedInUser.DMS[props.dmIndex].messages = [
+      ...loggedInUser.DMS[props.dmIndex].messages,
+      msgObject,
+    ]
+
+    friend.DMS[foundFriendDMIndex].messages = [
+      ...friend.DMS[foundFriendDMIndex].messages,
+      msgObject,
+    ]
+    let DMClone = { ...DM }
+    DMClone.messages = [...DMClone.messages, msgObject]
+    event.target[0].value = ''
+
+    // console.log(foundLoggedInUserIndex)
+    fetch(`http://localhost:8000/discord/discord/updateUser/${friend._id}`, {
+      method: 'POST',
+      body: JSON.stringify(friend),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((header) => {
+        return header.json()
+      })
+      .then((response) => {
+        if (response) {
+        }
+      })
+
+    fetch(
+      `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
+      {
+        method: 'POST',
+        body: JSON.stringify(loggedInUser),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+      .then((header) => {
+        return header.json()
+      })
+      .then((response) => {
+        if (response) {
+          props.setuser(loggedInUser)
+          setDM(DMClone)
+        }
+      })
+
+    socket.emit('send-message', msgObject, DM._id)
   }
   return (
     <div className={classes.DMMain}>
@@ -160,97 +214,29 @@ export const DMMain = (props) => {
           <strong>@{friend.username ? friend.username : null}</strong>
         </div>
         <div className={classes.DMMainChatBoxContainerHorizontalLine}></div>
-
-        <div className={classes.DMMainChatBoxContainerMsgContainer}>
-          <div className={classes.DMMainChatBoxContainerMsgContainerAvatar}>
-            <img src={catto} alt='' />
-            <div className={classes.DMMainChatBoxNameContainer}>
-              {props.user.username}
-              <span className={classes.DMMsgDate}> 05/28/2021 4:34 PM </span>
-              <div className={classes.DMMainChatBoxContainerMsgContainerMsg}>
-                asddsa
+        {DM.messages
+          ? DM.messages.map((dmObj, dmObjIndex) => (
+              <div className={classes.DMMainChatBoxContainerMsgContainer}>
+                <div
+                  className={classes.DMMainChatBoxContainerMsgContainerAvatar}
+                >
+                  <img src={catto} alt='' />
+                  <div className={classes.DMMainChatBoxNameContainer}>
+                    {dmObj.sender}
+                    <span className={classes.DMMsgDate}>
+                      {' '}
+                      {dmObj.sentDate}{' '}
+                    </span>
+                    <div
+                      className={classes.DMMainChatBoxContainerMsgContainerMsg}
+                    >
+                      {dmObj.msg}
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={classes.DMMainChatBoxContainerMsgContainer}>
-          <div className={classes.DMMainChatBoxContainerMsgContainerAvatar}>
-            <img src={catto} alt='' />
-            <div className={classes.DMMainChatBoxNameContainer}>
-              {props.user.username}
-              <span className={classes.DMMsgDate}> 05/28/2021 4:34 PM </span>
-              <div className={classes.DMMainChatBoxContainerMsgContainerMsg}>
-                asddsa
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={classes.DMMainChatBoxContainerMsgContainer}>
-          <div className={classes.DMMainChatBoxContainerMsgContainerAvatar}>
-            <img src={catto} alt='' />
-            <div className={classes.DMMainChatBoxNameContainer}>
-              {props.user.username}
-              <span className={classes.DMMsgDate}> 05/28/2021 4:34 PM </span>
-              <div className={classes.DMMainChatBoxContainerMsgContainerMsg}>
-                asddsa
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={classes.DMMainChatBoxContainerMsgContainer}>
-          <div className={classes.DMMainChatBoxContainerMsgContainerAvatar}>
-            <img src={catto} alt='' />
-            <div className={classes.DMMainChatBoxNameContainer}>
-              {props.user.username}
-              <span className={classes.DMMsgDate}> 05/28/2021 4:34 PM </span>
-              <div className={classes.DMMainChatBoxContainerMsgContainerMsg}>
-                asddsa
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={classes.DMMainChatBoxContainerMsgContainer}>
-          <div className={classes.DMMainChatBoxContainerMsgContainerAvatar}>
-            <img src={catto} alt='' />
-            <div className={classes.DMMainChatBoxNameContainer}>
-              {props.user.username}
-              <span className={classes.DMMsgDate}> 05/28/2021 4:34 PM </span>
-              <div className={classes.DMMainChatBoxContainerMsgContainerMsg}>
-                asddsa
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={classes.DMMainChatBoxContainerMsgContainer}>
-          <div className={classes.DMMainChatBoxContainerMsgContainerAvatar}>
-            <img src={catto} alt='' />
-            <div className={classes.DMMainChatBoxNameContainer}>
-              {props.user.username}
-              <span className={classes.DMMsgDate}> 05/28/2021 4:34 PM </span>
-              <div className={classes.DMMainChatBoxContainerMsgContainerMsg}>
-                asddsa
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={classes.DMMainChatBoxContainerMsgContainer}>
-          <div className={classes.DMMainChatBoxContainerMsgContainerAvatar}>
-            <img src={catto} alt='' />
-            <div className={classes.DMMainChatBoxNameContainer}>
-              {props.user.username}
-              <span className={classes.DMMsgDate}> 05/28/2021 4:34 PM </span>
-              <div className={classes.DMMainChatBoxContainerMsgContainerMsg}>
-                asddsa
-              </div>
-            </div>
-          </div>
-        </div>
+            ))
+          : null}
       </div>
       <div className={classes.DMMainSendMsgContainer}>
         <form

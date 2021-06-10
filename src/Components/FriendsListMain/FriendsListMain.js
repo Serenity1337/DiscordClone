@@ -13,6 +13,15 @@ import { v4 as uuidv4 } from 'uuid'
 import NewDm from '../../utils/imgs/NewDm'
 import catto from '../../utils/imgs/catto.png'
 
+import {
+  addFriendHandler,
+  acceptFriendRequest,
+  unblockUserHandler,
+  removeUserFromFriendList,
+  blockUserHandler,
+  declineFriendRequest,
+} from './FriendsListMainUtils/FriendsListMainHandlers'
+
 export const FriendsListMain = (props) => {
   let location = useLocation()
   // State to filter out online,all,pending or blocked users
@@ -66,146 +75,6 @@ export const FriendsListMain = (props) => {
     setusernameState(event.target.value)
   }
   //--------------------------------------------------------------
-  // add a friend submit handler
-  const addFriendHandler = (event) => {
-    event.preventDefault()
-    const DMId = uuidv4()
-
-    const loggedInUser = { ...props.user }
-
-    const usernameCopy = usernameState.slice(
-      usernameState.length - usernameState.length,
-      usernameState.length - 5
-    )
-    const discordTagCopy = usernameState.slice(
-      usernameState.length - 5,
-      usernameState.length
-    )
-    // Checking whether the user actually exists.
-    const foundUser = props.users.filter(
-      (filteredUser) => filteredUser.username === usernameCopy
-    )
-    if (foundUser.length > 0 && discordTagCopy === foundUser[0].tag) {
-      // Checking if the user exists as pending user already.
-      const existsPending = props.user.friends.pending.filter(
-        (pendingUser) => pendingUser.username === usernameCopy
-      )
-      // Checking if the user exists as a friend already.
-      const existsFriend = props.user.friends.accepted.filter(
-        (acceptedUser) => acceptedUser.username === usernameCopy
-      )
-      const existsBlocked = props.user.friends.blocked.filter(
-        (blockedUser) => blockedUser.userName === usernameCopy
-      )
-      if (existsPending.length === 0) {
-        if (existsFriend.length === 0) {
-          if (existsBlocked.length === 0) {
-            let foundUserCopy = { ...foundUser[0] }
-            delete foundUserCopy.friends
-            foundUserCopy.status = 'Outgoing friend request'
-            loggedInUser.friends.pending = [
-              ...loggedInUser.friends.pending,
-              foundUserCopy,
-            ]
-            const DMObj = {
-              participants: [
-                `${loggedInUser.username}`,
-                `${foundUserCopy.username}`,
-              ],
-              _id: `${DMId}`,
-              messages: [],
-            }
-            let foundDM = false
-            for (let index = 0; index < loggedInUser.DMS.length; index++) {
-              const findingDM = loggedInUser.DMS[index].participants.includes(
-                foundUserCopy.username
-              )
-
-              if (findingDM === true) foundDM = true
-
-              console.log('inside loop foundDM', foundDM)
-              // loggedInUser.DMS[index].participants.map((currUser) => {
-              //   if (currUser === foundUserCopy.username) {
-              //     console.log('testing')
-              //   }
-              // })
-            }
-            console.log('outside loop foundDM', foundDM)
-            console.log('test')
-
-            const foundUserCopyCopy = { ...foundUser[0] }
-            let loggedInUserCopy = { ...props.user }
-            delete loggedInUserCopy.friends
-            loggedInUserCopy.status = 'incoming friend request'
-            foundUserCopyCopy.friends.pending = [
-              ...foundUserCopyCopy.friends.pending,
-              loggedInUserCopy,
-            ]
-            const loggedInUserIndex = props.users.findIndex(
-              (currentUser) => currentUser.username === loggedInUser.username
-            )
-
-            const foundUserIndex = props.users.findIndex(
-              (friendUser) => friendUser.username === foundUser[0].username
-            )
-
-            const usersCopy = [...props.users]
-            usersCopy[loggedInUserIndex] = loggedInUser
-            usersCopy[foundUserIndex] = foundUserCopyCopy
-
-            if (!foundDM) {
-              loggedInUser.DMS = [...loggedInUser.DMS, DMObj]
-              foundUserCopyCopy.DMS = [...foundUserCopyCopy.DMS, DMObj]
-            }
-            fetch(`http://localhost:4000/users/${loggedInUser.id}`, {
-              method: 'PUT',
-              body: JSON.stringify(loggedInUser),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            })
-              .then((header) => {
-                return header.json()
-              })
-              .then((response) => {
-                if (response.error) {
-                  seterrorState(response.msg)
-                }
-                props.setuser(loggedInUser)
-              })
-
-            fetch(`http://localhost:4000/users/${foundUserCopyCopy.id}`, {
-              method: 'PUT',
-              body: JSON.stringify(foundUserCopyCopy),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            })
-              .then((header) => {
-                return header.json()
-              })
-              .then((response) => {
-                if (response.error) {
-                  seterrorState(response.msg)
-                }
-                props.setusers(usersCopy)
-              })
-          } else {
-            seterrorState('You have already blocked this user.')
-          }
-        } else {
-          seterrorState(`You're already friends with that user!`)
-        }
-      } else {
-        seterrorState(`You have already sent a friend request to that user.`)
-      }
-    } else {
-      seterrorState(
-        `Hm, didn't work. Double check that the capitalization, spelling, any spaces, and numbers are correct.`
-      )
-    }
-  }
-  //--------------------------------------------------------------
   // opens the profile modal
   const openModalProfileHandler = (event, user, index) => {
     event.preventDefault()
@@ -247,13 +116,37 @@ export const FriendsListMain = (props) => {
         <div className={classes.profileModalChoice}>Add Note</div>
         <div
           className={classes.profileModalChoice}
-          onClick={(event) => removeUserFromFriendList(event, user, index)}
+          onClick={(event) =>
+            removeUserFromFriendList(
+              event,
+              user,
+              index,
+              props.users,
+              props.setuser,
+              props.setusers,
+              seterrorState,
+              props.user,
+              setopenModalProfile
+            )
+          }
         >
           Remove Friend
         </div>
         <div
           className={classes.profileModalChoice}
-          onClick={(event) => blockUserHandler(event, user, index)}
+          onClick={(event) =>
+            blockUserHandler(
+              event,
+              user,
+              index,
+              props.users,
+              props.setuser,
+              props.setusers,
+              seterrorState,
+              props.user,
+              setopenModalProfile
+            )
+          }
         >
           Block
         </div>
@@ -261,335 +154,6 @@ export const FriendsListMain = (props) => {
     )
   }
 
-  //--------------------------------------------------------------
-  // accept or decline friend requests from pending users
-  const acceptFriendRequest = (event, user, index) => {
-    event.stopPropagation()
-    event.preventDefault()
-
-    const loggedInUser = { ...props.user }
-    const foundFriend = props.users.filter(
-      (friend) => friend.username === user.username
-    )
-    user.status = foundFriend[0].status
-    loggedInUser.friends.accepted = [...loggedInUser.friends.accepted, user]
-    const filteredPending = loggedInUser.friends.pending.filter(
-      (friend) => friend.username !== user.username
-    )
-    loggedInUser.friends.pending = filteredPending
-
-    let foundLoggedInUser = props.users.filter(
-      (loggedUser) => loggedUser.username === loggedInUser.username
-    )
-
-    delete foundLoggedInUser[0].friends
-
-    foundFriend[0].friends.accepted = [
-      ...foundFriend[0].friends.accepted,
-      foundLoggedInUser[0],
-    ]
-    const filteredFriendPending = foundFriend[0].friends.pending.filter(
-      (friend) => friend.username !== loggedInUser.username
-    )
-    foundFriend[0].friends.pending = filteredFriendPending
-
-    const loggedInUserIndex = props.users.findIndex(
-      (currentUser) => currentUser.username === loggedInUser.username
-    )
-
-    const friendIndex = props.users.findIndex(
-      (friendUser) => friendUser.username === foundFriend[0].username
-    )
-
-    const usersCopy = [...props.users]
-    usersCopy[loggedInUserIndex] = loggedInUser
-    usersCopy[index] = foundFriend[0]
-
-    fetch(`http://localhost:4000/users/${loggedInUser.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(loggedInUser),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response.error) {
-          seterrorState(response.msg)
-        }
-        props.setuser(loggedInUser)
-      })
-
-    fetch(`http://localhost:4000/users/${foundFriend[0].id}`, {
-      method: 'PUT',
-      body: JSON.stringify(foundFriend[0]),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response.error) {
-          seterrorState(response.msg)
-        }
-        props.setusers(usersCopy)
-      })
-  }
-
-  const unblockUserHandler = (event, user, index) => {
-    event.stopPropagation()
-    event.preventDefault()
-
-    const loggedInUser = { ...props.user }
-    const foundFriend = props.users.filter(
-      (friend) => friend.username === user.username
-    )
-    const filteredBlocked = loggedInUser.friends.blocked.filter(
-      (friend) => friend.username !== user.username
-    )
-    loggedInUser.friends.blocked = filteredBlocked
-
-    const loggedInUserIndex = props.users.findIndex(
-      (currentUser) => currentUser.username === loggedInUser.username
-    )
-
-    const usersCopy = [...props.users]
-    usersCopy[loggedInUserIndex] = loggedInUser
-
-    fetch(`http://localhost:4000/users/${loggedInUser.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(loggedInUser),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response.error) {
-          seterrorState(response.msg)
-        }
-        props.setuser(loggedInUser)
-      })
-  }
-
-  const removeUserFromFriendList = (event, user, index) => {
-    event.stopPropagation()
-    event.preventDefault()
-
-    const loggedInUser = { ...props.user }
-    const foundFriend = props.users.filter(
-      (friend) => friend.username === user.username
-    )
-    const filteredAccepted = loggedInUser.friends.accepted.filter(
-      (friend) => friend.username !== user.username
-    )
-    loggedInUser.friends.accepted = filteredAccepted
-
-    let foundLoggedInUser = props.users.filter(
-      (loggedUser) => loggedUser.username === loggedInUser.username
-    )
-
-    delete foundLoggedInUser[0].friends
-
-    const friendFriendsArray = foundFriend[0].friends.accepted.filter(
-      (loggedUser) => loggedUser.username !== foundLoggedInUser[0].username
-    )
-
-    foundFriend[0].friends.accepted = friendFriendsArray
-
-    const loggedInUserIndex = props.users.findIndex(
-      (currentUser) => currentUser.username === loggedInUser.username
-    )
-
-    const friendIndex = props.users.findIndex(
-      (friendUser) => friendUser.username === foundFriend[0].username
-    )
-
-    const usersCopy = [...props.users]
-    usersCopy[loggedInUserIndex] = loggedInUser
-    usersCopy[index] = foundFriend[0]
-
-    fetch(`http://localhost:4000/users/${loggedInUser.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(loggedInUser),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response.error) {
-          seterrorState(response.msg)
-        }
-        props.setuser(loggedInUser)
-      })
-
-    fetch(`http://localhost:4000/users/${foundFriend[0].id}`, {
-      method: 'PUT',
-      body: JSON.stringify(foundFriend[0]),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response.error) {
-          seterrorState(response.msg)
-        }
-        props.setusers(usersCopy)
-        setopenModalProfile({})
-      })
-  }
-  const blockUserHandler = (event, user, index) => {
-    event.stopPropagation()
-    event.preventDefault()
-
-    const loggedInUser = { ...props.user }
-    const foundFriend = props.users.filter(
-      (friend) => friend.username === user.username
-    )
-
-    loggedInUser.friends.blocked = [...loggedInUser.friends.blocked, user]
-    const filteredAccepted = loggedInUser.friends.accepted.filter(
-      (friend) => friend.username !== user.username
-    )
-    loggedInUser.friends.accepted = filteredAccepted
-
-    let foundLoggedInUser = props.users.filter(
-      (loggedUser) => loggedUser.username === loggedInUser.username
-    )
-
-    delete foundLoggedInUser[0].friends
-
-    const friendFriendsArray = foundFriend[0].friends.accepted.filter(
-      (loggedUser) => loggedUser.username !== foundLoggedInUser[0].username
-    )
-
-    foundFriend[0].friends.accepted = friendFriendsArray
-
-    const loggedInUserIndex = props.users.findIndex(
-      (currentUser) => currentUser.username === loggedInUser.username
-    )
-
-    const friendIndex = props.users.findIndex(
-      (friendUser) => friendUser.username === foundFriend[0].username
-    )
-
-    const usersCopy = [...props.users]
-    usersCopy[loggedInUserIndex] = loggedInUser
-    usersCopy[index] = foundFriend[0]
-
-    fetch(`http://localhost:4000/users/${loggedInUser.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(loggedInUser),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response.error) {
-          seterrorState(response.msg)
-        }
-        props.setuser(loggedInUser)
-      })
-
-    fetch(`http://localhost:4000/users/${foundFriend[0].id}`, {
-      method: 'PUT',
-      body: JSON.stringify(foundFriend[0]),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response.error) {
-          seterrorState(response.msg)
-        }
-        props.setusers(usersCopy)
-        setopenModalProfile({})
-      })
-  }
-
-  const declineFriendRequest = (event, user, index) => {
-    event.stopPropagation()
-    event.preventDefault()
-
-    const loggedInUser = { ...props.user }
-    const filteredLoggedInPendingArr = loggedInUser.friends.pending.filter(
-      (filteredPendingUser) => filteredPendingUser.username !== user.username
-    )
-    loggedInUser.friends.pending = filteredLoggedInPendingArr
-
-    const foundFriend = props.users.filter(
-      (friend) => friend.username === user.username
-    )
-
-    const filteredFriendPendingArr = foundFriend[0].friends.pending.filter(
-      (userCopy) => userCopy.username !== loggedInUser.username
-    )
-
-    foundFriend[0].friends.pending = filteredFriendPendingArr
-
-    const loggedInUserIndex = props.users.findIndex(
-      (currentUser) => currentUser.username === loggedInUser.username
-    )
-
-    const friendIndex = props.users.findIndex(
-      (friendUser) => friendUser.username === foundFriend[0].username
-    )
-
-    const usersCopy = [...props.users]
-    usersCopy[loggedInUserIndex] = loggedInUser
-    usersCopy[friendIndex] = foundFriend[0]
-    fetch(`http://localhost:4000/users/${loggedInUser.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(loggedInUser),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response.error) {
-          seterrorState(response.msg)
-        }
-        props.setuser(loggedInUser)
-      })
-
-    fetch(`http://localhost:4000/users/${foundFriend[0].id}`, {
-      method: 'PUT',
-      body: JSON.stringify(foundFriend[0]),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response.error) {
-          seterrorState(response.msg)
-        }
-        props.setusers(usersCopy)
-      })
-  }
   //--------------------------------------------------------------
   // displays the mouseover text on the buttons
   const displayBtnText = (event) => {
@@ -637,10 +201,6 @@ export const FriendsListMain = (props) => {
         </div>
       )
     }
-  }
-  const testing = (event) => {
-    event.stopPropagation()
-    event.preventDefault()
   }
   //--------------------------------------------------------------
   // renders the online/all/blocked/pending users based on filters
@@ -711,7 +271,17 @@ export const FriendsListMain = (props) => {
               <div className={classes.btnContainer}>
                 <div
                   className={classes.optionsBtn}
-                  onClick={(event) => unblockUserHandler(event, user, index)}
+                  onClick={(event) =>
+                    unblockUserHandler(
+                      event,
+                      user,
+                      index,
+                      props.users,
+                      props.setuser,
+                      seterrorState,
+                      props.user
+                    )
+                  }
                 >
                   <FaUserTimes
                     style={{
@@ -744,7 +314,18 @@ export const FriendsListMain = (props) => {
                 <div className={classes.btnContainer}>
                   <div
                     className={classes.msgButton}
-                    onClick={(event) => acceptFriendRequest(event, user, index)}
+                    onClick={(event) =>
+                      acceptFriendRequest(
+                        event,
+                        user,
+                        index,
+                        props.users,
+                        props.setuser,
+                        props.setusers,
+                        seterrorState,
+                        props.user
+                      )
+                    }
                   >
                     <TiTick
                       className={classes.pendingAcceptBtn}
@@ -758,7 +339,16 @@ export const FriendsListMain = (props) => {
                   <div
                     className={classes.optionsBtn}
                     onClick={(event) =>
-                      declineFriendRequest(event, user, index)
+                      declineFriendRequest(
+                        event,
+                        user,
+                        index,
+                        props.user,
+                        props.users,
+                        props.setuser,
+                        props.setusers,
+                        seterrorState
+                      )
                     }
                   >
                     <BsX
@@ -812,7 +402,18 @@ export const FriendsListMain = (props) => {
             <form
               action=''
               className={classes.submitAddFriend}
-              onSubmit={addFriendHandler}
+              onSubmit={(event) =>
+                addFriendHandler(
+                  event,
+                  props.user,
+                  usernameState,
+                  props.users,
+                  seterrorState,
+                  props.setusers,
+                  props.setuser,
+                  uuidv4
+                )
+              }
             >
               <input
                 type='text'

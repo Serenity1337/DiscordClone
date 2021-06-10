@@ -32,14 +32,12 @@ export const Register = () => {
         let profileCopy = { ...profile }
         profileCopy.friends = { pending: [], accepted: [], blocked: [] }
         profileCopy.status = 'online'
-        profileCopy.setUserStatus = ''
-        profileCopy.customStatus = ''
         delete profileCopy.rpassword
         profileCopy.tag = discordTag()
         profileCopy.DMS = []
         const usersCopy = [...users, profileCopy]
         seterror('')
-        fetch('http://localhost:4000/users', {
+        fetch('http://localhost:8000/discord/discord/register', {
           method: 'POST',
           body: JSON.stringify(profileCopy),
           headers: {

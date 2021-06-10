@@ -39,7 +39,7 @@ export const ServersSideBar = (props) => {
                   left: '75px',
                 }}
               >
-                {server.servername}
+                {server.serverName}
               </div>
             ) : null}
           </div>

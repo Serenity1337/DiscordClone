@@ -14,29 +14,28 @@ export const Login = () => {
   }
   const profileSubmitHandler = (event) => {
     event.preventDefault()
-    fetch('http://localhost:4000/users', {
-      method: 'GET',
+    let profileCopy = { ...profile }
+    console.log(profileCopy, 'asd')
+    fetch('http://localhost:8000/discord/discord/login', {
+      method: 'POST',
+      body: JSON.stringify(profileCopy),
       headers: {
-        'Content-Type': 'json/application',
+        'Content-Type': 'application/json',
       },
     })
       .then((header) => {
+        console.log(header)
         return header.json()
       })
       .then((response) => {
-        if (response) {
-          const user = response.filter(
-            (responseUser) => responseUser.email === profile.email
+        if (response.token) {
+          localStorage.setItem(
+            'cordCopyToken',
+            JSON.stringify({ id: response.id, token: response.token })
           )
-          if (user[0] && user[0].password === profile.password) {
-            localStorage.setItem(
-              'cordCopyToken',
-              JSON.stringify({ id: user[0].id })
-            )
-            setredirected(true)
-          } else {
-            seterror('Please make sure the credentials are correct')
-          }
+          setredirected(true)
+        } else {
+          seterror('Please make sure the credentials are correct')
         }
       })
   }

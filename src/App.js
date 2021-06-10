@@ -30,12 +30,15 @@ function App() {
   const getUser = () => {
     const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
     if (userToken) {
-      fetch(`http://localhost:4000/users/${userToken.id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      fetch(
+        `http://localhost:8000/discord/discord/getSingleUser/${userToken.id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
         .then((header) => {
           return header.json()
         })
@@ -49,7 +52,7 @@ function App() {
   }
   const getUsers = () => {
     const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
-    fetch(`http://localhost:4000/users`, {
+    fetch(`http://localhost:8000/discord/discord/getAllUsers`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -67,7 +70,7 @@ function App() {
   }
   const getServers = () => {
     const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
-    fetch(`http://localhost:4000/servers`, {
+    fetch(`http://localhost:8000/discord/discord/getAllServers`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -89,10 +92,7 @@ function App() {
     getServers()
     loggedIn()
     const interval = setInterval(() => {
-      getUser()
       loggedIn()
-      getUsers()
-      getServers()
     }, 10000)
     return () => clearInterval(interval)
   }, [])
@@ -124,7 +124,9 @@ function App() {
                 ? user.DMS.map((dm, dmIndex) => (
                     <Route
                       path={`/channels/@me/${dm._id}`}
-                      render={() => <DirectMessaging dm={(dm, dmIndex)} />}
+                      render={() => (
+                        <DirectMessaging dm={dm} dmIndex={dmIndex} />
+                      )}
                       exact={true}
                       label='DirectMessaging'
                     />
