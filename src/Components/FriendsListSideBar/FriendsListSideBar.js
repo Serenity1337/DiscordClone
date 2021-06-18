@@ -25,6 +25,7 @@ export const FriendsListSideBar = (props) => {
 
   const redirectToADM = (user, index) => {
     const loggedInUser = props.user
+    console.log(loggedInUser)
     for (let index = 0; index < loggedInUser.DMS.length; index++) {
       let directMessage = loggedInUser.DMS[index]
       for (
@@ -33,8 +34,8 @@ export const FriendsListSideBar = (props) => {
         participantsIndex++
       ) {
         if (user.username === directMessage.participants[participantsIndex]) {
-          setredirected(true)
           setredirectionLocation(`${directMessage._id}`)
+          setredirected(true)
         }
       }
     }
@@ -195,7 +196,9 @@ export const FriendsListSideBar = (props) => {
           />
         </div>
       </div>
-      {redirected ? <Redirect to={`@me/${redirectionLocation}`} /> : null}
+      {redirected ? (
+        <Redirect to={`/channels/@me/${redirectionLocation}`} />
+      ) : null}
     </div>
   )
 }

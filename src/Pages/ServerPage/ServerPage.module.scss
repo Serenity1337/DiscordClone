@@ -1,0 +1,27 @@
+.appContainer {
+  display: flex;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  scroll-behavior: smooth;
+  overflow: auto;
+  .serverPageMain {
+    width: 100%;
+    height: 100vh;
+    background-color: #202225;
+    color: #fff;
+    font-size: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .serverName {
+      margin-top: 5px;
+    }
+    .welcomeText {
+      color: #b9bbbe;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 5px;
+    }
+  }
+}

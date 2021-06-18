@@ -1,0 +1,148 @@
+.ChannelListSideContainer {
+  background-color: #2f3136;
+  box-sizing: border-box;
+  width: 240px;
+  min-width: 240px;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  scroll-behavior: smooth;
+  overflow: auto;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  .serverHeader {
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 220px;
+    height: 28px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    padding: 0px 0px 0px 10px;
+    margin: 10px;
+  }
+  .createChannelContainer {
+    display: flex;
+    justify-content: space-between;
+    .createChannelHeading {
+      padding: 18px 8px 4px 18px;
+      height: 40px;
+      box-sizing: border-box;
+      text-transform: uppercase;
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 600;
+      color: #8e9297;
+    }
+    .createChannelBtn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      padding: 12px 0px 0px 0px;
+      margin: 0px 16px 0px 0px;
+      text-align: center;
+      cursor: pointer;
+      outline: none;
+    }
+  }
+
+  .channelsContainer {
+    scroll-behavior: smooth;
+    overflow: auto;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+    height: calc(100% - 19.56%);
+    .channel {
+      margin: 3px 8px 0px 8px;
+      padding: 8px;
+      color: #6c7077;
+      text-decoration: none;
+      display: flex;
+      .hashtag {
+        margin-right: 5px;
+        height: 20px;
+        font-size: 20px;
+      }
+    }
+    .channel:hover {
+      color: #dcddde;
+      background-color: #34373c;
+      .hashtag {
+        color: #6c7077;
+      }
+    }
+  }
+  .meUserContainer {
+    height: 52px;
+    background-color: #282a2e;
+    padding: 10px;
+    display: flex;
+    box-sizing: border-box;
+    justify-content: space-between;
+    .profileContainer {
+      display: flex;
+
+      .imgContainer {
+        cursor: pointer;
+        .offlineStatusIcon,
+        .onlineStatusIcon,
+        .busyStatusIcon {
+          position: relative;
+          top: -16px;
+          left: 20px;
+
+          border-radius: 50%;
+          width: 10px;
+          height: 10px;
+          border: 0;
+          border-radius: 50%;
+          background-color: #717c8a;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 3;
+          border: 3px solid #2f3136;
+
+          .innerCircle {
+            width: 5px;
+            height: 5px;
+            border: 0;
+            border-radius: 50%;
+            background-color: #2f3136;
+          }
+        }
+        .onlineStatusIcon {
+          background-color: #43b581;
+        }
+        .busyStatusIcon {
+          background-color: #e84444;
+          .innerLine {
+            width: 8px;
+            height: 2px;
+            background-color: #2f3136;
+          }
+        }
+      }
+      .userNameStatusContainer {
+        margin: 5px 0px 0px 10px;
+        color: #fff;
+        font-size: 14px;
+      }
+    }
+    .settingsContainer {
+      display: flex;
+      align-items: center;
+      padding: 0px 10px 0px 0px;
+    }
+  }
+}
+.friendsList::-webkit-scrollbar {
+  display: none; // safari/chrome
+}
+.friendListSideContainer::-webkit-scrollbar {
+  display: none; // safari/chrome
+}

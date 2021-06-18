@@ -1,0 +1,200 @@
+.DMMain {
+  background-color: #36393f;
+  width: 100%;
+  .DMMainNav {
+    margin: 10px 10px 10px 10px;
+    display: flex;
+    justify-content: space-between;
+    .DMMainNavUser {
+      .DMMainNavUserContainer {
+        padding: 0px 0px 0px 10px;
+        display: flex;
+        // border-bottom: rgb(32, 34, 37) 1.5px solid;
+        .DMMainNavUserContainerAt {
+          color: rgb(114, 118, 125);
+          font-family: Whitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          // height: 24px;
+          // width: 24px;
+          font-size: 20px;
+        }
+        .DMMainNavUserContainerUsername {
+          font-family: Whitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 600;
+          color: #fff;
+          font-size: 16px;
+          text-align: center;
+          margin: 5px 10px 0px 10px;
+        }
+      }
+    }
+    .DMMainNavIconsContainer {
+      display: flex;
+      .DMMainNavIconsContainerSearch {
+        display: block;
+        margin-top: 2px;
+        width: 144px;
+        color: #dcddde;
+        background-color: #202225;
+        border: 0;
+        border-radius: 5px;
+        padding: 5px 5px;
+      }
+      .DMMainNavIconsContainerSearch:focus {
+        width: 244px;
+        outline: none;
+      }
+      .DMMainNavIconsContainerSearch::placeholder {
+        color: #72767d;
+      }
+    }
+  }
+  .DMMainHorizontalLine {
+    width: 100%;
+    height: 1.5px;
+    background-color: rgb(32, 34, 37);
+  }
+  .DMMainChatBoxContainer {
+    margin-right: 5px;
+    padding: 20px;
+    height: 565px;
+    scroll-behavior: smooth;
+    overflow: auto;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+    .DMMainChatBoxContainerFriendAvatar {
+      height: 45px;
+      background-color: #4f545c;
+      color: #fff;
+      padding: 8px;
+      font-size: 43px;
+      margin: 0xp;
+      border-radius: 50%;
+      display: inline-block;
+      width: 45px;
+      text-align: center;
+    }
+    .DMMainChatBoxContainerFriendName {
+      color: #fff;
+      font-size: 32px;
+      margin: 16px 0px;
+      font-family: Whitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    .DMMainChatBoxContainerText {
+      color: #b9bbbe;
+      font-size: 16px;
+      font-family: Whitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      margin: 0px 0px;
+    }
+    .DMMainChatBoxContainerHorizontalLine {
+      width: 100%;
+      height: 0.5px;
+      background-color: #42454a;
+      margin-top: 20px;
+    }
+    .DMMainChatBoxContainerMsgContainer {
+      display: flex;
+      margin: 20px 0px 0px 0px;
+      .DMMainChatBoxContainerMsgContainerAvatar {
+        display: flex;
+        img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          margin: 0px 15px 0px 0px;
+        }
+        .DMMainChatBoxNameContainer {
+          font-size: 16px;
+          font-family: Whitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          margin: 5px 0px 0px 0px;
+          color: #fff;
+
+          .DMMsgDate {
+            margin: 0px 0px 0px 5px;
+            font-size: 12px;
+            color: #72767d;
+          }
+          .DMMainChatBoxContainerMsgContainerMsg {
+            color: #dcddde;
+            margin: 5px 0px;
+          }
+        }
+      }
+    }
+    .DMMainChatBoxContainerMsgContainer:hover {
+      background-color: rgba(4, 4, 5, 0.07);
+    }
+  }
+  // .DMMainChatBoxContainer::-webkit-scrollbar {
+  //   width: 10px;
+  // }
+  .DMMainSendMsgContainer {
+    background-color: #40444b;
+    display: flex;
+    margin: 0px 15px;
+    border-radius: 5px;
+    justify-content: space-between;
+    // padding: 13px;
+    .MsgContainerUploadBtn {
+      display: flex;
+      width: 100%;
+      .MsgUploadBtnContainer {
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .MsgUploadBtn {
+          width: 24px;
+          height: 24px;
+          background-color: #b9bbbe;
+          color: #40444b;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 24px;
+          margin: 0px 15px 0px 15px;
+        }
+      }
+      .MsgUploadBtnContainer:hover {
+        .MsgUploadBtn {
+          background-color: #dcddde;
+        }
+      }
+      .MsgContainerMsgInput {
+        height: 44px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background-color: #40444b;
+        color: #bec0c2;
+        width: 100%;
+      }
+      .MsgContainerMsgInput:focus {
+        outline: 0;
+      }
+    }
+    .MsgContainerExtras {
+      display: flex;
+      align-items: center;
+      margin: 0px 15px 0px 0px;
+    }
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #2e3338;
+  border-radius: 5px;
+  margin: 10px 5px 10px 0px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #202225;
+  border-radius: 5px;
+}

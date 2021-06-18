@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import classes from './AddServerModal.module.scss'
 import catto from '../../utils/imgs/catto.png'
-
+import { v4 as uuidv4 } from 'uuid'
 export const AddServerModal = (props) => {
   const [serverName, setserverName] = useState('')
   const toggleModalOff = () => {
@@ -13,13 +13,22 @@ export const AddServerModal = (props) => {
   const serverSubmitHandler = (event) => {
     event.preventDefault()
     const server = {
-      servername: serverName,
+      serverName: serverName,
       avatar: '../../utils/imgs/catto.png',
       owner: `${props.user.username}`,
       members: [],
+      channels: [
+        {
+          channelName: 'general',
+          channelDescription: '',
+          messages: [],
+          nsfw: 'false',
+          _id: uuidv4(),
+        },
+      ],
     }
     const serversCopy = [server, ...props.servers]
-    fetch('http://localhost:4000/servers', {
+    fetch('http://localhost:8000/discord/discord/createServer', {
       method: 'POST',
       body: JSON.stringify(server),
       headers: {
