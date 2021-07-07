@@ -17,7 +17,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { io } from 'socket.io-client'
 
 export const ChannelMain = (props) => {
-  console.log(props)
   const socket = io('http://localhost:8080')
   let now = new Date()
   const [friend, setFriend] = useState({})
@@ -26,10 +25,8 @@ export const ChannelMain = (props) => {
   const [channel, setChannel] = useState({})
 
   useEffect(() => {
-    if (channel) {
-      socket.emit('channel room', `${channel._id}`)
-    }
-  }, [channel])
+    socket.emit('channel room', `${props.channel._id}`)
+  }, [])
 
   socket.on('receive-channel-message', (message) => {
     if (channel.messages) {

@@ -9,13 +9,19 @@ import { UserContext } from '../../Contexts/UserContext'
 import { UsersContext } from '../../Contexts/UsersContext'
 import AddServerModal from '../../Modals/AddServerModal'
 import classes from './DirectMessaging.module.scss'
-
+import { getLoggedInUser } from '../../utils/Api'
 export const DirectMessaging = (props) => {
   const { user, setuser } = useContext(UserContext)
   const { users, setusers } = useContext(UsersContext)
   const { servers, setservers } = useContext(ServersContext)
   const [redirected, setredirected] = useState(false)
   const [addServerModalToggle, setaddServerModalToggle] = useState(false)
+  useEffect(() => {
+    getLoggedInUser().then((response) => {
+      if (response) setuser(response)
+      console.log(response)
+    })
+  }, [])
   return (
     <div className={classes.appContainer}>
       <ServersSideBar

@@ -10,7 +10,9 @@ import { ServersContext } from './Contexts/ServersContext'
 import DirectMessaging from './Pages/DirectMessaging'
 import { ChannelPage } from './Pages/ChannelPage/ChannelPage'
 import { ServerPage } from './Pages/ServerPage/ServerPage'
+import { getLoggedInUser, getUsers, getServers, loggedIn } from './utils/Api'
 function App() {
+  // const socket = io('http://localhost:8080')
   const [user, setuser] = useState({})
   const [users, setusers] = useState([])
   const [servers, setservers] = useState([])
@@ -21,118 +23,80 @@ function App() {
     [servers, setservers]
   )
 
-  // check if logged in
-  const loggedIn = () => {
-    const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
-    if (!userToken) {
-    } else {
-      return
-    }
-  }
-  const getUser = () => {
-    const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
-    if (userToken) {
-      fetch(
-        `http://localhost:8000/discord/discord/getSingleUser/${userToken.id}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-        .then((header) => {
-          return header.json()
-        })
-        .then((response) => {
-          console.log(response, 'testinggg')
-          setuser(response)
-        })
-        .catch((e) => {
-          console.log(e)
-        })
-    }
-  }
-  const getUsers = () => {
-    const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
-    fetch(`http://localhost:8000/discord/discord/getAllUsers`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        setusers(response)
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-  }
-  const getServers = () => {
-    const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
-    fetch(`http://localhost:8000/discord/discord/getAllServers`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        setservers(response)
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-  }
   useEffect(() => {
-    getUser()
-    getUsers()
-    getServers()
+    getLoggedInUser().then((response) => {
+      if (response) setuser(response)
+    })
+    getUsers().then((response) => {
+      if (response) setusers(response)
+    })
+    getServers().then((response) => {
+      if (response) setservers(response)
+    })
     loggedIn()
 
-    const interval = setInterval(() => {
-      getUser()
-      getUsers()
-      getServers()
-      loggedIn()
-    }, 10000)
-    return () => clearInterval(interval)
+    // const interval = setInterval(() => {
+    //   // getUser()
+    //   // getUsers()
+    //   // getServers()
+    //   loggedIn()
+    // }, 10000)
+    // return () => clearInterval(interval)
   }, [])
 
-  useEffect(() => {
-    if (user.status) {
-      console.log('asd')
-      window.addEventListener('beforeunload', (event) => {
-        event.preventDefault()
-        const userClone = { ...user }
-        userClone.status = 'offline'
-        fetch(
-          `http://localhost:8000/discord/discord/updateUser/${userClone._id}`,
-          {
-            method: 'POST',
-            body: JSON.stringify(userClone),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
-          .then((header) => {
-            return header.json()
-          })
-          .then((response) => {
-            if (response) {
-              console.log(response)
-            }
-          })
-      })
-    }
-  }, [user])
-
+  // useEffect(() => {
+  //   if (user.status) {
+  //     window.addEventListener('beforeunload', (event) => {
+  //       event.preventDefault()
+  //       const userClone = { ...user }
+  //       userClone.status = 'offline'
+  //       fetch(
+  //         `http://localhost:8000/discord/discord/updateUser/${userClone._id}`,
+  //         {
+  //           method: 'POST',
+  //           body: JSON.stringify(userClone),
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //         }
+  //       )
+  //         .then((header) => {
+  //           return header.json()
+  //         })
+  //         .then((response) => {
+  //           if (response) {
+  //             console.log(response)
+  //           }
+  //         })
+  //     })
+  //   }
+  // }, [user])
+  // useEffect(() => {
+  //   if (user.status === 'offline') {
+  //     console.log(user, 'testing')
+  //     socket.emit('online', user)
+  //     socket.on('receive-user-status', (receivedUser) => {
+  //       delete receivedUser.tokens
+  //       delete receivedUser.password
+  //       delete receivedUser.__v
+  //       fetch(`http://localhost:8000/discord/discord/updateUser/${user._id}`, {
+  //         method: 'POST',
+  //         body: JSON.stringify(receivedUser),
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //       })
+  //         .then((header) => {
+  //           return header.json()
+  //         })
+  //         .then((response) => {
+  //           if (response) {
+  //             setuser(receivedUser)
+  //           }
+  //         })
+  //     })
+  //   }
+  // }, [user])
   return (
     <div className='app'>
       <Switch>

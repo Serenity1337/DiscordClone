@@ -1,47 +1,56 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import classes from './DMMain.module.scss'
-import { FiPhoneCall, FiSmile } from 'react-icons/fi'
+import { FiPhoneCall, FiSmile, FiEdit2 } from 'react-icons/fi'
 import { BsFillCameraVideoFill } from 'react-icons/bs'
 import { AiFillPushpin, AiOutlineGift, AiOutlineGif } from 'react-icons/ai'
-import { TiUserAdd } from 'react-icons/ti'
+import { TiUserAdd, TiDeleteOutline } from 'react-icons/ti'
 import { MdInbox } from 'react-icons/md'
 import { BiHelpCircle } from 'react-icons/bi'
 import catto from '../../utils/imgs/catto.png'
 import dateFormat from 'dateformat'
 import { v4 as uuidv4 } from 'uuid'
 import { io } from 'socket.io-client'
+import { UserContext } from '../../Contexts/UserContext'
 
 export const DMMain = (props) => {
-  const socket = io('http://localhost:8080')
+  const chatBoxContainer = React.createRef()
+  const socket = io('localhost:8080', {
+    reconnection: true,
+    reconnectionDelay: 1000,
+    transports: ['websocket', 'polling'],
+    upgrade: false,
+    pingInterval: 1000 * 60 * 5,
+    pingTimeout: 1000 * 60 * 3,
+  })
   let now = new Date()
   const [friend, setFriend] = useState({})
   const [msg, setMsg] = useState('')
-  const [msgs, setMsgs] = useState([])
-  const [DM, setDM] = useState({})
+  const { user, setuser } = useContext(UserContext)
+  const [messages, setmessages] = useState([])
+  const [editMsgBool, seteditMsgBool] = useState({})
+  const [editMsg, seteditMsg] = useState('')
+  useEffect(() => {
+    socket.emit('dm room', `${props.dm._id}`)
+    setmessages([...user.DMS[props.dmIndex].messages])
+    return () => {
+      window.removeEventListener('keydown', cancelEditForm)
+    }
+  }, [])
 
   useEffect(() => {
-    if (DM) {
-      console.log(props)
-      socket.emit('dm room', `${DM._id}`)
-    }
-  }, [DM])
-
-  socket.on('receive-message', (message) => {
-    if (DM.messages) {
-      let dmCopy = { ...DM }
-      let dmCopyMsgArr = [...dmCopy.messages, message]
-      dmCopy.messages = dmCopyMsgArr
-      setDM(dmCopy)
-    }
+    socket.on('receive-message', (message) => {
+      if (message.sender !== user.username) {
+        setmessages((prevState) => {
+          return [...prevState, message]
+        })
+      }
+    })
+    return () => socket.off('receive-message')
   })
   useEffect(() => {
-    if (
-      props.dm.participants &&
-      props.user.username &&
-      props.users.length > 0
-    ) {
+    if (props.dm.participants && user.username && props.users.length > 0) {
       const loggedInUserFriendString = props.dm.participants.filter(
-        (userFriend) => userFriend !== props.user.username
+        (userFriend) => userFriend !== user.username
       )
       const loggedInUserFriend = props.users.filter(
         (friendObject) => friendObject.username === loggedInUserFriendString[0]
@@ -50,12 +59,24 @@ export const DMMain = (props) => {
     }
   }, [props.users])
 
-  useEffect(() => {
-    setDM(props.dm)
-  }, [props.dm])
-
   const msgInputHandler = (event) => {
     setMsg(event.target.value)
+  }
+  const cancelEditForm = (event, index) => {
+    if (event.key === 'Escape') {
+      // console.log('testing')
+      // console.log(event.key)
+      // console.log(index)
+      seteditMsgBool({ ...editMsgBool, [index]: false })
+    }
+  }
+  const editFormHandler = (event) => {
+    event.preventDefault()
+  }
+  const editMsgHandler = (index) => {
+    seteditMsgBool({ ...editMsgBool, [index]: true })
+    setMsg(messages[index].msg)
+    window.addEventListener('keydown', (event) => cancelEditForm(event, index))
   }
 
   const msgFormHandler = (event) => {
@@ -68,10 +89,10 @@ export const DMMain = (props) => {
     let currDate = dateFormat(now, 'mm/dd/yyyy hh:MM TT')
     msgObject.sentDate = currDate
     msgObject.id = msgId
-    msgObject.sender = props.user.username
+    msgObject.sender = user.username
     msgObject.msg = msg
 
-    let loggedInUser = props.user
+    let loggedInUser = { ...user }
 
     loggedInUser.DMS[props.dmIndex].messages = [
       ...loggedInUser.DMS[props.dmIndex].messages,
@@ -82,8 +103,9 @@ export const DMMain = (props) => {
       ...friend.DMS[foundFriendDMIndex].messages,
       msgObject,
     ]
-    let DMClone = { ...DM }
+    let DMClone = { ...props.dm }
     DMClone.messages = [...DMClone.messages, msgObject]
+
     event.target[0].value = ''
 
     // console.log(foundLoggedInUserIndex)
@@ -117,12 +139,18 @@ export const DMMain = (props) => {
       })
       .then((response) => {
         if (response) {
-          props.setuser(loggedInUser)
-          setDM(DMClone)
+          setmessages((prevState) => {
+            return [...prevState, msgObject]
+          })
         }
       })
 
-    socket.emit('send-message', msgObject, DM._id)
+    chatBoxContainer.current.scrollTo(
+      0,
+      chatBoxContainer.current.scrollHeight + 42
+    )
+
+    socket.emit('send-message', msgObject, props.dm._id)
   }
   return (
     <div className={classes.DMMain}>
@@ -133,9 +161,6 @@ export const DMMain = (props) => {
             <div className={classes.DMMainNavUserContainerUsername}>
               {friend.username ? friend.username : null}
             </div>
-            {/* <span className={classes.DMMainNavUserContainerUsernameStatus}>
-              o
-            </span> */}
           </div>
         </div>
         <div className={classes.DMMainNavIconsContainer}>
@@ -201,7 +226,7 @@ export const DMMain = (props) => {
         </div>
       </div>
       <div className={classes.DMMainHorizontalLine}></div>
-      <div className={classes.DMMainChatBoxContainer}>
+      <div className={classes.DMMainChatBoxContainer} ref={chatBoxContainer}>
         <div className={classes.DMMainChatBoxContainerFriendAvatar}>
           <img src={catto} alt='' />
         </div>
@@ -214,8 +239,8 @@ export const DMMain = (props) => {
           <strong>@{friend.username ? friend.username : null}</strong>
         </div>
         <div className={classes.DMMainChatBoxContainerHorizontalLine}></div>
-        {DM.messages
-          ? DM.messages.map((dmObj, dmObjIndex) => (
+        {messages.length > 0
+          ? messages.map((dmObj, dmObjIndex) => (
               <div className={classes.DMMainChatBoxContainerMsgContainer}>
                 <div
                   className={classes.DMMainChatBoxContainerMsgContainerAvatar}
@@ -227,13 +252,56 @@ export const DMMain = (props) => {
                       {' '}
                       {dmObj.sentDate}{' '}
                     </span>
-                    <div
-                      className={classes.DMMainChatBoxContainerMsgContainerMsg}
-                    >
-                      {dmObj.msg}
-                    </div>
+
+                    {editMsgBool[dmObjIndex] ? (
+                      <form
+                        className={classes.editMsgForm}
+                        onSubmit={editFormHandler}
+                      >
+                        <input
+                          type='text'
+                          className={classes.editMsgInput}
+                          value={msg}
+                          onChange={msgInputHandler}
+                        />
+                        <input type='submit' />
+                      </form>
+                    ) : (
+                      <div
+                        className={
+                          classes.DMMainChatBoxContainerMsgContainerMsg
+                        }
+                      >
+                        {dmObj.msg}
+                      </div>
+                    )}
                   </div>
                 </div>
+                {dmObj.sender === user.username && !editMsgBool[dmObjIndex] ? (
+                  <div className={classes.msgIcons}>
+                    <FiEdit2
+                      fill='#b9bbbe'
+                      stroke='#b9bbbe'
+                      style={{
+                        width: '20px',
+                        height: '20px',
+                        margin: '5px 10px 0px 10px',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => editMsgHandler(dmObjIndex)}
+                    />{' '}
+                    <TiDeleteOutline
+                      fill='#b9bbbe'
+                      stroke='#b9bbbe'
+                      style={{
+                        width: '20px',
+                        height: '20px',
+                        margin: '5px 10px 0px 10px',
+                        cursor: 'pointer',
+                      }}
+                    />
+                  </div>
+                ) : null}
               </div>
             ))
           : null}

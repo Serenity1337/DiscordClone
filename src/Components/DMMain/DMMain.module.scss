@@ -91,9 +91,11 @@
     }
     .DMMainChatBoxContainerMsgContainer {
       display: flex;
+      justify-content: space-between;
       margin: 20px 0px 0px 0px;
       .DMMainChatBoxContainerMsgContainerAvatar {
         display: flex;
+        width: 100%;
         img {
           width: 40px;
           height: 40px;
@@ -105,7 +107,7 @@
           font-family: Whitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
           margin: 5px 0px 0px 0px;
           color: #fff;
-
+          width: 90%;
           .DMMsgDate {
             margin: 0px 0px 0px 5px;
             font-size: 12px;
@@ -115,7 +117,25 @@
             color: #dcddde;
             margin: 5px 0px;
           }
+          .editMsgForm {
+            .editMsgInput {
+              height: 30px;
+              margin: 10px 10px 10px 0px;
+              padding: 5px;
+              border: 0;
+              background-color: #40444b;
+              color: #bec0c2;
+              width: 100%;
+              border-radius: 5px;
+            }
+            .editMsgInput:focus {
+              outline: 0;
+            }
+          }
         }
+      }
+      .msgIcons {
+        display: flex;
       }
     }
     .DMMainChatBoxContainerMsgContainer:hover {
@@ -134,6 +154,7 @@
     // padding: 13px;
     .MsgContainerUploadBtn {
       display: flex;
+      width: 100%;
       .MsgUploadBtnContainer {
         cursor: pointer;
         display: flex;
@@ -164,6 +185,7 @@
         border: 0;
         background-color: #40444b;
         color: #bec0c2;
+        width: 100%;
       }
       .MsgContainerMsgInput:focus {
         outline: 0;
