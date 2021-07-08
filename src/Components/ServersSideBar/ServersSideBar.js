@@ -30,6 +30,7 @@ export const ServersSideBar = (props) => {
             onMouseOut={(event) => removeName(event, server, index)}
             onMouseOver={(event) => displayName(event, server, index)}
             to={`/channels/${server._id}`}
+            key={server._id}
           >
             <img src={catto} alt='' />
             {displayState[index] ? (

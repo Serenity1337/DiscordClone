@@ -1,0 +1,38 @@
+.offlineStatusIcon,
+.onlineStatusIcon,
+.busyStatusIcon {
+  position: relative;
+  top: -16px;
+  left: 20px;
+
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 50%;
+  background-color: #717c8a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  border: 3px solid #2f3136;
+
+  .innerCircle {
+    width: 5px;
+    height: 5px;
+    border: 0;
+    border-radius: 50%;
+    background-color: #2f3136;
+  }
+}
+.onlineStatusIcon {
+  background-color: #43b581;
+}
+.busyStatusIcon {
+  background-color: #e84444;
+  .innerLine {
+    width: 8px;
+    height: 2px;
+    background-color: #2f3136;
+  }
+}

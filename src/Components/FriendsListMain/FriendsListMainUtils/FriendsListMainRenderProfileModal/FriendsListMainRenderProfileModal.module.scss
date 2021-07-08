@@ -1,0 +1,24 @@
+.profileModalContainer {
+  .profileModalChoice {
+    color: #b9bbbe;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    min-height: 32px;
+    padding: 6px 8px;
+    font-size: 14px;
+    border-radius: 5px;
+  }
+  .profileModalChoice:hover {
+    color: #fff;
+    background-color: #5c6fb1;
+  }
+}

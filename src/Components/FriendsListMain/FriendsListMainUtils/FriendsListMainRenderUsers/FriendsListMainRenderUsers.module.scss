@@ -1,0 +1,177 @@
+.friendsList {
+  scroll-behavior: smooth;
+  overflow: scroll;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  height: -moz-available;
+  height: -webkit-fill-available;
+  height: fill-available;
+  padding: 0px 0px 15px 0px;
+
+  a {
+    text-decoration: none;
+    .userContainer {
+      display: flex;
+      margin: 0px 10px 0px 10px;
+      padding: 20px 10px;
+      border-top: 1px solid hsla(0, 0%, 100%, 0.06);
+      justify-content: space-between;
+
+      .userProfile {
+        display: flex;
+        .friendListUserAvatar {
+          width: 32px;
+          height: 32px;
+          img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+          }
+        }
+        .friendUsername {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          color: #ffffff;
+          margin: 0px 0px 0px 10px;
+          text-overflow: ellipsis;
+        }
+        .blockedStatus {
+          font-size: 12px;
+          color: #b9bbbe;
+          text-transform: capitalize;
+          margin: 5px 0px 0px 10px;
+        }
+      }
+      .btnContainer {
+        display: flex;
+        .msgButton,
+        .optionsBtn {
+          width: 36px;
+          height: 36px;
+          margin-left: 10px;
+          background-color: #2f3136;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+        .msgButton {
+          .pendingAcceptBtn {
+            fill: #b9bbbe;
+          }
+        }
+        .optionsBtn {
+          .pendingCancelBtn {
+            fill: #b9bbbe;
+          }
+        }
+
+        .msgButton:hover {
+          .pendingAcceptBtn {
+            fill: green;
+          }
+        }
+
+        .optionsBtn:hover {
+          .pendingCancelBtn {
+            fill: red;
+          }
+        }
+      }
+    }
+    .userContainer:hover {
+      background-color: #3a3e44;
+      border: 0;
+      border-radius: 5px;
+      .btnContainer {
+        .msgButton,
+        .optionsBtn {
+          background-color: #202225;
+        }
+      }
+    }
+  }
+  .addFriendContainer {
+    .addFriendHeading {
+      font-weight: 700;
+      font-size: 16px;
+      margin: 17px 25px 9px 34px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .addFriendSubHeading,
+    .addFriendError {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin: 20px 25px 20px 34px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 17px;
+      color: #dcddde;
+    }
+    .addFriendError {
+      color: red;
+    }
+    .submitAddFriend {
+      margin: 13px 25px 13px 35px;
+      width: 45%;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      background-color: rgba(0, 0, 0, 0.1);
+      padding: 0 13px;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      height: 52px;
+      justify-content: space-between;
+      .username {
+        font-size: 16px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        white-space: pre;
+        background-color: transparent;
+        border: 0;
+        outline: 0;
+        color: #dcddde;
+        width: 380px;
+        height: 40px;
+      }
+      .username::placeholder {
+        color: #4f545c;
+      }
+      .addFriendSubmitBtn,
+      .addFriendSubmitBtnDisabled {
+        height: 32px;
+        min-width: 60px;
+        min-height: 32px;
+        color: #fff;
+        background-color: #7289da;
+        border: 0;
+        border-radius: 5px;
+        padding: 10px 15px;
+        outline: 0;
+        cursor: pointer;
+      }
+      .addFriendSubmitBtnDisabled {
+        background-color: #7289da;
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    }
+    .horizontalLine {
+      width: 100%;
+      height: 1.5px;
+      background-color: rgb(32, 34, 37);
+    }
+  }
+}

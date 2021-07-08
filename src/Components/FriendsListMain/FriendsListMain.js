@@ -1,29 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
 import classes from './FriendsListMain.module.scss'
-import { FaUserFriends, FaUserTimes } from 'react-icons/fa'
+import { FaUserFriends } from 'react-icons/fa'
 import { CgInbox } from 'react-icons/cg'
 import { IoIosHelpCircleOutline } from 'react-icons/io'
-import { IoEllipsisVerticalSharp } from 'react-icons/io5'
-import { FiMessageSquare, FiUserX } from 'react-icons/fi'
-import { TiTick } from 'react-icons/ti'
-import { BsX } from 'react-icons/bs'
-import { v4 as uuidv4 } from 'uuid'
+
 // import { discordTag } from '../../utils/Functions'
 import NewDm from '../../utils/imgs/NewDm'
-import catto from '../../utils/imgs/catto.png'
 
-import {
-  addFriendHandler,
-  acceptFriendRequest,
-  unblockUserHandler,
-  removeUserFromFriendList,
-  blockUserHandler,
-  declineFriendRequest,
-} from './FriendsListMainUtils/FriendsListMainHandlers'
+import { FriendsListMainRenderUsers } from './FriendsListMainUtils/FriendsListMainRenderUsers/FriendsListMainRenderUsers'
 
 export const FriendsListMain = (props) => {
-  let location = useLocation()
   // State to filter out online,all,pending or blocked users
   const [friendStatusState, setfriendStatusState] = useState({
     online: false,
@@ -32,14 +18,12 @@ export const FriendsListMain = (props) => {
     blocked: false,
   })
   const [filteredFriendsArr, setfilteredFriendsArr] = useState([])
-  const [errorState, seterrorState] = useState('')
-  const [usernameState, setusernameState] = useState('')
   const [openModalProfile, setopenModalProfile] = useState({})
-  const [mouseCoordX, setmouseCoordX] = useState(0)
-  const [mouseCoordY, setmouseCoordY] = useState(0)
-  const [modalProfileIndex, setmodalProfileIndex] = useState(0)
-  // This useEffect filters online/blocked/all/pending users based on filter
 
+  const [modalProfileIndex, setmodalProfileIndex] = useState(0)
+  const [errorState, seterrorState] = useState('')
+  // This useEffect filters online/blocked/all/pending users based on filter
+  console.log(openModalProfile)
   useEffect(() => {
     if (props.user.username) {
       if (friendStatusState.online === true) {
@@ -71,95 +55,14 @@ export const FriendsListMain = (props) => {
     }
   }, [openModalProfile])
   // username input handler
-  const usernameInputHandler = (event) => {
-    setusernameState(event.target.value)
-  }
+
   //--------------------------------------------------------------
   // opens the profile modal
-  const openModalProfileHandler = (event, user, index) => {
-    event.preventDefault()
-    if (event.button === 2) {
-      const modalProfile = { [index]: true }
-      console.log(user)
-      setopenModalProfile(modalProfile)
-      setmodalProfileIndex(index)
-      setmouseCoordX(event.clientX)
-      setmouseCoordY(event.clientY)
 
-      return false
-    }
-    return false
-  }
   const closeModalProfileHandler = (event) => {
     setopenModalProfile(false)
   }
 
-  //--------------------------------------------------------------
-  // render the profile modal
-
-  const renderProfileModal = (user, index) => {
-    console.log(user)
-    return (
-      <div
-        className={classes.profileModalContainer}
-        style={{
-          padding: `6px 8px`,
-          backgroundColor: '#18191c',
-          position: 'absolute',
-          top: `${mouseCoordY}px`,
-          left: `${mouseCoordX}px`,
-        }}
-      >
-        <div className={classes.profileModalChoice}>Profile</div>
-        <div className={classes.profileModalChoice}>Message</div>
-        <div className={classes.profileModalChoice}>Call</div>
-        <div className={classes.profileModalChoice}>Add Note</div>
-        <div
-          className={classes.profileModalChoice}
-          onClick={(event) =>
-            removeUserFromFriendList(
-              event,
-              user,
-              index,
-              props.users,
-              props.setuser,
-              props.setusers,
-              seterrorState,
-              props.user,
-              setopenModalProfile
-            )
-          }
-        >
-          Remove Friend
-        </div>
-        <div
-          className={classes.profileModalChoice}
-          onClick={(event) =>
-            blockUserHandler(
-              event,
-              user,
-              index,
-              props.users,
-              props.setuser,
-              props.setusers,
-              seterrorState,
-              props.user,
-              setopenModalProfile
-            )
-          }
-        >
-          Block
-        </div>
-      </div>
-    )
-  }
-
-  //--------------------------------------------------------------
-  // displays the mouseover text on the buttons
-  const displayBtnText = (event) => {
-    event.stopPropagation()
-    event.preventDefault()
-  }
   //------------------------------------------------------------
   // Filter handler to filter the users based on this filter
   const filterHandler = (event) => {
@@ -178,271 +81,10 @@ export const FriendsListMain = (props) => {
   }
   //-------------------------------------------------------------
   // function to return status icons based on the conditions
-  const renderStatus = (user, index) => {
-    if (
-      user.status === 'offline' ||
-      user.status === 'outgoing friend request' ||
-      user.status === 'incoming friend request' ||
-      user.status === 'blocked'
-    ) {
-      return (
-        <div className={classes.offlineStatusIcon}>
-          <div className={classes.innerCircle}></div>
-        </div>
-      )
-    }
-    if (user.status === 'online') {
-      return <div className={classes.onlineStatusIcon}></div>
-    }
-    if (user.status === 'busy') {
-      return (
-        <div className={classes.busyStatusIcon}>
-          <div className={classes.innerLine}></div>
-        </div>
-      )
-    }
-  }
+
   //--------------------------------------------------------------
   // renders the online/all/blocked/pending users based on filters
-  const renderUsers = () => {
-    if (props.user.username) {
-      // renders all friends regardless of the status
-      if (friendStatusState.all || friendStatusState.online) {
-        return filteredFriendsArr.map((user, index) => (
-          <Link to={`${location.pathname}`}>
-            <div
-              className={classes.userContainer}
-              onContextMenu={(event) =>
-                openModalProfileHandler(event, user, index)
-              }
-            >
-              {openModalProfile[index] ? renderProfileModal(user, index) : null}
-              <div className={classes.userProfile}>
-                <div className={classes.friendListUserAvatar}>
-                  <img src={catto} alt='' />
-                  {renderStatus(user, index)}
-                </div>
-                <div className={classes.friendUsername}>{user.username} </div>
-              </div>
-              <div className={classes.btnContainer}>
-                <div className={classes.msgButton}>
-                  <FiMessageSquare
-                    style={{
-                      width: '20px',
-                      height: '20px',
-                      fill: '#b9bbbe',
-                      stroke: 'none',
-                    }}
-                  />
-                </div>
-                <div
-                  className={classes.optionsBtn}
-                  onClick={(event) => displayBtnText(event)}
-                >
-                  <IoEllipsisVerticalSharp
-                    style={{
-                      width: '20px',
-                      height: '20px',
-                      fill: '#b9bbbe',
-                      stroke: 'none',
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-          </Link>
-        ))
-      }
 
-      if (friendStatusState.blocked) {
-        return filteredFriendsArr.map((user, index) => (
-          <Link to={`${location.pathname}`}>
-            <div className={classes.userContainer}>
-              <div className={classes.userProfile}>
-                <div className={classes.friendListUserAvatar}>
-                  <img src={catto} alt='' />
-                  {renderStatus(user, index)}
-                </div>
-                <div className={classes.friendUsername}>
-                  {user.username}
-                  <div className={classes.blockedStatus}>{user.status}</div>
-                </div>
-              </div>
-              <div className={classes.btnContainer}>
-                <div
-                  className={classes.optionsBtn}
-                  onClick={(event) =>
-                    unblockUserHandler(
-                      event,
-                      user,
-                      index,
-                      props.users,
-                      props.setuser,
-                      seterrorState,
-                      props.user
-                    )
-                  }
-                >
-                  <FaUserTimes
-                    style={{
-                      width: '20px',
-                      height: '20px',
-                      fill: '#b9bbbe',
-                      stroke: 'none',
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-          </Link>
-        ))
-      }
-      // -------------------------------------------------------
-      // renders all pending user requests
-      if (friendStatusState.pending && filteredFriendsArr.length > 0) {
-        return filteredFriendsArr.map((user, index) => (
-          <Link to={`${location.pathname}`}>
-            <div className={classes.userContainer}>
-              <div className={classes.userProfile}>
-                <div className={classes.friendListUserAvatar}>
-                  <img src={catto} alt='' />
-                  {renderStatus(user, index)}
-                </div>
-                <div className={classes.friendUsername}>{user.username} </div>
-              </div>
-              {user.status === 'incoming friend request' ? (
-                <div className={classes.btnContainer}>
-                  <div
-                    className={classes.msgButton}
-                    onClick={(event) =>
-                      acceptFriendRequest(
-                        event,
-                        user,
-                        index,
-                        props.users,
-                        props.setuser,
-                        props.setusers,
-                        seterrorState,
-                        props.user
-                      )
-                    }
-                  >
-                    <TiTick
-                      className={classes.pendingAcceptBtn}
-                      style={{
-                        width: '20px',
-                        height: '20px',
-                        stroke: 'none',
-                      }}
-                    />
-                  </div>
-                  <div
-                    className={classes.optionsBtn}
-                    onClick={(event) =>
-                      declineFriendRequest(
-                        event,
-                        user,
-                        index,
-                        props.user,
-                        props.users,
-                        props.setuser,
-                        props.setusers,
-                        seterrorState
-                      )
-                    }
-                  >
-                    <BsX
-                      className={classes.pendingCancelBtn}
-                      style={{
-                        width: '20px',
-                        height: '20px',
-                        stroke: 'none',
-                      }}
-                    />
-                  </div>
-                </div>
-              ) : (
-                <div className={classes.btnContainer}>
-                  <div
-                    className={classes.optionsBtn}
-                    onClick={(event) =>
-                      declineFriendRequest(event, user, index)
-                    }
-                  >
-                    <BsX
-                      className={classes.pendingCancelBtn}
-                      style={{
-                        width: '20px',
-                        height: '20px',
-                        stroke: 'none',
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-          </Link>
-        ))
-      } else {
-      }
-      //---------------------------------------------------------
-      // renders add friend UI
-      if (friendStatusState.addFriend) {
-        return (
-          <div className={classes.addFriendContainer}>
-            <div className={classes.addFriendHeading}>add friend</div>
-            {!errorState ? (
-              <div className={classes.addFriendSubHeading}>
-                You can add a friend with their Discord Tag. It is cAsE
-                sEnSiTiVe
-              </div>
-            ) : (
-              <div className={classes.addFriendError}>{errorState}</div>
-            )}
-            <form
-              action=''
-              className={classes.submitAddFriend}
-              onSubmit={(event) =>
-                addFriendHandler(
-                  event,
-                  props.user,
-                  usernameState,
-                  props.users,
-                  seterrorState,
-                  props.setusers,
-                  props.setuser,
-                  uuidv4
-                )
-              }
-            >
-              <input
-                type='text'
-                name='username'
-                id='username'
-                className={classes.username}
-                placeholder='Enter a username#0000'
-                onChange={usernameInputHandler}
-              />
-
-              <button
-                type='submit'
-                disabled={usernameState.length > 0 ? false : true}
-                className={
-                  usernameState.length > 0
-                    ? classes.addFriendSubmitBtn
-                    : classes.addFriendSubmitBtnDisabled
-                }
-              >
-                Send Friend Request
-              </button>
-            </form>
-            <div className={classes.horizontalLine}></div>
-          </div>
-        )
-      }
-      //---------------------------------------------------------
-    }
-  }
   // renders the header text for example "pending -- x" based on condition
   const renderHeading = () => {
     if (friendStatusState.online === true) {
@@ -523,7 +165,16 @@ export const FriendsListMain = (props) => {
       ></div>
 
       {renderHeading()}
-      <div className={classes.friendsList}>{renderUsers()}</div>
+      <FriendsListMainRenderUsers
+        user={props.user}
+        friendStatusState={friendStatusState}
+        filteredFriendsArr={filteredFriendsArr}
+        openModalProfile={openModalProfile}
+        errorState={errorState}
+        seterrorState={seterrorState}
+        setopenModalProfile={setopenModalProfile}
+        setmodalProfileIndex={setmodalProfileIndex}
+      />
     </div>
   )
 }

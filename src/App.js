@@ -130,12 +130,13 @@ function App() {
                       )}
                       exact={true}
                       label='DirectMessaging'
+                      key={dm._id}
                     />
                   ))
                 : null}
               {servers.length > 0
                 ? servers.map((server, serverIndex) => (
-                    <>
+                    <div key={server._id}>
                       <Route
                         path={`/channels/${server._id}`}
                         render={() => (
@@ -158,7 +159,7 @@ function App() {
                         exact={true}
                         label='ServerPage'
                       />
-                    </>
+                    </div>
                   ))
                 : null}
 
@@ -177,6 +178,7 @@ function App() {
                         )}
                         exact={true}
                         label='ChannelPage'
+                        key={channel._id}
                       />
                     ))
                   )
