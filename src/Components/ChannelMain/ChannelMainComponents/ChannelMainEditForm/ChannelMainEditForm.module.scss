@@ -1,0 +1,35 @@
+.editMsgForm {
+  .editMsgInput {
+    height: 30px;
+    margin: 10px 10px 10px 0px;
+    padding: 5px;
+    border: 0;
+    background-color: #40444b;
+    color: #bec0c2;
+    width: 100%;
+    border-radius: 5px;
+  }
+  .editMsgInput:focus {
+    outline: 0;
+  }
+  .saveOrCancelBtns {
+    font-size: 12px;
+    color: #dcddde;
+  }
+  .cancelEditFormBtn,
+  .saveEditFormBtn {
+    color: #00aff4;
+    text-decoration: none;
+  }
+  .cancelEditFormBtn:hover,
+  .saveEditFormBtn:hover {
+    text-decoration: underline;
+  }
+  .saveEditFormBtn {
+    background: none;
+    border: none;
+  }
+  .cancelEditFormBtn {
+    margin-right: 5px;
+  }
+}

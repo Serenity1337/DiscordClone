@@ -38,31 +38,30 @@ export const DMMain = (props) => {
 
   useEffect(() => {
     socket.on('receive-edit-message', (editMsg, msgIndex) => {
-      console.log(messages[msgIndex])
-      if (messages[msgIndex].sender !== user.username) {
-        console.log('edited', editMsg)
-        setmessages((prevState) => {
+      setmessages((prevState) => {
+        if (prevState[msgIndex].sender !== user.username) {
           prevState[msgIndex].msg = editMsg
           return [...prevState]
-        })
-      }
+        } else {
+          return [...prevState]
+        }
+      })
+      // }
     })
     // return () => socket.off('receive-edit-message')
   })
   useEffect(() => {
     socket.on('receive-deleted-message', (dmObj, dmIndex) => {
-      console.log(dmObj, 'dmObject')
-      console.log(dmIndex, 'dmIndex')
-      console.log(messages[dmIndex], 'testing')
-      console.log(messages, 'testing321')
-      // if (messages[dmIndex].sender !== user.username) {
-      //   setmessages((prevState) => {
-      //     const clonePrevState = prevState.filter(
-      //       (msgObj) => msgObj.id !== dmObj.id
-      //     )
-      //     return [...clonePrevState]
-      //   })
-      // }
+      setmessages((prevState) => {
+        if (prevState[dmIndex].sender !== user.username) {
+          const clonePrevState = prevState.filter(
+            (msgObj) => msgObj.id !== dmObj.id
+          )
+          return [...clonePrevState]
+        } else {
+          return [...prevState]
+        }
+      })
     })
     // return () => socket.off('receive-edit-message')
   })

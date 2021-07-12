@@ -1,0 +1,75 @@
+.DMMainChatBoxContainer {
+  margin-right: 5px;
+  padding: 20px;
+  height: 565px;
+  scroll-behavior: smooth;
+  overflow: auto;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  .DMMainChatBoxContainerFriendAvatar {
+    height: 45px;
+    background-color: #4f545c;
+    color: #fff;
+    padding: 8px;
+    font-size: 43px;
+    margin: 0xp;
+    border-radius: 50%;
+    display: inline-block;
+    width: 45px;
+    text-align: center;
+  }
+  .DMMainChatBoxContainerFriendName {
+    color: #fff;
+    font-size: 32px;
+    margin: 16px 0px;
+    font-family: Whitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+  .DMMainChatBoxContainerText {
+    color: #b9bbbe;
+    font-size: 16px;
+    font-family: Whitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0px 0px;
+  }
+  .DMMainChatBoxContainerHorizontalLine {
+    width: 100%;
+    height: 0.5px;
+    background-color: #42454a;
+    margin-top: 20px;
+  }
+  .DMMainChatBoxContainerMsgContainer {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0px 0px 0px;
+    .DMMainChatBoxContainerMsgContainerAvatar {
+      display: flex;
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin: 0px 15px 0px 0px;
+      }
+      .DMMainChatBoxNameContainer {
+        font-size: 16px;
+        font-family: Whitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        margin: 5px 0px 0px 0px;
+        color: #fff;
+
+        .DMMsgDate {
+          margin: 0px 0px 0px 5px;
+          font-size: 12px;
+          color: #72767d;
+        }
+        .DMMainChatBoxContainerMsgContainerMsg {
+          color: #dcddde;
+          margin: 5px 0px;
+        }
+      }
+    }
+    .msgIcons {
+      display: flex;
+    }
+  }
+  .DMMainChatBoxContainerMsgContainer:hover {
+    background-color: rgba(4, 4, 5, 0.07);
+  }
+}

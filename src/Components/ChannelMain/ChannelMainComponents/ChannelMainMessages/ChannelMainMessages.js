@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import classes from './DMMainMessages.module.scss'
+import classes from './ChannelMainMessages.module.scss'
 import catto from '../../../../utils/imgs/catto.png'
 import { TiDeleteOutline } from 'react-icons/ti'
 import { FiEdit2 } from 'react-icons/fi'
-import DMMainEditForm from '../DMMainEditForm'
 import { io } from 'socket.io-client'
-export const DMMainMessages = (props) => {
-  const socket = io('localhost:8080', {
+import { ChannelMainEditForm } from '../ChannelMainEditForm/ChannelMainEditForm'
+export const ChannelMainMessages = (props) => {
+  const socket = io('ws://localhost:8080', {
     reconnection: true,
     reconnectionDelay: 1000,
     transports: ['websocket', 'polling'],
@@ -14,11 +14,10 @@ export const DMMainMessages = (props) => {
     pingInterval: 1000 * 60 * 5,
     pingTimeout: 1000 * 60 * 3,
   })
-  const chatBoxContainer = React.createRef()
+
   const [editMsgBool, seteditMsgBool] = useState({})
 
   useEffect(() => {
-    props.setchatBoxContainer(chatBoxContainer.current)
     return () => {
       window.removeEventListener('keydown', cancelEditForm)
     }
@@ -35,25 +34,21 @@ export const DMMainMessages = (props) => {
     }
   }
 
-  const delMsgHandler = (dmObj, dmObjIndex) => {
-    const foundFriendDMIndex = props.friend.DMS.findIndex(
-      (DM) => DM._id === props.dm._id
+  const delMsgHandler = (channelObj, channelObjIndex) => {
+    const filteredMsgArr = props.messages.filter(
+      (msgObj) => msgObj.id !== channelObj.id
     )
 
-    let loggedInUser = { ...props.user }
-
-    const filteredMsgArr = loggedInUser.DMS[props.dmIndex].messages.filter(
-      (msgObj) => msgObj.id !== dmObj.id
-    )
-    loggedInUser.DMS[props.dmIndex].messages = filteredMsgArr
-    const friendClone = { ...props.friend }
-    friendClone.DMS[foundFriendDMIndex].messages = filteredMsgArr
+    let channelClone = { ...props.channel }
+    channelClone.messages = filteredMsgArr
+    let serverClone = { ...props.server }
+    serverClone.channels[props.channelIndex] = channelClone
 
     fetch(
-      `http://localhost:8000/discord/discord/updateUser/${props.friend._id}`,
+      `http://localhost:8000/discord/discord/updateServer/${props.server._id}`,
       {
         method: 'POST',
-        body: JSON.stringify(friendClone),
+        body: JSON.stringify(serverClone),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -64,83 +59,72 @@ export const DMMainMessages = (props) => {
       })
       .then((response) => {
         if (response) {
-        }
-      })
-
-    fetch(
-      `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
-      {
-        method: 'POST',
-        body: JSON.stringify(loggedInUser),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response) {
-          props.setmessages((prevState) => {
+          props.setMessages((prevState) => {
             const clonePrevState = prevState.filter(
-              (msgObj) => msgObj.id !== dmObj.id
+              (msgObj) => msgObj.id !== channelObj.id
             )
             return [...clonePrevState]
           })
         }
       })
-    socket.emit('delete-message', dmObj, dmObjIndex, props.dm._id)
+
+    socket.emit(
+      'delete-channel-message',
+      props.server._id,
+      props.channel._id,
+      channelObj,
+      channelObjIndex
+    )
   }
   return (
-    <div className={classes.DMMainChatBoxContainer} ref={chatBoxContainer}>
-      <div className={classes.DMMainChatBoxContainerFriendAvatar}>
-        <img src={catto} alt='' />
-      </div>
+    <div className={classes.DMMainChatBoxContainer}>
+      <div className={classes.DMMainChatBoxContainerFriendAvatar}>#</div>
       <div className={classes.DMMainChatBoxContainerFriendName}>
         {' '}
-        {props.friend.username ? props.friend.username : null}{' '}
+        Welcome to #{props.channel ? props.channel.channelName : null}
       </div>
       <div className={classes.DMMainChatBoxContainerText}>
-        This is the beginning of your direct message history with{' '}
-        <strong>@{props.friend.username ? props.friend.username : null}</strong>
+        This is the start of the #
+        <strong>
+          {props.channel ? props.channel.channelName : null} channel
+        </strong>
       </div>
       <div className={classes.DMMainChatBoxContainerHorizontalLine}></div>
-      {props.messages.length > 0
-        ? props.messages.map((dmObj, dmObjIndex) => (
-            <div
-              className={classes.DMMainChatBoxContainerMsgContainer}
-              key={dmObj._id}
-            >
+      {props.messages
+        ? props.messages.map((channelObj, channelObjIndex) => (
+            <div className={classes.DMMainChatBoxContainerMsgContainer}>
               <div className={classes.DMMainChatBoxContainerMsgContainerAvatar}>
                 <img src={catto} alt='' />
                 <div className={classes.DMMainChatBoxNameContainer}>
-                  {dmObj.sender}
-                  <span className={classes.DMMsgDate}> {dmObj.sentDate} </span>
-
-                  {editMsgBool[dmObjIndex] ? (
-                    <DMMainEditForm
-                      dmObjIndex={dmObjIndex}
-                      dmObj={dmObj}
+                  {channelObj.sender}
+                  <span className={classes.DMMsgDate}>
+                    {' '}
+                    {channelObj.sentDate}{' '}
+                  </span>
+                  {editMsgBool[channelObjIndex] ? (
+                    <ChannelMainEditForm
+                      channelObjIndex={channelObjIndex}
+                      channelObj={channelObj}
                       editMsgBool={editMsgBool}
                       seteditMsgBool={seteditMsgBool}
-                      friend={props.friend}
                       user={props.user}
-                      setmessages={props.setmessages}
-                      dm={props.dm}
-                      dmIndex={props.dmIndex}
+                      messages={props.messages}
+                      setMessages={props.setMessages}
+                      channel={props.channel}
+                      channelIndex={props.channelIndex}
+                      server={props.server}
                     />
                   ) : (
                     <div
                       className={classes.DMMainChatBoxContainerMsgContainerMsg}
                     >
-                      {dmObj.msg}
+                      {channelObj.msg}
                     </div>
                   )}
                 </div>
               </div>
-              {dmObj.sender === props.user.username &&
-              !editMsgBool[dmObjIndex] ? (
+              {channelObj.sender === props.user.username &&
+              !editMsgBool[channelObjIndex] ? (
                 <div className={classes.msgIcons}>
                   <FiEdit2
                     fill='#b9bbbe'
@@ -148,10 +132,10 @@ export const DMMainMessages = (props) => {
                     style={{
                       width: '20px',
                       height: '20px',
-                      margin: '5px 0px 0px 10px',
+                      margin: '5px 10px 0px 10px',
                       cursor: 'pointer',
                     }}
-                    onClick={() => editMsgHandler(dmObjIndex)}
+                    onClick={() => editMsgHandler(channelObjIndex)}
                   />{' '}
                   <TiDeleteOutline
                     fill='#b9bbbe'
@@ -159,10 +143,10 @@ export const DMMainMessages = (props) => {
                     style={{
                       width: '20px',
                       height: '20px',
-                      margin: '5px 10px 0px 0px',
+                      margin: '5px 10px 0px 10px',
                       cursor: 'pointer',
                     }}
-                    onClick={() => delMsgHandler(dmObj, dmObjIndex)}
+                    onClick={() => delMsgHandler(channelObj, channelObjIndex)}
                   />
                 </div>
               ) : null}

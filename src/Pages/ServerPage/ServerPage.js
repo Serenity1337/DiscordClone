@@ -8,14 +8,27 @@ import { UsersContext } from '../../Contexts/UsersContext'
 import AddChannelModal from '../../Modals/AddChannelModal'
 import AddServerModal from '../../Modals/AddServerModal'
 import classes from './ServerPage.module.scss'
-
+import { getServers } from '../../utils/Api'
+import { io } from 'socket.io-client'
 export const ServerPage = (props) => {
+  const socket = io('ws://localhost:8080', {
+    transports: ['websocket'],
+    upgrade: false,
+  })
   const { user, setuser } = useContext(UserContext)
   const { users, setusers } = useContext(UsersContext)
   const { servers, setservers } = useContext(ServersContext)
   const [addServerModalToggle, setaddServerModalToggle] = useState(false)
   const [addChannelModalToggle, setaddChannelModalToggle] = useState(false)
-  console.log(props)
+  useEffect(() => {
+    getServers().then((response) => {
+      if (response) {
+        console.log(response)
+        setservers(response)
+      }
+    })
+    socket.emit('server room', props.server._id)
+  }, [])
   return (
     <div className={classes.appContainer}>
       <ServersSideBar

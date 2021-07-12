@@ -1,0 +1,52 @@
+.DMMainSendMsgContainer {
+  background-color: #40444b;
+  display: flex;
+  margin: 0px 15px;
+  border-radius: 5px;
+  justify-content: space-between;
+  // padding: 13px;
+  .MsgContainerUploadBtn {
+    display: flex;
+    width: 100%;
+    .MsgUploadBtnContainer {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .MsgUploadBtn {
+        width: 24px;
+        height: 24px;
+        background-color: #b9bbbe;
+        color: #40444b;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        margin: 0px 15px 0px 15px;
+      }
+    }
+    .MsgUploadBtnContainer:hover {
+      .MsgUploadBtn {
+        background-color: #dcddde;
+      }
+    }
+    .MsgContainerMsgInput {
+      height: 44px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background-color: #40444b;
+      color: #bec0c2;
+      width: 100%;
+    }
+    .MsgContainerMsgInput:focus {
+      outline: 0;
+    }
+  }
+  .MsgContainerExtras {
+    display: flex;
+    align-items: center;
+    margin: 0px 15px 0px 0px;
+  }
+}

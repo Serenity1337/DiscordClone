@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react'
 import classes from './DMMainEditForm.module.scss'
 import { io } from 'socket.io-client'
 export const DMMainEditForm = (props) => {
-  useEffect(() => {
-    seteditMsg(props.dmObj.msg)
-  }, [])
   const socket = io('localhost:8080', {
     reconnection: true,
     reconnectionDelay: 1000,
@@ -15,6 +12,9 @@ export const DMMainEditForm = (props) => {
   })
 
   const [editMsg, seteditMsg] = useState('')
+  useEffect(() => {
+    seteditMsg(props.dmObj.msg)
+  }, [])
   const editFormHandler = (event) => {
     event.preventDefault()
     const foundFriendDMIndex = props.friend.DMS.findIndex(
@@ -29,7 +29,6 @@ export const DMMainEditForm = (props) => {
 
     loggedInUser.DMS[props.dmIndex].messages[foundUserMsgIndex].msg = editMsg
 
-    console.log(loggedInUser.DMS[props.dmIndex].messages[foundUserMsgIndex])
     const friendClone = { ...props.friend }
     friendClone.DMS[foundFriendDMIndex].messages[foundUserMsgIndex].msg =
       editMsg
