@@ -20,17 +20,30 @@ export const DMMain = (props) => {
   const [messages, setmessages] = useState([])
   const [chatBoxContainer, setchatBoxContainer] = useState({})
   useEffect(() => {
-    socket.emit('dm room', `${props.dm._id}`)
+    socket.emit('dm room', `${user._id}`)
     setmessages([...user.DMS[props.dmIndex].messages])
   }, [])
 
   useEffect(() => {
-    socket.on('receive-message', (message) => {
-      if (message.sender !== user.username) {
-        console.log(message)
+    socket.on('receive-message', (dmId, message) => {
+      console.log('receiving')
+      if (dmId === props.dm.id) {
         setmessages((prevState) => {
-          return [...prevState, message]
+          if (message.sender !== user.username) {
+            return [...prevState, message]
+          }
         })
+      } else {
+        console.log('im receiving')
+        if (message.sender !== user.username) {
+          const userClone = { ...user }
+          const dmIndex = user.DMS.findIndex((thisDm) => thisDm._id === dmId)
+          userClone.DMS[dmIndex].messages = [
+            ...userClone.DMS[dmIndex].messages,
+            message,
+          ]
+          setuser(userClone)
+        }
       }
     })
     // return () => socket.off('receive-message')
@@ -66,16 +79,18 @@ export const DMMain = (props) => {
     // return () => socket.off('receive-edit-message')
   })
   useEffect(() => {
-    if (props.dm.participants && user.username && props.users.length > 0) {
-      const loggedInUserFriendString = props.dm.participants.filter(
-        (userFriend) => userFriend !== user.username
-      )
-      const loggedInUserFriend = props.users.filter(
-        (friendObject) => friendObject.username === loggedInUserFriendString[0]
-      )
-      setFriend(loggedInUserFriend[0])
-    }
-  }, [props.users])
+    console.log(props.dm)
+    console.log(props.users)
+    const loggedInUserFriendString = props.dm.participants.filter(
+      (userFriend) => userFriend !== user.username
+    )
+    const loggedInUserFriend = props.users.filter(
+      (friendObject) => friendObject.username === loggedInUserFriendString[0]
+    )
+    setFriend(loggedInUserFriend[0])
+    console.log(loggedInUserFriend)
+    socket.emit('dm room', `${loggedInUserFriend[0]._id}`)
+  }, [])
 
   return (
     <div className={classes.DMMain}>

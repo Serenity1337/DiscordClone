@@ -93,7 +93,7 @@ export const DMMMainForm = (props) => {
     props.chatBoxContainer.scrollTo(0, props.chatBoxContainer.scrollHeight + 42)
     console.log(props.chatBoxContainer)
 
-    socket.emit('send-message', msgObject, props.dm._id)
+    socket.emit('send-message', props.friend._id, props.dm._id, msgObject)
   }
 
   return (

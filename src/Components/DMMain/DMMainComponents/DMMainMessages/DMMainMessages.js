@@ -90,7 +90,13 @@ export const DMMainMessages = (props) => {
           })
         }
       })
-    socket.emit('delete-message', dmObj, dmObjIndex, props.dm._id)
+    socket.emit(
+      'delete-message',
+      props.friend._id,
+      props.dm._id,
+      dmObj,
+      dmObjIndex
+    )
   }
   return (
     <div className={classes.DMMainChatBoxContainer} ref={chatBoxContainer}>

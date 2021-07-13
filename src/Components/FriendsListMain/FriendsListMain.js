@@ -23,7 +23,6 @@ export const FriendsListMain = (props) => {
   const [modalProfileIndex, setmodalProfileIndex] = useState(0)
   const [errorState, seterrorState] = useState('')
   // This useEffect filters online/blocked/all/pending users based on filter
-  console.log(openModalProfile)
   useEffect(() => {
     if (props.user.username) {
       if (friendStatusState.online === true) {

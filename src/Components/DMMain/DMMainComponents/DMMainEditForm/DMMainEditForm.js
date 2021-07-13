@@ -76,7 +76,13 @@ export const DMMainEditForm = (props) => {
 
     props.seteditMsgBool({ ...props.editMsgBool, [props.dmObjIndex]: false })
 
-    socket.emit('edit-message', editMsg, foundUserMsgIndex, props.dm._id)
+    socket.emit(
+      'edit-message',
+      props.friend._id,
+      props.dm._id,
+      editMsg,
+      foundUserMsgIndex
+    )
   }
   const cancelEditForm = (event) => {
     props.seteditMsgBool({ ...props.editMsgBool, [props.dmObjIndex]: false })

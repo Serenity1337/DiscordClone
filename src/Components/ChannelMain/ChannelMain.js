@@ -40,7 +40,6 @@ export const ChannelMain = (props) => {
         ]
 
         serversClone[props.serverIndex] = serverClone
-        console.log(serversClone)
         props.setservers(serversClone)
       }
     }
@@ -50,17 +49,30 @@ export const ChannelMain = (props) => {
     socket.on(
       'receive-edited-channel-message',
       (channelId, editMsg, msgIndex) => {
-        setMessages((prevState) => {
+        if (channelId === props.channel._id) {
+          setMessages((prevState) => {
+            if (prevState[msgIndex].sender !== props.user.username) {
+              prevState[msgIndex].msg = editMsg
+              return [...prevState]
+            } else {
+              return [...prevState]
+            }
+          })
+        } else {
+          const serversClone = [...props.servers]
+          const serverClone = { ...props.server }
+          const channelIndex = serverClone.channels.findIndex(
+            (chanl) => chanl._id === channelId
+          )
+          serverClone.channels[channelIndex].messages[msgIndex].msg = editMsg
           if (
-            prevState[msgIndex].sender !== props.user.username &&
-            channelId === props.channel._id
+            props.user.username !==
+            serverClone.channels[channelIndex].messages[msgIndex].sender
           ) {
-            prevState[msgIndex].msg = editMsg
-            return [...prevState]
-          } else {
-            return [...prevState]
+            serversClone[props.serverIndex] = serverClone
+            props.setservers(serversClone)
           }
-        })
+        }
         // }
       }
     )
@@ -69,17 +81,33 @@ export const ChannelMain = (props) => {
   useEffect(() => {
     socket.on(
       'receive-deleted-channel-message',
-      (channelId, channelObj, channelIndex) => {
-        setMessages((prevState) => {
-          if (channelId === props.channel._id) {
-            const clonePrevState = prevState.filter(
-              (msgObj) => msgObj.id !== channelObj.id
+      (channelId, messageObj, msgIndex) => {
+        if (channelId === props.channel._id) {
+          setMessages((prevState) => {
+            if (channelId === props.channel._id) {
+              const clonePrevState = prevState.filter(
+                (msgObj) => msgObj.id !== messageObj.id
+              )
+              return [...clonePrevState]
+            } else {
+              return [...prevState]
+            }
+          })
+        } else {
+          if (props.user.username !== messageObj.sender) {
+            const serversClone = [...props.servers]
+            const serverClone = { ...props.server }
+            const channelIndex = serverClone.channels.findIndex(
+              (chanl) => chanl._id === channelId
             )
-            return [...clonePrevState]
-          } else {
-            return [...prevState]
+            const filteredMsgArr = serverClone.channels[
+              channelIndex
+            ].messages.filter((msgObj) => msgObj.id !== messageObj.id)
+            serverClone.channels[channelIndex].messages = filteredMsgArr
+            serversClone[props.serverIndex] = serverClone
+            props.setservers(serversClone)
           }
-        })
+        }
       }
     )
     // return () => socket.off('receive-edit-message')

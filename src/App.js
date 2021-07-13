@@ -11,8 +11,9 @@ import DirectMessaging from './Pages/DirectMessaging'
 import { ChannelPage } from './Pages/ChannelPage/ChannelPage'
 import { ServerPage } from './Pages/ServerPage/ServerPage'
 import { getLoggedInUser, getUsers, getServers, loggedIn } from './utils/Api'
+import { io } from 'socket.io-client'
 function App() {
-  // const socket = io('http://localhost:8080')
+  const socket = io('http://localhost:8080')
   const [user, setuser] = useState({})
   const [users, setusers] = useState([])
   const [servers, setservers] = useState([])
@@ -25,7 +26,9 @@ function App() {
 
   useEffect(() => {
     getLoggedInUser().then((response) => {
-      if (response) setuser(response)
+      if (response) {
+        setuser(response)
+      }
     })
     getUsers().then((response) => {
       if (response) setusers(response)
@@ -115,13 +118,15 @@ function App() {
                 exact={true}
                 label='Login'
               />
-              <Route
-                path='/channels/@me'
-                component={Channels}
-                exact={true}
-                label='Channels'
-              />
-              {user.DMS
+              {user.DMS ? (
+                <Route
+                  path='/channels/@me'
+                  component={Channels}
+                  exact={true}
+                  label='Channels'
+                />
+              ) : null}
+              {user.DMS && users.length > 0
                 ? user.DMS.map((dm, dmIndex) => (
                     <Route
                       path={`/channels/@me/${dm._id}`}
