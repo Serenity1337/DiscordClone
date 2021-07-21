@@ -25,7 +25,7 @@ export const DMMainEditForm = (props) => {
 
     const foundUserMsgIndex = loggedInUser.DMS[
       props.dmIndex
-    ].messages.findIndex((msgObj) => msgObj.msg === props.dmObj.msg)
+    ].messages.findIndex((msgObj) => msgObj.id === props.dmObj.id)
 
     loggedInUser.DMS[props.dmIndex].messages[foundUserMsgIndex].msg = editMsg
 

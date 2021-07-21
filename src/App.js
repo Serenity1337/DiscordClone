@@ -1,6 +1,6 @@
 import './App.css'
 import React, { useEffect, useState, useMemo } from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom'
 import Register from './Pages/Register'
 import Login from './Pages/Login'
 import Channels from './Pages/Channels'
@@ -12,7 +12,11 @@ import { ChannelPage } from './Pages/ChannelPage/ChannelPage'
 import { ServerPage } from './Pages/ServerPage/ServerPage'
 import { getLoggedInUser, getUsers, getServers, loggedIn } from './utils/Api'
 import { io } from 'socket.io-client'
+import SocketIoDmClient from './Components/SocketIoClientComponent'
+import { SocketIoChannelClient } from './Components/SocketIoChannelsClient/SocketIoChannelClient'
 function App() {
+  const location = useLocation()
+
   const socket = io('http://localhost:8080')
   const [user, setuser] = useState({})
   const [users, setusers] = useState([])
@@ -28,6 +32,7 @@ function App() {
     getLoggedInUser().then((response) => {
       if (response) {
         setuser(response)
+        // socket.emit('dm room', `${response._id}`)
       }
     })
     getUsers().then((response) => {
@@ -47,65 +52,13 @@ function App() {
     // return () => clearInterval(interval)
   }, [])
 
-  // useEffect(() => {
-  //   if (user.status) {
-  //     window.addEventListener('beforeunload', (event) => {
-  //       event.preventDefault()
-  //       const userClone = { ...user }
-  //       userClone.status = 'offline'
-  //       fetch(
-  //         `http://localhost:8000/discord/discord/updateUser/${userClone._id}`,
-  //         {
-  //           method: 'POST',
-  //           body: JSON.stringify(userClone),
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //           },
-  //         }
-  //       )
-  //         .then((header) => {
-  //           return header.json()
-  //         })
-  //         .then((response) => {
-  //           if (response) {
-  //             console.log(response)
-  //           }
-  //         })
-  //     })
-  //   }
-  // }, [user])
-  // useEffect(() => {
-  //   if (user.status === 'offline') {
-  //     console.log(user, 'testing')
-  //     socket.emit('online', user)
-  //     socket.on('receive-user-status', (receivedUser) => {
-  //       delete receivedUser.tokens
-  //       delete receivedUser.password
-  //       delete receivedUser.__v
-  //       fetch(`http://localhost:8000/discord/discord/updateUser/${user._id}`, {
-  //         method: 'POST',
-  //         body: JSON.stringify(receivedUser),
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //       })
-  //         .then((header) => {
-  //           return header.json()
-  //         })
-  //         .then((response) => {
-  //           if (response) {
-  //             setuser(receivedUser)
-  //           }
-  //         })
-  //     })
-  //   }
-  // }, [user])
   return (
     <div className='app'>
       <Switch>
         <UsersContext.Provider value={usersValue}>
           <ServersContext.Provider value={ServersValue}>
             <UserContext.Provider value={userValue}>
+              <Redirect from='*' to='/login' />
               <Route
                 path='/register'
                 component={Register}
@@ -119,12 +72,15 @@ function App() {
                 label='Login'
               />
               {user.DMS ? (
-                <Route
-                  path='/channels/@me'
-                  component={Channels}
-                  exact={true}
-                  label='Channels'
-                />
+                <>
+                  <Redirect from='*' to='/channels/@me' />
+                  <Route
+                    path='/channels/@me'
+                    component={Channels}
+                    exact={true}
+                    label='Channels'
+                  />
+                </>
               ) : null}
               {user.DMS && users.length > 0
                 ? user.DMS.map((dm, dmIndex) => (
@@ -188,6 +144,17 @@ function App() {
                     ))
                   )
                 : null}
+              {user.DMS ? (
+                <SocketIoDmClient user={user} setuser={setuser} />
+              ) : null}
+              {servers.length > 0 && user.DMS ? (
+                <SocketIoChannelClient
+                  servers={servers}
+                  setservers={setservers}
+                  user={user}
+                  setuser={setuser}
+                />
+              ) : null}
             </UserContext.Provider>
           </ServersContext.Provider>
         </UsersContext.Provider>

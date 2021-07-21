@@ -27,14 +27,15 @@ export const DMMain = (props) => {
   useEffect(() => {
     socket.on('receive-message', (dmId, message) => {
       console.log('receiving')
-      if (dmId === props.dm.id) {
+      if (dmId === props.dm._id) {
         setmessages((prevState) => {
           if (message.sender !== user.username) {
             return [...prevState, message]
+          } else {
+            return [...prevState]
           }
         })
       } else {
-        console.log('im receiving')
         if (message.sender !== user.username) {
           const userClone = { ...user }
           const dmIndex = user.DMS.findIndex((thisDm) => thisDm._id === dmId)
@@ -50,31 +51,35 @@ export const DMMain = (props) => {
   })
 
   useEffect(() => {
-    socket.on('receive-edit-message', (editMsg, msgIndex) => {
-      setmessages((prevState) => {
-        if (prevState[msgIndex].sender !== user.username) {
-          prevState[msgIndex].msg = editMsg
-          return [...prevState]
-        } else {
-          return [...prevState]
-        }
-      })
+    socket.on('receive-edit-message', (dmId, editMsg, msgIndex) => {
+      if (dmId === props.dm._id) {
+        setmessages((prevState) => {
+          if (prevState[msgIndex].sender !== user.username) {
+            prevState[msgIndex].msg = editMsg
+            return [...prevState]
+          } else {
+            return [...prevState]
+          }
+        })
+      }
       // }
     })
     // return () => socket.off('receive-edit-message')
   })
   useEffect(() => {
-    socket.on('receive-deleted-message', (dmObj, dmIndex) => {
-      setmessages((prevState) => {
-        if (prevState[dmIndex].sender !== user.username) {
-          const clonePrevState = prevState.filter(
-            (msgObj) => msgObj.id !== dmObj.id
-          )
-          return [...clonePrevState]
-        } else {
-          return [...prevState]
-        }
-      })
+    socket.on('receive-deleted-message', (dmId, msgObj, msgIndex) => {
+      if (dmId === props.dm._id) {
+        setmessages((prevState) => {
+          if (prevState[msgIndex].sender !== user.username) {
+            const clonePrevState = prevState.filter(
+              (currMsgObj) => currMsgObj.id !== msgObj.id
+            )
+            return [...clonePrevState]
+          } else {
+            return [...prevState]
+          }
+        })
+      }
     })
     // return () => socket.off('receive-edit-message')
   })

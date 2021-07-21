@@ -25,7 +25,7 @@ export const FriendsListMainRenderProfileModal = (props) => {
         onClick={(event) =>
           removeUserFromFriendList(
             event,
-            props.user,
+            props.friend,
             props.index,
             props.users,
             props.setuser,

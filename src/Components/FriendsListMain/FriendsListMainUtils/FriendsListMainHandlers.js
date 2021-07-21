@@ -6,7 +6,8 @@ const addFriendHandler = (
   seterrorState,
   setusers,
   setuser,
-  uuidv4
+  uuidv4,
+  socket
 ) => {
   event.preventDefault()
   const DMId = uuidv4()
@@ -25,6 +26,7 @@ const addFriendHandler = (
   const foundUser = users.filter(
     (filteredUser) => filteredUser.username === usernameCopy
   )
+  socket.emit('dm room', foundUser[0]._id)
   if (foundUser.length > 0 && discordTagCopy === foundUser[0].tag) {
     // Checking if the user exists as pending user already.
     const existsPending = user.friends.pending.filter(
@@ -127,6 +129,7 @@ const addFriendHandler = (
               }
               setusers(usersCopy)
             })
+          socket.emit('add-friend-request', foundUser[0]._id, loggedInUser)
         } else {
           seterrorState('You have already blocked this user.')
         }
@@ -151,7 +154,8 @@ const acceptFriendRequest = (
   setuser,
   setusers,
   seterrorState,
-  currentUser
+  currentUser,
+  socket
 ) => {
   event.stopPropagation()
   event.preventDefault()
@@ -160,6 +164,7 @@ const acceptFriendRequest = (
   const foundFriend = users.filter(
     (friend) => friend.username === user.username
   )
+  socket.emit('dm room', foundFriend[0]._id)
   user.status = foundFriend[0].status
   loggedInUser.friends.accepted = [...loggedInUser.friends.accepted, user]
   const filteredPending = loggedInUser.friends.pending.filter(
@@ -233,6 +238,7 @@ const acceptFriendRequest = (
       }
       setusers(usersCopy)
     })
+  socket.emit('accept-friend-request', foundFriend[0]._id, loggedInUser)
 }
 
 const unblockUserHandler = (
@@ -297,7 +303,8 @@ const removeUserFromFriendList = (
 ) => {
   event.stopPropagation()
   event.preventDefault()
-
+  console.log(users)
+  console.log(currentUser)
   const loggedInUser = { ...currentUser }
   const foundFriend = users.filter(
     (friend) => friend.username === user.username

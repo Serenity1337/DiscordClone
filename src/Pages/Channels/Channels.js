@@ -22,22 +22,22 @@ export const Channels = () => {
   useEffect(() => {
     socket.emit('dm room', `${user._id}`)
   }, [])
-  useEffect(() => {
-    socket.on('receive-message', (dmId, message) => {
-      console.log('receiving')
+  // useEffect(() => {
+  //   socket.on('receive-message', (dmId, message) => {
+  //     console.log('receiving')
 
-      if (message.sender !== user.username) {
-        const userClone = { ...user }
-        const dmIndex = user.DMS.findIndex((thisDm) => thisDm._id === dmId)
-        userClone.DMS[dmIndex].messages = [
-          ...userClone.DMS[dmIndex].messages,
-          message,
-        ]
-        setuser(userClone)
-      }
-    })
-    // return () => socket.off('receive-message')
-  })
+  //     if (message.sender !== user.username) {
+  //       const userClone = { ...user }
+  //       const dmIndex = user.DMS.findIndex((thisDm) => thisDm._id === dmId)
+  //       userClone.DMS[dmIndex].messages = [
+  //         ...userClone.DMS[dmIndex].messages,
+  //         message,
+  //       ]
+  //       setuser(userClone)
+  //     }
+  //   })
+  //   // return () => socket.off('receive-message')
+  // })
 
   return (
     <div className={classes.appContainer}>

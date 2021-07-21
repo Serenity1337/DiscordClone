@@ -166,6 +166,9 @@ export const FriendsListMain = (props) => {
       {renderHeading()}
       <FriendsListMainRenderUsers
         user={props.user}
+        setuser={props.setuser}
+        users={props.users}
+        setusers={props.setusers}
         friendStatusState={friendStatusState}
         filteredFriendsArr={filteredFriendsArr}
         openModalProfile={openModalProfile}

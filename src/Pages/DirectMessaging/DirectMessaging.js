@@ -16,11 +16,11 @@ export const DirectMessaging = (props) => {
   const { users, setusers } = useContext(UsersContext)
   const { servers, setservers } = useContext(ServersContext)
   const [addServerModalToggle, setaddServerModalToggle] = useState(false)
-  useEffect(() => {
-    getLoggedInUser().then((response) => {
-      if (response) setuser(response)
-    })
-  }, [])
+  // useEffect(() => {
+  //   getLoggedInUser().then((response) => {
+  //     if (response) setuser(response)
+  //   })
+  // }, [])
   return (
     <div className={classes.appContainer}>
       <ServersSideBar

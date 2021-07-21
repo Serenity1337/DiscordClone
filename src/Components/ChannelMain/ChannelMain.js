@@ -27,21 +27,6 @@ export const ChannelMain = (props) => {
           return [...prevState]
         }
       })
-    } else {
-      if (props.user.username !== message.sender) {
-        const serversClone = [...props.servers]
-        const serverClone = { ...props.server }
-        const channelIndex = serverClone.channels.findIndex(
-          (chanl) => chanl._id === channelId
-        )
-        serverClone.channels[channelIndex].messages = [
-          ...serverClone.channels[channelIndex].messages,
-          message,
-        ]
-
-        serversClone[props.serverIndex] = serverClone
-        props.setservers(serversClone)
-      }
     }
   })
 
@@ -58,22 +43,7 @@ export const ChannelMain = (props) => {
               return [...prevState]
             }
           })
-        } else {
-          const serversClone = [...props.servers]
-          const serverClone = { ...props.server }
-          const channelIndex = serverClone.channels.findIndex(
-            (chanl) => chanl._id === channelId
-          )
-          serverClone.channels[channelIndex].messages[msgIndex].msg = editMsg
-          if (
-            props.user.username !==
-            serverClone.channels[channelIndex].messages[msgIndex].sender
-          ) {
-            serversClone[props.serverIndex] = serverClone
-            props.setservers(serversClone)
-          }
         }
-        // }
       }
     )
     // return () => socket.off('receive-edit-message')
@@ -93,20 +63,6 @@ export const ChannelMain = (props) => {
               return [...prevState]
             }
           })
-        } else {
-          if (props.user.username !== messageObj.sender) {
-            const serversClone = [...props.servers]
-            const serverClone = { ...props.server }
-            const channelIndex = serverClone.channels.findIndex(
-              (chanl) => chanl._id === channelId
-            )
-            const filteredMsgArr = serverClone.channels[
-              channelIndex
-            ].messages.filter((msgObj) => msgObj.id !== messageObj.id)
-            serverClone.channels[channelIndex].messages = filteredMsgArr
-            serversClone[props.serverIndex] = serverClone
-            props.setservers(serversClone)
-          }
         }
       }
     )

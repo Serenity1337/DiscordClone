@@ -16,7 +16,9 @@ import {
 } from '../FriendsListMainHandlers'
 import { FriendsListMainRenderProfileModal } from '../FriendsListMainRenderProfileModal/FriendsListMainRenderProfileModal'
 import { FriendListMainRenderStatus } from '../FriendListMainRenderStatus/FriendListMainRenderStatus'
+import { io } from 'socket.io-client'
 export const FriendsListMainRenderUsers = (props) => {
+  const socket = io('ws://localhost:8080')
   let location = useLocation()
 
   const [usernameState, setusernameState] = useState('')
@@ -56,7 +58,11 @@ export const FriendsListMainRenderUsers = (props) => {
                 <FriendsListMainRenderProfileModal
                   mouseCoordY={mouseCoordY}
                   mouseCoordX={mouseCoordX}
-                  user={user}
+                  friend={user}
+                  user={props.user}
+                  users={props.users}
+                  setuser={props.setuser}
+                  setusers={props.setusers}
                   index={index}
                   seterrorState={props.seterrorState}
                   setopenModalProfile={props.setopenModalProfile}
@@ -168,7 +174,8 @@ export const FriendsListMainRenderUsers = (props) => {
                         props.setuser,
                         props.setusers,
                         props.seterrorState,
-                        props.user
+                        props.user,
+                        socket
                       )
                     }
                   >
@@ -192,7 +199,8 @@ export const FriendsListMainRenderUsers = (props) => {
                         props.users,
                         props.setuser,
                         props.setusers,
-                        props.seterrorState
+                        props.seterrorState,
+                        socket
                       )
                     }
                   >
@@ -211,7 +219,17 @@ export const FriendsListMainRenderUsers = (props) => {
                   <div
                     className={classes.optionsBtn}
                     onClick={(event) =>
-                      declineFriendRequest(event, user, index)
+                      declineFriendRequest(
+                        event,
+                        user,
+                        index,
+                        props.user,
+                        props.users,
+                        props.setuser,
+                        props.setusers,
+                        props.seterrorState,
+                        socket
+                      )
                     }
                   >
                     <BsX
@@ -256,7 +274,8 @@ export const FriendsListMainRenderUsers = (props) => {
                   props.seterrorState,
                   props.setusers,
                   props.setuser,
-                  uuidv4
+                  uuidv4,
+                  socket
                 )
               }
             >

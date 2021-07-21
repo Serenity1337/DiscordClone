@@ -21,12 +21,6 @@ export const ServerPage = (props) => {
   const [addServerModalToggle, setaddServerModalToggle] = useState(false)
   const [addChannelModalToggle, setaddChannelModalToggle] = useState(false)
   useEffect(() => {
-    getServers().then((response) => {
-      if (response) {
-        console.log(response)
-        setservers(response)
-      }
-    })
     socket.emit('server room', props.server._id)
   }, [])
   return (
