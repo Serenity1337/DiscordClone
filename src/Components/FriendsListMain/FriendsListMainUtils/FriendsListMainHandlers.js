@@ -292,13 +292,13 @@ const unblockUserHandler = (
 
 const removeUserFromFriendList = (
   event,
-  user,
+  currentUser,
   index,
   users,
   setuser,
   setusers,
   seterrorState,
-  currentUser,
+  user,
   setopenModalProfile,
   socket
 ) => {
@@ -386,13 +386,13 @@ const removeUserFromFriendList = (
 
 const blockUserHandler = (
   event,
-  user,
+  currentUser,
   index,
   users,
   setuser,
   setusers,
   seterrorState,
-  currentUser,
+  user,
   setopenModalProfile,
   socket
 ) => {
@@ -417,7 +417,7 @@ const blockUserHandler = (
   delete foundLoggedInUser[0].friends
 
   const friendFriendsArray = foundFriend[0].friends.accepted.filter(
-    (loggedUser) => loggedUser.username !== foundLoggedInUser[0].username
+    (loggedUser) => loggedUser._id !== loggedInUser._id
   )
 
   foundFriend[0].friends.accepted = friendFriendsArray

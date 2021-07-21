@@ -25,13 +25,13 @@ export const FriendsListMainRenderProfileModal = (props) => {
         onClick={(event) =>
           removeUserFromFriendList(
             event,
-            props.friend,
+            props.user,
             props.index,
             props.users,
             props.setuser,
             props.setusers,
             props.seterrorState,
-            props.user,
+            props.friend,
             props.setopenModalProfile,
             props.socket
           )
@@ -50,7 +50,7 @@ export const FriendsListMainRenderProfileModal = (props) => {
             props.setuser,
             props.setusers,
             props.seterrorState,
-            props.user,
+            props.friend,
             props.setopenModalProfile,
             props.socket
           )
