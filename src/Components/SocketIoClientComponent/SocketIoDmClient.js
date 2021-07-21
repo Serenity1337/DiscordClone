@@ -15,8 +15,6 @@ export const SocketIoDmClient = (props) => {
   useEffect(() => {
     if (props.user.DMS) {
       socket.on('receive-message', (dmId, message) => {
-        console.log('receiving from app.js')
-
         if (message.sender !== props.user.username) {
           const userClone = { ...props.user }
           const dmIndex = props.user.DMS.findIndex(
@@ -66,36 +64,54 @@ export const SocketIoDmClient = (props) => {
   })
   useEffect(() => {
     socket.on('receive-friend-request', (userId, friend) => {
-      console.log('received friend request')
-      console.log(friend)
       props.setuser((prevState) => {
         const userClone = { ...prevState }
-        console.log(userClone)
-        const friendClone = { ...friend }
-        friendClone.status = 'incoming friend request'
-        userClone.friends.pending = [...userClone.friends.pending, friendClone]
-        return { ...userClone }
+        const checkIfExists = userClone.friends.pending.filter(
+          (frnd) => frnd._id === friend._id
+        )
+        if (checkIfExists.length > 0) {
+          return { ...prevState }
+        } else {
+          console.log(userClone)
+          const friendClone = { ...friend }
+          friendClone.status = 'incoming friend request'
+          userClone.friends.pending = [
+            ...userClone.friends.pending,
+            friendClone,
+          ]
+          return { ...userClone }
+        }
       })
     })
   }, [])
 
-  // useEffect(() => {
-  //   socket.on('receive-accepted-friend-request', (userId, friend) => {
-  //     console.log('received accepted friend request')
-  //     console.log(friend)
-  //     props.setuser((prevState) => {
-  //       const userClone = { ...prevState }
-  //       console.log(userClone)
-  //       const friendClone = { ...friend }
-  //       friendClone.status = 'incoming friend request'
-  //       const pendingClone = userClone.friends.pending.filter(
-  //         (frnd) => frnd._id === friend._id
-  //       )
-  //       userClone.friends.pending = pendingClone
-  //       userClone.friends.accepted = [...userClone.friends.accepted]
-  //       return { ...userClone }
-  //     })
-  //   })
-  // }, [])
+  useEffect(() => {
+    socket.on('receive-accepted-friend-request', (userId, friend) => {
+      props.setuser((prevState) => {
+        const userClone = { ...prevState }
+        const checkIfExists = userClone.friends.accepted.filter(
+          (frnd) => frnd._id === friend._id
+        )
+        if (checkIfExists.length > 0) {
+          return { ...prevState }
+        } else {
+          const friendClone = { ...friend }
+          const foundFriend = props.users.filter(
+            (frnd) => frnd._id === friend._id
+          )
+          friendClone.status = foundFriend[0].status
+          const pendingClone = userClone.friends.pending.filter(
+            (frnd) => frnd._id !== friend._id
+          )
+          userClone.friends.pending = pendingClone
+          userClone.friends.accepted = [
+            ...userClone.friends.accepted,
+            friendClone,
+          ]
+          return { ...userClone }
+        }
+      })
+    })
+  }, [])
   return <div></div>
 }

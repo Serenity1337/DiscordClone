@@ -144,8 +144,13 @@ function App() {
                     ))
                   )
                 : null}
-              {user.DMS ? (
-                <SocketIoDmClient user={user} setuser={setuser} />
+              {user.DMS && users.length > 0 ? (
+                <SocketIoDmClient
+                  user={user}
+                  setuser={setuser}
+                  users={users}
+                  setusers={setusers}
+                />
               ) : null}
               {servers.length > 0 && user.DMS ? (
                 <SocketIoChannelClient
