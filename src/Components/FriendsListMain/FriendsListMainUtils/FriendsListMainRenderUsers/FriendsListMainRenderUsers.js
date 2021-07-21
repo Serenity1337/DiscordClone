@@ -66,6 +66,7 @@ export const FriendsListMainRenderUsers = (props) => {
                   index={index}
                   seterrorState={props.seterrorState}
                   setopenModalProfile={props.setopenModalProfile}
+                  socket={socket}
                 />
               ) : null}
               <div className={classes.userProfile}>

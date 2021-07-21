@@ -83,7 +83,7 @@ export const SocketIoDmClient = (props) => {
         }
       })
     })
-  }, [])
+  })
 
   useEffect(() => {
     socket.on('receive-accepted-friend-request', (userId, friend) => {
@@ -112,6 +112,20 @@ export const SocketIoDmClient = (props) => {
         }
       })
     })
-  }, [])
+  })
+
+  useEffect(() => {
+    socket.on('receive-declined-friend-request', (userId, friend) => {
+      props.setuser((prevState) => {
+        const userClone = { ...prevState }
+
+        const pendingClone = userClone.friends.pending.filter(
+          (frnd) => frnd._id !== friend._id
+        )
+        userClone.friends.pending = pendingClone
+        return { ...userClone }
+      })
+    })
+  })
   return <div></div>
 }

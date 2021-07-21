@@ -32,7 +32,8 @@ export const FriendsListMainRenderProfileModal = (props) => {
             props.setusers,
             props.seterrorState,
             props.user,
-            props.setopenModalProfile
+            props.setopenModalProfile,
+            props.socket
           )
         }
       >
@@ -50,7 +51,8 @@ export const FriendsListMainRenderProfileModal = (props) => {
             props.setusers,
             props.seterrorState,
             props.user,
-            props.setopenModalProfile
+            props.setopenModalProfile,
+            props.socket
           )
         }
       >

@@ -299,7 +299,8 @@ const removeUserFromFriendList = (
   setusers,
   seterrorState,
   currentUser,
-  setopenModalProfile
+  setopenModalProfile,
+  socket
 ) => {
   event.stopPropagation()
   event.preventDefault()
@@ -309,6 +310,7 @@ const removeUserFromFriendList = (
   const foundFriend = users.filter(
     (friend) => friend.username === user.username
   )
+  socket.emit('dm room', foundFriend[0]._id)
   const filteredAccepted = loggedInUser.friends.accepted.filter(
     (friend) => friend.username !== user.username
   )
@@ -378,6 +380,8 @@ const removeUserFromFriendList = (
       setusers(usersCopy)
       setopenModalProfile({})
     })
+
+  socket.emit('remove-friend-request', foundFriend[0]._id, loggedInUser)
 }
 
 const blockUserHandler = (
@@ -389,7 +393,8 @@ const blockUserHandler = (
   setusers,
   seterrorState,
   currentUser,
-  setopenModalProfile
+  setopenModalProfile,
+  socket
 ) => {
   event.stopPropagation()
   event.preventDefault()
@@ -398,7 +403,7 @@ const blockUserHandler = (
   const foundFriend = users.filter(
     (friend) => friend.username === user.username
   )
-
+  socket.emit('dm room', foundFriend[0]._id)
   loggedInUser.friends.blocked = [...loggedInUser.friends.blocked, user]
   const filteredAccepted = loggedInUser.friends.accepted.filter(
     (friend) => friend.username !== user.username
@@ -469,6 +474,8 @@ const blockUserHandler = (
       setusers(usersCopy)
       setopenModalProfile({})
     })
+
+  socket.emit('block-friend-request', foundFriend[0]._id, loggedInUser)
 }
 
 const declineFriendRequest = (
@@ -479,7 +486,8 @@ const declineFriendRequest = (
   users,
   setuser,
   setusers,
-  seterrorState
+  seterrorState,
+  socket
 ) => {
   event.stopPropagation()
   event.preventDefault()
@@ -494,6 +502,7 @@ const declineFriendRequest = (
     (friend) => friend.username === user.username
   )
 
+  socket.emit('dm room', foundFriend[0]._id)
   const filteredFriendPendingArr = foundFriend[0].friends.pending.filter(
     (userCopy) => userCopy.username !== loggedInUser.username
   )
@@ -550,6 +559,7 @@ const declineFriendRequest = (
       }
       setusers(usersCopy)
     })
+  socket.emit('decline-friend-request', foundFriend[0]._id, loggedInUser)
 }
 module.exports = {
   addFriendHandler,
