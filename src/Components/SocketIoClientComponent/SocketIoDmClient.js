@@ -142,5 +142,20 @@ export const SocketIoDmClient = (props) => {
       })
     })
   })
+
+  useEffect(() => {
+    socket.on('receive-remove-friend-request', (userId, friend) => {
+      props.setuser((prevState) => {
+        const userClone = { ...prevState }
+
+        const acceptedClone = userClone.friends.accepted.filter(
+          (frnd) => frnd._id !== friend._id
+        )
+        userClone.friends.accepted = acceptedClone
+
+        return { ...userClone }
+      })
+    })
+  })
   return <div></div>
 }
