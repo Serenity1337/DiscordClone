@@ -36,52 +36,12 @@
     }
     .createServerForm {
       text-align: left;
-      .serverNameLabel {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 12px;
-        line-height: 16px;
-        color: #6a7480;
-      }
-      .serverNameInput {
-        padding: 10px;
-        height: 40px;
-        box-sizing: border-box;
-        width: 100%;
-        border-radius: 3px;
-        color: #2e3338;
-        background-color: rgba(79, 84, 92, 0.02);
-        border: 1px solid rgba(79, 84, 92, 0.3);
-        -webkit-transition: border-color 0.2s ease-in-out;
-        transition: border-color 0.2s ease-in-out;
-      }
+      
       .btnContainer {
         display: flex;
         justify-content: space-between;
         margin: 40px 0px 30px 0px;
-        .serverCancelBtn {
-          background: none;
-          cursor: pointer;
-          border: none;
-        }
-        .serverSubmitBtn,
-        .serverSubmitBtnDisabled {
-          background-color: #7289da;
-          height: 38px;
-          transition: background-color 0.17s ease, color 0.17s ease;
-          color: #fff;
-          border-radius: 5px;
-          border: none;
-          padding: 0px 25px;
-          cursor: pointer;
-          outline: 0;
-        }
-        .serverSubmitBtnDisabled {
-          cursor: not-allowed;
-          opacity: 0.5;
-        }
+        
       }
     }
   }

@@ -22,50 +22,7 @@
       margin: 0px 0px 32px 0px;
     }
     form {
-      .inputContainer {
-        label {
-          color: #8e9297;
-          margin-bottom: 8px;
-          font-size: 12px;
-          line-height: 16px;
-          font-weight: 600;
-          text-transform: uppercase;
-          display: block;
-        }
-        input {
-          color: rgb(220, 221, 222);
-          margin-bottom: 8px;
-          padding: 10px;
-          height: 40px;
-          font-size: 16px;
-          box-sizing: border-box;
-          width: 100%;
-          border-radius: 3px;
-          background-color: rgba(0, 0, 0, 0.1);
-          border: 1px solid rgba(0, 0, 0, 0.3);
-          -webkit-transition: border-color 0.2s ease-in-out;
-          transition: border-color 0.2s ease-in-out;
-          outline: 0;
-        }
-      }
-    }
-    .submitBtn {
-      color: #fff;
-      width: 100%;
-      text-align: center;
-      background-color: #7289da;
-      font-size: 16px;
-      line-height: 24px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      border-radius: 3px;
-      margin: 10px 0px 0px 0px;
-    }
-    .submitBtn:hover {
-      background-color: #677bc4;
+      
     }
     .redirectToLogin {
       color: #7289da;

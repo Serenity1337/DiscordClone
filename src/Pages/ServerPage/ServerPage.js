@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { Redirect } from 'react-router'
 import { ChannelListSidebar } from '../../Components/ChannelListSideBar/ChannelListSidebar'
 import ServersSideBar from '../../Components/ServersSideBar'
 import { ServersContext } from '../../Contexts/ServersContext'
@@ -8,7 +7,6 @@ import { UsersContext } from '../../Contexts/UsersContext'
 import AddChannelModal from '../../Modals/AddChannelModal'
 import AddServerModal from '../../Modals/AddServerModal'
 import classes from './ServerPage.module.scss'
-import { getServers } from '../../utils/Api'
 import { io } from 'socket.io-client'
 export const ServerPage = (props) => {
   const socket = io('ws://localhost:8080', {

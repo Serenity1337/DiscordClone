@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import classes from './AddServerModal.module.scss'
 import catto from '../../utils/imgs/catto.png'
 import { v4 as uuidv4 } from 'uuid'
+import Input from '../../Components/Shared/Input'
+import Button from '../../Components/Shared/Button'
+import { postRequest } from '../../utils/Api'
 export const AddServerModal = (props) => {
   const [serverName, setserverName] = useState('')
   const toggleModalOff = () => {
@@ -28,16 +31,16 @@ export const AddServerModal = (props) => {
       ],
     }
     const serversCopy = [server, ...props.servers]
-    fetch('http://localhost:8000/discord/discord/createServer', {
-      method: 'POST',
-      body: JSON.stringify(server),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((header) => {
-      if (header.ok) {
+    const res = postRequest(
+      `http://localhost:8000/discord/discord/createServer`,
+      server
+    )
+    res.then((response) => {
+      if (!response.message) {
         props.setservers(serversCopy)
         props.setaddServerModalToggle(false)
+      } else {
+        // idk some kind of code for error handling??
       }
     })
   }
@@ -56,32 +59,32 @@ export const AddServerModal = (props) => {
           className={classes.createServerForm}
           onSubmit={serverSubmitHandler}
         >
-          <label htmlFor='serverName' className={classes.serverNameLabel}>
-            Server Name
-          </label>
-          <input
-            type='text'
-            name='serverName'
-            id='serverName'
-            className={classes.serverNameInput}
-            onChange={serverNameHandler}
+          <Input
+            containerClass='serverModalContainer'
+            label={{ for: 'serverName', text: 'Server Name' }}
+            input={{
+              type: 'text',
+              name: 'serverName',
+              id: 'serverName',
+              handler: serverNameHandler,
+            }}
           />
           <div className={classes.btnContainer}>
-            <button
+            <Button
+              styles={['serverCancelBtn']}
               type='button'
-              className={classes.serverCancelBtn}
-              onClick={toggleModalOff}
+              handler={toggleModalOff}
             >
               Cancel
-            </button>
+            </Button>
             {serverName.length > 0 ? (
-              <button className={classes.serverSubmitBtn} type='submit'>
+              <Button styles={['serverlSubmitBtn']} type='submit'>
                 Create
-              </button>
+              </Button>
             ) : (
-              <button className={classes.serverSubmitBtnDisabled} type='button'>
+              <Button styles={['serverSubmitBtnDisabled']} type='button'>
                 Create
-              </button>
+              </Button>
             )}
           </div>
         </form>

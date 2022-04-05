@@ -1,4 +1,6 @@
 .friendListSideContainer {
+  display: flex;
+  flex-direction: column;
   background-color: #2f3136;
   box-sizing: border-box;
   width: 240px;
@@ -178,6 +180,7 @@
     display: flex;
     box-sizing: border-box;
     justify-content: space-between;
+    margin-top: auto;
     .profileContainer {
       display: flex;
 

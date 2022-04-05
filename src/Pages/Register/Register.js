@@ -1,9 +1,12 @@
 import classes from './Register.module.scss'
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import Dates from '../../Components/Dates'
 import { Link, Redirect } from 'react-router-dom'
 import { discordTag } from '../../utils/Functions'
 import { UsersContext } from '../../Contexts/UsersContext'
+import Button from '../../Components/Shared/Button'
+import Input from '../../Components/Shared/Input'
+import { postRequest } from '../../utils/Api'
 
 export const Register = () => {
   const [profile, setprofile] = useState({ birthday: {} })
@@ -15,6 +18,49 @@ export const Register = () => {
     profileCopy[event.target.name] = event.target.value
     setprofile(profileCopy)
   }
+  const inputElements = [
+    {
+      containerClass: '',
+      label: { for: 'email', text: 'EMAIL' },
+      input: {
+        type: 'email',
+        name: 'email',
+        id: 'email',
+        handler: profileHandler,
+      },
+    },
+    {
+      containerClass: '',
+      label: { for: 'username', text: 'USERNAME' },
+      input: {
+        type: 'text',
+        name: 'username',
+        id: 'username',
+        handler: profileHandler,
+      },
+    },
+    {
+      containerClass: '',
+      label: { for: 'password', text: 'PASSWORD' },
+      input: {
+        type: 'password',
+        name: 'password',
+        id: 'password',
+        handler: profileHandler,
+      },
+    },
+    {
+      containerClass: '',
+      label: { for: 'rpassword', text: 'REPEAT PASSWORD' },
+      input: {
+        type: 'password',
+        name: 'rpassword',
+        id: 'rpassword',
+        handler: profileHandler,
+      },
+    },
+  ]
+
   const profileSubmitHandler = (event) => {
     event.preventDefault()
     if (
@@ -35,25 +81,21 @@ export const Register = () => {
         delete profileCopy.rpassword
         profileCopy.tag = discordTag()
         profileCopy.DMS = []
+        console.log(users)
         const usersCopy = [...users, profileCopy]
         seterror('')
-        fetch('http://localhost:8000/discord/discord/register', {
-          method: 'POST',
-          body: JSON.stringify(profileCopy),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-          .then((header) => {
-            return header.json()
-          })
-          .then((response) => {
-            if (response.error) {
-              seterror(response.msg)
-            }
+        const res = postRequest(
+          'http://localhost:8000/discord/discord/register',
+          profileCopy
+        )
+        res.then((res) => {
+          if (res.errmsg) {
+            seterror('Email is already taken, please choose a different one')
+          } else {
             setusers(usersCopy)
             setredirected(true)
-          })
+          }
+        })
       } else {
         seterror('Please make sure you repeat password correctly')
       }
@@ -64,46 +106,28 @@ export const Register = () => {
       <div className={classes.formContainer}>
         <h1 className={classes.formTitle}>Create an account</h1>
         <form action='' onSubmit={profileSubmitHandler}>
-          <div className={classes.inputContainer}>
-            <label htmlFor='email'>EMAIL</label>
-            <input
-              type='email'
-              name='email'
-              id='email'
-              onInput={profileHandler}
-            />
-          </div>
-          <div className={classes.inputContainer}>
-            <label htmlFor='username'>USERNAME</label>
-            <input
-              type='text'
-              name='username'
-              id='username'
-              onInput={profileHandler}
-            />
-          </div>
-          <div className={classes.inputContainer}>
-            <label htmlFor='password'>PASSWORD</label>
-            <input
-              type='password'
-              name='password'
-              id='password'
-              onInput={profileHandler}
-            />
-          </div>
-          <div className={classes.inputContainer}>
-            <label htmlFor='rpassword'>REPEAT PASSWORD</label>
-            <input
-              type='password'
-              name='rpassword'
-              id='rpassword'
-              onInput={profileHandler}
-            />
-          </div>
+          {inputElements.map((inputElement) => {
+            return (
+              <Input
+                containerClass={inputElement.containerClass}
+                label={{
+                  for: inputElement.label.for,
+                  text: inputElement.label.text,
+                }}
+                input={{
+                  type: inputElement.input.type,
+                  name: inputElement.input.name,
+                  id: inputElement.input.id,
+                  handler: inputElement.input.handler,
+                }}
+              />
+            )
+          })}
           <Dates profile={profile} setprofile={setprofile} />
-          <button type='submit' className={classes.submitBtn}>
+
+          <Button styles={['registerSubmitBtn']} type='submit'>
             Continue
-          </button>
+          </Button>
         </form>
 
         <Link to='/login' className={classes.redirectToLogin}>

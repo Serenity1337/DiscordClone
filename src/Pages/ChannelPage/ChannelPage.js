@@ -8,13 +8,7 @@ import { UsersContext } from '../../Contexts/UsersContext'
 import AddChannelModal from '../../Modals/AddChannelModal'
 import AddServerModal from '../../Modals/AddServerModal'
 import classes from './ChannelPage.module.scss'
-import { getServers } from '../../utils/Api'
-import { io } from 'socket.io-client'
 export const ChannelPage = (props) => {
-  const socket = io('ws://localhost:8080', {
-    transports: ['websocket'],
-    upgrade: false,
-  })
   const { user, setuser } = useContext(UserContext)
   const { users, setusers } = useContext(UsersContext)
   const { servers, setservers } = useContext(ServersContext)
@@ -24,8 +18,6 @@ export const ChannelPage = (props) => {
 
   useEffect(() => {
     setserver(props.server)
-    console.log(props.server)
-    console.log(server)
   }, [])
   return (
     <div className={classes.appContainer}>

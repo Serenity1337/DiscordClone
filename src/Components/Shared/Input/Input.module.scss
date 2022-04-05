@@ -1,0 +1,72 @@
+.inputContainer {
+  label {
+    color: #8e9297;
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: block;
+  }
+  input {
+    color: rgb(220, 221, 222);
+    margin-bottom: 8px;
+    padding: 10px;
+    height: 40px;
+    font-size: 16px;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    -webkit-transition: border-color 0.2s ease-in-out;
+    transition: border-color 0.2s ease-in-out;
+    outline: 0;
+  }
+}
+.channelModalContainer {
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 16px;
+    color: #fff;
+  }
+  input {
+    padding: 10px;
+    height: 40px;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 3px;
+    color: #fff;
+    background-color: rgba(79, 84, 92, 0.02);
+    border: 1px solid rgba(79, 84, 92, 0.3);
+    -webkit-transition: border-color 0.2s ease-in-out;
+    transition: border-color 0.2s ease-in-out;
+  }
+}
+.serverModalContainer {
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 16px;
+    color: #6a7480;
+  }
+  input {
+    padding: 10px;
+    height: 40px;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 3px;
+    color: #2e3338;
+    background-color: rgba(79, 84, 92, 0.02);
+    border: 1px solid rgba(79, 84, 92, 0.3);
+    -webkit-transition: border-color 0.2s ease-in-out;
+    transition: border-color 0.2s ease-in-out;
+  }
+}

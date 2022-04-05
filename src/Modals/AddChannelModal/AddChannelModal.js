@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import classes from './AddChannelModal.module.scss'
 import { v4 as uuidv4 } from 'uuid'
+import Input from '../../Components/Shared/Input'
+import Button from '../../Components/Shared/Button'
+import { postRequest } from '../../utils/Api'
 export const AddChannelModal = (props) => {
   const [channelName, setchannelName] = useState('')
   const toggleModalOff = () => {
@@ -22,19 +25,16 @@ export const AddChannelModal = (props) => {
     const serverCopy = props.server
     serverCopy.channels = [...serverCopy.channels, channel]
     serversCopy[props.serverIndex] = serverCopy
-    fetch(
+    const res = postRequest(
       `http://localhost:8000/discord/discord/updateServer/${serverCopy._id}`,
-      {
-        method: 'POST',
-        body: JSON.stringify(serverCopy),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    ).then((header) => {
-      if (header.ok) {
+      serverCopy
+    )
+    res.then((response) => {
+      if (!response.message) {
         props.setservers(serversCopy)
         props.setaddChannelModalToggle(false)
+      } else {
+        // idk some kind of code for error handling??
       }
     })
   }
@@ -47,35 +47,32 @@ export const AddChannelModal = (props) => {
           className={classes.createChannelForm}
           onSubmit={channelSubmitHandler}
         >
-          <label htmlFor='channelName' className={classes.channelNameLabel}>
-            Channel Name
-          </label>
-          <input
-            type='text'
-            name='channelName'
-            id='channelName'
-            className={classes.channelNameInput}
-            onChange={channelNameHandler}
+          <Input
+            containerClass='channelModalContainer'
+            label={{ for: 'channelName', text: 'Channel Name' }}
+            input={{
+              type: 'text',
+              name: 'channelName',
+              id: 'channelName',
+              handler: channelNameHandler,
+            }}
           />
           <div className={classes.btnContainer}>
-            <button
+            <Button
+              styles={['channelCancelBtn']}
               type='button'
-              className={classes.channelCancelBtn}
-              onClick={toggleModalOff}
+              handler={toggleModalOff}
             >
               Cancel
-            </button>
+            </Button>
             {channelName.length > 0 ? (
-              <button className={classes.channelSubmitBtn} type='submit'>
+              <Button styles={['channelSubmitBtn']} type='submit'>
                 Create
-              </button>
+              </Button>
             ) : (
-              <button
-                className={classes.channelSubmitBtnDisabled}
-                type='button'
-              >
+              <Button styles={['channelSubmitBtnDisabled']} type='button'>
                 Create
-              </button>
+              </Button>
             )}
           </div>
         </form>

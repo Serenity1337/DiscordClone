@@ -11,13 +11,9 @@ import DirectMessaging from './Pages/DirectMessaging'
 import { ChannelPage } from './Pages/ChannelPage/ChannelPage'
 import { ServerPage } from './Pages/ServerPage/ServerPage'
 import { getLoggedInUser, getUsers, getServers, loggedIn } from './utils/Api'
-import { io } from 'socket.io-client'
 import SocketIoDmClient from './Components/SocketIoClientComponent'
 import { SocketIoChannelClient } from './Components/SocketIoChannelsClient/SocketIoChannelClient'
 function App() {
-  const location = useLocation()
-
-  const socket = io('http://localhost:8080')
   const [user, setuser] = useState({})
   const [users, setusers] = useState([])
   const [servers, setservers] = useState([])
@@ -29,12 +25,14 @@ function App() {
   )
 
   useEffect(() => {
-    getLoggedInUser().then((response) => {
-      if (response) {
-        setuser(response)
-        // socket.emit('dm room', `${response._id}`)
-      }
-    })
+    if (getLoggedInUser()) {
+      getLoggedInUser().then((response) => {
+        if (response) {
+          setuser(response)
+        }
+      })
+    }
+
     getUsers().then((response) => {
       if (response) setusers(response)
     })
@@ -42,14 +40,6 @@ function App() {
       if (response) setservers(response)
     })
     loggedIn()
-
-    // const interval = setInterval(() => {
-    //   // getUser()
-    //   // getUsers()
-    //   // getServers()
-    //   loggedIn()
-    // }, 10000)
-    // return () => clearInterval(interval)
   }, [])
 
   return (

@@ -1,0 +1,62 @@
+.registerSubmitBtn, .loginSubmitBtn {
+  color: #fff;
+  width: 100%;
+  text-align: center;
+  background-color: #7289da;
+  font-size: 16px;
+  line-height: 24px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 3px;
+  margin: 10px 0px 0px 0px;
+}
+.registerSubmitBtn:hover, .loginSubmitBtn:hover {
+  background-color: #677bc4;
+}
+.channelCancelBtn {
+  background: none;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+}
+.channelSubmitBtn,
+.channelSubmitBtnDisabled {
+  background-color: #7289da;
+  height: 38px;
+  transition: background-color 0.17s ease, color 0.17s ease;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  padding: 0px 25px;
+  cursor: pointer;
+  outline: 0;
+}
+.channelSubmitBtnDisabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.serverCancelBtn {
+  background: none;
+  cursor: pointer;
+  border: none;
+}
+.serverSubmitBtn,
+.serverSubmitBtnDisabled {
+  background-color: #7289da;
+  height: 38px;
+  transition: background-color 0.17s ease, color 0.17s ease;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  padding: 0px 25px;
+  cursor: pointer;
+  outline: 0;
+}
+.serverSubmitBtnDisabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

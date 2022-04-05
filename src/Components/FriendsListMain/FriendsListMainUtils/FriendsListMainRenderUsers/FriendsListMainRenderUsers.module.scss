@@ -4,8 +4,8 @@
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
   height: -moz-available;
-  height: -webkit-fill-available;
-  height: fill-available;
+  height: -webkit-stretch;
+  height: stretch;
   padding: 0px 0px 15px 0px;
 
   a {

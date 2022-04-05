@@ -63,3 +63,37 @@ export const getServers = () => {
       return e
     })
 }
+
+export const getRequest = (link) => {
+  return fetch(`${link}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((header) => {
+      return header.json()
+    })
+    .then((response) => {
+      if (response) return response
+    })
+    .catch((e) => {
+      return e
+    })
+}
+
+export const postRequest = (link, payload) => {
+  return fetch(`${link}`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((header) => {
+      return header.json()
+    })
+    .catch((e) => {
+      return e
+    })
+}
