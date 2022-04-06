@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import FriendsListMain from '../../Components/FriendsListMain'
 import FriendsListSideBar from '../../Components/FriendsListSideBar'
 import ServersSideBar from '../../Components/ServersSideBar'
@@ -8,6 +9,10 @@ import { UsersContext } from '../../Contexts/UsersContext'
 import AddServerModal from '../../Modals/AddServerModal'
 import classes from './Channels.module.scss'
 import { io } from 'socket.io-client'
+import {
+  CreateServerAction,
+  FetchServersAction,
+} from '../../Redux/Action-creators/ServersActions'
 
 export const Channels = () => {
   const socket = io('http://localhost:8080')

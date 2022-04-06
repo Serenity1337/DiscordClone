@@ -1,5 +1,12 @@
 import './App.css'
 import React, { useEffect, useState, useMemo } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  FetchServersAction,
+  CreateServerAction,
+} from './Redux/Action-creators/ServersActions'
+import { FetchUserAction } from './Redux/Action-creators/UserActions'
+import { FetchUsersAction } from './Redux/Action-creators/UsersActions'
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom'
 import Register from './Pages/Register'
 import Login from './Pages/Login'
@@ -17,6 +24,8 @@ function App() {
   const [user, setuser] = useState({})
   const [users, setusers] = useState([])
   const [servers, setservers] = useState([])
+  const dispatch = useDispatch()
+  const state = useSelector((state) => state)
   const userValue = useMemo(() => ({ user, setuser }), [user, setuser])
   const usersValue = useMemo(() => ({ users, setusers }), [users, setusers])
   const ServersValue = useMemo(
@@ -25,6 +34,10 @@ function App() {
   )
 
   useEffect(() => {
+    dispatch(FetchServersAction())
+    dispatch(FetchUsersAction())
+    const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
+    if (userToken) dispatch(FetchUserAction(userToken.id))
     if (getLoggedInUser()) {
       getLoggedInUser().then((response) => {
         if (response) {
@@ -41,6 +54,7 @@ function App() {
     })
     loggedIn()
   }, [])
+  console.log(state, 'test')
 
   return (
     <div className='app'>

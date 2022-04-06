@@ -1,0 +1,3 @@
+export const CREATE_SERVER = 'CREATE_SERVER'
+export const UPDATE_SERVERS = 'UPDATE_SERVERS'
+export const FETCH_SERVERS = 'FETCH_SERVERS'

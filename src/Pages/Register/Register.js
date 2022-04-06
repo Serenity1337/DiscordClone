@@ -3,16 +3,20 @@ import React, { useState, useContext } from 'react'
 import Dates from '../../Components/Dates'
 import { Link, Redirect } from 'react-router-dom'
 import { discordTag } from '../../utils/Functions'
-import { UsersContext } from '../../Contexts/UsersContext'
+import { CreateUserAction } from '../../Redux/Action-creators/UsersActions'
 import Button from '../../Components/Shared/Button'
 import Input from '../../Components/Shared/Input'
 import { postRequest } from '../../utils/Api'
+import { useSelector, useDispatch } from 'react-redux'
 
 export const Register = () => {
+  const dispatch = useDispatch()
+  const users = useSelector((state) => state.users)
+
   const [profile, setprofile] = useState({ birthday: {} })
   const [error, seterror] = useState('')
   const [redirected, setredirected] = useState(false)
-  const { users, setusers } = useContext(UsersContext)
+
   const profileHandler = (event) => {
     let profileCopy = { ...profile }
     profileCopy[event.target.name] = event.target.value
@@ -81,7 +85,6 @@ export const Register = () => {
         delete profileCopy.rpassword
         profileCopy.tag = discordTag()
         profileCopy.DMS = []
-        console.log(users)
         const usersCopy = [...users, profileCopy]
         seterror('')
         const res = postRequest(
@@ -92,7 +95,9 @@ export const Register = () => {
           if (res.errmsg) {
             seterror('Email is already taken, please choose a different one')
           } else {
-            setusers(usersCopy)
+            // setusers(usersCopy)
+            dispatch(CreateUserAction(profileCopy))
+            console.log(users)
             setredirected(true)
           }
         })
