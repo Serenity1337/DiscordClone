@@ -1,6 +1,9 @@
 .DMMain {
+  max-height: 100vh;
   background-color: #36393f;
   width: 100%;
+  display: flex;
+  flex-direction: column;
   .DMMainHorizontalLine {
     width: 100%;
     height: 1.5px;

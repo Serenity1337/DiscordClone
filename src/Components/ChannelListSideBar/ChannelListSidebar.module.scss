@@ -1,4 +1,6 @@
 .ChannelListSideContainer {
+  display: flex;
+  flex-direction: column;
   background-color: #2f3136;
   box-sizing: border-box;
   width: 240px;
@@ -77,6 +79,7 @@
     }
   }
   .meUserContainer {
+    margin-top: auto;
     height: 52px;
     background-color: #282a2e;
     padding: 10px;

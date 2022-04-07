@@ -104,17 +104,17 @@ export const FriendsListMainRenderUsers = (props) => {
       }
 
       if (props.friendStatusState.blocked) {
-        return props.filteredFriendsArr.map((user, index) => (
+        return props.filteredFriendsArr.map((friend, index) => (
           <Link to={`${location.pathname}`}>
             <div className={classes.userContainer}>
               <div className={classes.userProfile}>
                 <div className={classes.friendListUserAvatar}>
                   <img src={catto} alt='' />
-                  {<FriendListMainRenderStatus user={user} />}
+                  {<FriendListMainRenderStatus user={friend} />}
                 </div>
                 <div className={classes.friendUsername}>
-                  {user.username}
-                  <div className={classes.blockedStatus}>{user.status}</div>
+                  {friend.username}
+                  <div className={classes.blockedStatus}>{friend.status}</div>
                 </div>
               </div>
               <div className={classes.btnContainer}>
@@ -123,7 +123,7 @@ export const FriendsListMainRenderUsers = (props) => {
                   onClick={(event) =>
                     unblockUserHandler(
                       event,
-                      user,
+                      friend,
                       index,
                       users,
                       dispatch,
@@ -152,24 +152,24 @@ export const FriendsListMainRenderUsers = (props) => {
         props.friendStatusState.pending &&
         props.filteredFriendsArr.length > 0
       ) {
-        return props.filteredFriendsArr.map((user, index) => (
+        return props.filteredFriendsArr.map((friend, index) => (
           <Link to={`${location.pathname}`}>
             <div className={classes.userContainer}>
               <div className={classes.userProfile}>
                 <div className={classes.friendListUserAvatar}>
                   <img src={catto} alt='' />
-                  {<FriendListMainRenderStatus user={user} />}
+                  {<FriendListMainRenderStatus user={friend} />}
                 </div>
-                <div className={classes.friendUsername}>{user.username} </div>
+                <div className={classes.friendUsername}>{friend.username} </div>
               </div>
-              {user.status === 'incoming friend request' ? (
+              {friend.status === 'incoming friend request' ? (
                 <div className={classes.btnContainer}>
                   <div
                     className={classes.msgButton}
                     onClick={(event) =>
                       acceptFriendRequest(
                         event,
-                        user,
+                        friend,
                         index,
                         users,
                         dispatch,
@@ -193,7 +193,7 @@ export const FriendsListMainRenderUsers = (props) => {
                     onClick={(event) =>
                       declineFriendRequest(
                         event,
-                        user,
+                        friend,
                         index,
                         user,
                         users,
@@ -220,7 +220,7 @@ export const FriendsListMainRenderUsers = (props) => {
                     onClick={(event) =>
                       declineFriendRequest(
                         event,
-                        user,
+                        friend,
                         index,
                         user,
                         users,

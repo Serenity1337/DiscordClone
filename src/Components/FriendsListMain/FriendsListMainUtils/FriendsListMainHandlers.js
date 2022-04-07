@@ -1,7 +1,7 @@
 import { postRequest } from '../../../utils/Api'
 import { UpdateUserAction } from '../../../Redux/Action-creators/UserActions'
 import { UpdateUsersAction } from '../../../Redux/Action-creators/UsersActions'
-const addFriendHandler = (
+export const addFriendHandler = (
   event,
   user,
   usernameState,
@@ -168,7 +168,7 @@ const addFriendHandler = (
   }
 }
 
-const acceptFriendRequest = (
+export const acceptFriendRequest = (
   event,
   user,
   index,
@@ -282,7 +282,7 @@ const acceptFriendRequest = (
   socket.emit('accept-friend-request', foundFriend[0]._id, loggedInUser)
 }
 
-const unblockUserHandler = (
+export const unblockUserHandler = (
   event,
   user,
   index,
@@ -341,7 +341,7 @@ const unblockUserHandler = (
   //   })
 }
 
-const removeUserFromFriendList = (
+export const removeUserFromFriendList = (
   event,
   currentUser,
   index,
@@ -457,7 +457,7 @@ const removeUserFromFriendList = (
   socket.emit('remove-friend-request', foundFriend[0]._id, loggedInUser)
 }
 
-const blockUserHandler = (
+export const blockUserHandler = (
   event,
   currentUser,
   index,
@@ -572,7 +572,7 @@ const blockUserHandler = (
   socket.emit('block-friend-request', foundFriend[0]._id, loggedInUser)
 }
 
-const declineFriendRequest = (
+export const declineFriendRequest = (
   event,
   user,
   index,
@@ -677,11 +677,11 @@ const declineFriendRequest = (
   //   })
   socket.emit('decline-friend-request', foundFriend[0]._id, loggedInUser)
 }
-module.exports = {
-  addFriendHandler,
-  acceptFriendRequest,
-  unblockUserHandler,
-  removeUserFromFriendList,
-  blockUserHandler,
-  declineFriendRequest,
-}
+// module.exports = {
+//   addFriendHandler,
+//   acceptFriendRequest,
+//   unblockUserHandler,
+//   removeUserFromFriendList,
+//   blockUserHandler,
+//   declineFriendRequest,
+// }
