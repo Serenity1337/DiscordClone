@@ -1,5 +1,5 @@
 import classes from './Register.module.scss'
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import Dates from '../../Components/Dates'
 import { Link, Redirect } from 'react-router-dom'
 import { discordTag } from '../../utils/Functions'
@@ -85,7 +85,7 @@ export const Register = () => {
         delete profileCopy.rpassword
         profileCopy.tag = discordTag()
         profileCopy.DMS = []
-        const usersCopy = [...users, profileCopy]
+
         seterror('')
         const res = postRequest(
           'http://localhost:8000/discord/discord/register',
@@ -95,7 +95,6 @@ export const Register = () => {
           if (res.errmsg) {
             seterror('Email is already taken, please choose a different one')
           } else {
-            // setusers(usersCopy)
             dispatch(CreateUserAction(profileCopy))
             console.log(users)
             setredirected(true)

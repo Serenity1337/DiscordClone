@@ -5,7 +5,11 @@ import { v4 as uuidv4 } from 'uuid'
 import Input from '../../Components/Shared/Input'
 import Button from '../../Components/Shared/Button'
 import { postRequest } from '../../utils/Api'
+import { useSelector, useDispatch } from 'react-redux'
+import { CreateServerAction } from '../../Redux/Action-creators/ServersActions'
 export const AddServerModal = (props) => {
+  const dispatch = useDispatch()
+  const reduxState = useSelector((state) => state)
   const [serverName, setserverName] = useState('')
   const toggleModalOff = () => {
     props.setaddServerModalToggle(false)
@@ -18,7 +22,7 @@ export const AddServerModal = (props) => {
     const server = {
       serverName: serverName,
       avatar: '../../utils/imgs/catto.png',
-      owner: `${props.user.username}`,
+      owner: `${reduxState.user.username}`,
       members: [],
       channels: [
         {
@@ -30,14 +34,13 @@ export const AddServerModal = (props) => {
         },
       ],
     }
-    const serversCopy = [server, ...props.servers]
     const res = postRequest(
       `http://localhost:8000/discord/discord/createServer`,
       server
     )
     res.then((response) => {
       if (!response.message) {
-        props.setservers(serversCopy)
+        dispatch(CreateServerAction(server))
         props.setaddServerModalToggle(false)
       } else {
         // idk some kind of code for error handling??

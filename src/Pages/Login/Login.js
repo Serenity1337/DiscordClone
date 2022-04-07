@@ -4,7 +4,10 @@ import { Link, Redirect } from 'react-router-dom'
 import Input from '../../Components/Shared/Input'
 import Button from '../../Components/Shared/Button'
 import { postRequest } from '../../utils/Api'
+import { UpdateUserAction } from '../../Redux/Action-creators/UserActions'
+import { useDispatch } from 'react-redux'
 export const Login = () => {
+  const dispatch = useDispatch()
   const [profile, setprofile] = useState({})
   const [error, seterror] = useState('')
   const [redirected, setredirected] = useState(false)
@@ -44,11 +47,12 @@ export const Login = () => {
       profileCopy
     )
     res.then((response) => {
-      if (response.token) {
+      if (response) {
         localStorage.setItem(
           'cordCopyToken',
           JSON.stringify({ id: response.id, token: response.token })
         )
+        dispatch(UpdateUserAction(response.id))
         setredirected(true)
       } else {
         seterror('Please make sure the credentials are correct')

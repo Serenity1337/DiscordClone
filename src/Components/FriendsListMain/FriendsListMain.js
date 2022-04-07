@@ -8,9 +8,11 @@ import { IoIosHelpCircleOutline } from 'react-icons/io'
 import NewDm from '../../utils/imgs/NewDm'
 
 import { FriendsListMainRenderUsers } from './FriendsListMainUtils/FriendsListMainRenderUsers/FriendsListMainRenderUsers'
+import { useSelector } from 'react-redux'
 
-export const FriendsListMain = (props) => {
+export const FriendsListMain = () => {
   // State to filter out online,all,pending or blocked users
+  const user = useSelector((state) => state.user)
   const [friendStatusState, setfriendStatusState] = useState({
     online: false,
     all: true,
@@ -24,28 +26,28 @@ export const FriendsListMain = (props) => {
   const [errorState, seterrorState] = useState('')
   // This useEffect filters online/blocked/all/pending users based on filter
   useEffect(() => {
-    if (props.user.username) {
+    if (user.username) {
       if (friendStatusState.online === true) {
-        let arrCopy = [...props.user.friends.accepted]
+        let arrCopy = [...user.friends.accepted]
         let filteredArr = arrCopy.filter(
           (user, index) => user.status !== 'offline'
         )
         setfilteredFriendsArr(filteredArr)
       }
       if (friendStatusState.all === true) {
-        let arrCopy = [...props.user.friends.accepted]
+        let arrCopy = [...user.friends.accepted]
         setfilteredFriendsArr(arrCopy)
       }
       if (friendStatusState.pending === true) {
-        let arrCopy = [...props.user.friends.pending]
+        let arrCopy = [...user.friends.pending]
         setfilteredFriendsArr(arrCopy)
       }
       if (friendStatusState.blocked === true) {
-        let arrCopy = [...props.user.friends.blocked]
+        let arrCopy = [...user.friends.blocked]
         setfilteredFriendsArr(arrCopy)
       }
     }
-  }, [friendStatusState, props.user])
+  }, [friendStatusState, user])
   useEffect(() => {
     if (openModalProfile[modalProfileIndex] === true) {
       document.addEventListener('click', closeModalProfileHandler)
@@ -165,10 +167,6 @@ export const FriendsListMain = (props) => {
 
       {renderHeading()}
       <FriendsListMainRenderUsers
-        user={props.user}
-        setuser={props.setuser}
-        users={props.users}
-        setusers={props.setusers}
         friendStatusState={friendStatusState}
         filteredFriendsArr={filteredFriendsArr}
         openModalProfile={openModalProfile}

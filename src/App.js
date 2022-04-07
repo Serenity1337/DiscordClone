@@ -75,7 +75,7 @@ function App() {
                 exact={true}
                 label='Login'
               />
-              {user.DMS ? (
+              {user.username ? (
                 <>
                   <Redirect from='*' to='/channels/@me' />
                   <Route

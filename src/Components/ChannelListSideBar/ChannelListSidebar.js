@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import classes from './ChannelListSidebar.module.scss'
 import { FaMicrophone, FaHeadphones } from 'react-icons/fa'
 import { MdExpandMore } from 'react-icons/md'
 import { BsGearFill } from 'react-icons/bs'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import catto from '../../utils/imgs/catto.png'
+import { useSelector } from 'react-redux'
 
 export const ChannelListSidebar = (props) => {
-  console.log(props.server)
+  const user = useSelector((state) => state.user)
 
   const toggleModalOn = () => {
     props.setaddChannelModalToggle(true)
@@ -73,13 +74,11 @@ export const ChannelListSidebar = (props) => {
               alt=''
               style={{ width: '32px', height: '32px', borderRadius: '50%' }}
             />
-            {renderStatus(props.user)}
+            {renderStatus(user)}
           </div>
           <div className={classes.userNameStatusContainer}>
-            {props.user.username}
-            <div style={{ fontSize: '12px', color: '#8e9297' }}>
-              {props.user.tag}
-            </div>
+            {user.username}
+            <div style={{ fontSize: '12px', color: '#8e9297' }}>{user.tag}</div>
           </div>
         </div>
         <div className={classes.settingsContainer}>

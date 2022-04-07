@@ -5,7 +5,10 @@ import { TiDeleteOutline } from 'react-icons/ti'
 import { FiEdit2 } from 'react-icons/fi'
 import { io } from 'socket.io-client'
 import { ChannelMainEditForm } from '../ChannelMainEditForm/ChannelMainEditForm'
+import { useSelector } from 'react-redux'
+import { postRequest } from '../../../../utils/Api'
 export const ChannelMainMessages = (props) => {
+  const user = useSelector((state) => state.user)
   const socket = io('ws://localhost:8080', {
     reconnection: true,
     reconnectionDelay: 1000,
@@ -44,29 +47,43 @@ export const ChannelMainMessages = (props) => {
     let serverClone = { ...props.server }
     serverClone.channels[props.channelIndex] = channelClone
 
-    fetch(
+    const serverResponse = postRequest(
       `http://localhost:8000/discord/discord/updateServer/${props.server._id}`,
-      {
-        method: 'POST',
-        body: JSON.stringify(serverClone),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+      serverClone
     )
-      .then((header) => {
-        return header.json()
+
+    if (serverResponse) {
+      props.setMessages((prevState) => {
+        const clonePrevState = prevState.filter(
+          (msgObj) => msgObj.id !== channelObj.id
+        )
+        return [...clonePrevState]
       })
-      .then((response) => {
-        if (response) {
-          props.setMessages((prevState) => {
-            const clonePrevState = prevState.filter(
-              (msgObj) => msgObj.id !== channelObj.id
-            )
-            return [...clonePrevState]
-          })
-        }
-      })
+    }
+
+    // fetch(
+    //   `http://localhost:8000/discord/discord/updateServer/${props.server._id}`,
+    //   {
+    //     method: 'POST',
+    //     body: JSON.stringify(serverClone),
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   }
+    // )
+    //   .then((header) => {
+    //     return header.json()
+    //   })
+    //   .then((response) => {
+    //     if (response) {
+    //       props.setMessages((prevState) => {
+    //         const clonePrevState = prevState.filter(
+    //           (msgObj) => msgObj.id !== channelObj.id
+    //         )
+    //         return [...clonePrevState]
+    //       })
+    //     }
+    //   })
 
     socket.emit(
       'delete-channel-message',
@@ -107,7 +124,6 @@ export const ChannelMainMessages = (props) => {
                       channelObj={channelObj}
                       editMsgBool={editMsgBool}
                       seteditMsgBool={seteditMsgBool}
-                      user={props.user}
                       messages={props.messages}
                       setMessages={props.setMessages}
                       channel={props.channel}
@@ -123,7 +139,7 @@ export const ChannelMainMessages = (props) => {
                   )}
                 </div>
               </div>
-              {channelObj.sender === props.user.username &&
+              {channelObj.sender === user.username &&
               !editMsgBool[channelObjIndex] ? (
                 <div className={classes.msgIcons}>
                   <FiEdit2

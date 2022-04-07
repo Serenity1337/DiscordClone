@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import classes from './ChannelMainEditForm.module.scss'
 import { io } from 'socket.io-client'
+import { postRequest } from '../../../../utils/Api'
 export const ChannelMainEditForm = (props) => {
   const socket = io('localhost:8080', {
     reconnection: true,
@@ -28,27 +29,39 @@ export const ChannelMainEditForm = (props) => {
     serverClone.channels[props.channelIndex] = channelClone
     event.target[0].value = ''
 
-    fetch(
+    const serverResponse = postRequest(
       `http://localhost:8000/discord/discord/updateServer/${props.server._id}`,
-      {
-        method: 'POST',
-        body: JSON.stringify(serverClone),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+      serverClone
     )
-      .then((header) => {
-        return header.json()
+
+    if (serverResponse) {
+      props.setMessages((prevState) => {
+        prevState[foundMsgIndex].msg = editMsg
+        return [...prevState]
       })
-      .then((response) => {
-        if (response) {
-          props.setMessages((prevState) => {
-            prevState[foundMsgIndex].msg = editMsg
-            return [...prevState]
-          })
-        }
-      })
+    }
+
+    // fetch(
+    //   `http://localhost:8000/discord/discord/updateServer/${props.server._id}`,
+    //   {
+    //     method: 'POST',
+    //     body: JSON.stringify(serverClone),
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   }
+    // )
+    //   .then((header) => {
+    //     return header.json()
+    //   })
+    //   .then((response) => {
+    //     if (response) {
+    //       props.setMessages((prevState) => {
+    //         prevState[foundMsgIndex].msg = editMsg
+    //         return [...prevState]
+    //       })
+    //     }
+    //   })
 
     props.seteditMsgBool({
       ...props.editMsgBool,

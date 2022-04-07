@@ -4,7 +4,11 @@ import {
   removeUserFromFriendList,
   blockUserHandler,
 } from '../FriendsListMainHandlers'
+import { useDispatch, useSelector } from 'react-redux'
 export const FriendsListMainRenderProfileModal = (props) => {
+  const dispatch = useDispatch()
+  const reduxState = useSelector((state) => state)
+  const { user, users } = reduxState
   return (
     <div
       className={classes.profileModalContainer}
@@ -25,11 +29,10 @@ export const FriendsListMainRenderProfileModal = (props) => {
         onClick={(event) =>
           removeUserFromFriendList(
             event,
-            props.user,
+            user,
             props.index,
-            props.users,
-            props.setuser,
-            props.setusers,
+            users,
+            dispatch,
             props.seterrorState,
             props.friend,
             props.setopenModalProfile,
@@ -44,11 +47,10 @@ export const FriendsListMainRenderProfileModal = (props) => {
         onClick={(event) =>
           blockUserHandler(
             event,
-            props.user,
+            user,
             props.index,
-            props.users,
-            props.setuser,
-            props.setusers,
+            users,
+            dispatch,
             props.seterrorState,
             props.friend,
             props.setopenModalProfile,

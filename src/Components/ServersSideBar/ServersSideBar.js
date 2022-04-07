@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import classes from './ServersSideBar.module.scss'
 import catto from '../../utils/imgs/catto.png'
 import { FaPlus } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 export const ServersSideBar = (props) => {
+  const servers = useSelector((state) => state.servers)
   const [displayState, setdisplayState] = useState({})
   const [positionState, setpositionState] = useState(0)
   const displayName = (event, server, index) => {
@@ -24,7 +26,7 @@ export const ServersSideBar = (props) => {
         <div className={classes.addBtnContainer} onClick={toggleModalOn}>
           <FaPlus className={classes.addBtn} />
         </div>
-        {props.servers.map((server, index) => (
+        {servers.map((server, index) => (
           <Link
             className={classes.server}
             onMouseOut={(event) => removeName(event, server, index)}

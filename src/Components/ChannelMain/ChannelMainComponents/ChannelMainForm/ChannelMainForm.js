@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import classes from './ChannelMainForm.module.scss'
 import { FiSmile } from 'react-icons/fi'
 import { AiOutlineGift, AiOutlineGif } from 'react-icons/ai'
 import dateFormat from 'dateformat'
 import { v4 as uuidv4 } from 'uuid'
 import { io } from 'socket.io-client'
+import { useSelector } from 'react-redux'
+import { postRequest } from '../../../../utils/Api'
 export const ChannelMainForm = (props) => {
+  const user = useSelector((state) => state.user)
   const [msg, setMsg] = useState('')
 
   const socket = io('http://localhost:8080')
@@ -23,7 +26,7 @@ export const ChannelMainForm = (props) => {
     let currDate = dateFormat(now, 'mm/dd/yyyy hh:MM TT')
     msgObject.sentDate = currDate
     msgObject.id = msgId
-    msgObject.sender = props.user.username
+    msgObject.sender = user.username
     msgObject.msg = msg
 
     let channelClone = { ...props.channel }
@@ -32,26 +35,37 @@ export const ChannelMainForm = (props) => {
     serverClone.channels[props.channelIndex] = channelClone
     event.target[0].value = ''
 
-    fetch(
+    const serverResponse = postRequest(
       `http://localhost:8000/discord/discord/updateServer/${props.server._id}`,
-      {
-        method: 'POST',
-        body: JSON.stringify(serverClone),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+      serverClone
     )
-      .then((header) => {
-        return header.json()
+
+    if (serverResponse) {
+      props.setMessages((prevState) => {
+        return [...prevState, msgObject]
       })
-      .then((response) => {
-        if (response) {
-          props.setMessages((prevState) => {
-            return [...prevState, msgObject]
-          })
-        }
-      })
+    }
+
+    // fetch(
+    //   `http://localhost:8000/discord/discord/updateServer/${props.server._id}`,
+    //   {
+    //     method: 'POST',
+    //     body: JSON.stringify(serverClone),
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   }
+    // )
+    //   .then((header) => {
+    //     return header.json()
+    //   })
+    //   .then((response) => {
+    //     if (response) {
+    //       props.setMessages((prevState) => {
+    //         return [...prevState, msgObject]
+    //       })
+    //     }
+    //   })
 
     socket.emit(
       'send-channel-message',

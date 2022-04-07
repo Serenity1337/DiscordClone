@@ -21,52 +21,28 @@ export const ChannelPage = (props) => {
   }, [])
   return (
     <div className={classes.appContainer}>
-      <ServersSideBar
-        user={user}
-        users={users}
-        servers={servers}
-        setuser={setuser}
-        setusers={setusers}
-        setservers={setservers}
-        setaddServerModalToggle={setaddServerModalToggle}
-      />
+      <ServersSideBar setaddServerModalToggle={setaddServerModalToggle} />
       <ChannelListSidebar
         server={props.server}
         serverIndex={props.serverIndex}
-        user={user}
         setaddChannelModalToggle={setaddChannelModalToggle}
       />
       {addServerModalToggle ? (
-        <AddServerModal
-          setaddServerModalToggle={setaddServerModalToggle}
-          servers={servers}
-          setservers={setservers}
-          user={user}
-        />
+        <AddServerModal setaddServerModalToggle={setaddServerModalToggle} />
       ) : null}
       {addChannelModalToggle ? (
         <AddChannelModal
           setaddChannelModalToggle={setaddChannelModalToggle}
-          servers={servers}
-          setservers={setservers}
-          user={user}
-          setuser={setuser}
           server={server}
           serverIndex={props.serverIndex}
         />
       ) : null}
       <ChannelMain
-        user={user}
-        setuser={setuser}
-        users={users}
         server={props.server}
         setserver={setserver}
         channel={props.channel}
-        servers={servers}
         serverIndex={props.serverIndex}
-        setusers={setusers}
         channelIndex={props.channelIndex}
-        setservers={setservers}
       />
     </div>
   )

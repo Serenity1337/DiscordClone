@@ -4,7 +4,11 @@ import { v4 as uuidv4 } from 'uuid'
 import Input from '../../Components/Shared/Input'
 import Button from '../../Components/Shared/Button'
 import { postRequest } from '../../utils/Api'
+import { useSelector, useDispatch } from 'react-redux'
+import { CreateServerAction } from '../../Redux/Action-creators/ServersActions'
 export const AddChannelModal = (props) => {
+  const dispatch = useDispatch()
+  const reduxState = useSelector((state) => state)
   const [channelName, setchannelName] = useState('')
   const toggleModalOff = () => {
     props.setaddChannelModalToggle(false)
@@ -21,7 +25,7 @@ export const AddChannelModal = (props) => {
       nsfw: false,
       _id: uuidv4(),
     }
-    const serversCopy = [...props.servers]
+    const serversCopy = [...reduxState.servers]
     const serverCopy = props.server
     serverCopy.channels = [...serverCopy.channels, channel]
     serversCopy[props.serverIndex] = serverCopy
@@ -31,7 +35,7 @@ export const AddChannelModal = (props) => {
     )
     res.then((response) => {
       if (!response.message) {
-        props.setservers(serversCopy)
+        dispatch(CreateServerAction(serverCopy))
         props.setaddChannelModalToggle(false)
       } else {
         // idk some kind of code for error handling??

@@ -5,8 +5,10 @@ import { BsGearFill } from 'react-icons/bs'
 import Nitro from '../../utils/imgs/Nitro.js'
 import { Link, Redirect, useLocation } from 'react-router-dom'
 import catto from '../../utils/imgs/catto.png'
+import { useSelector } from 'react-redux'
 
-export const FriendsListSideBar = (props) => {
+export const FriendsListSideBar = () => {
+  const user = useSelector((state) => state.user)
   const location = useLocation()
   const [statusMessageState, setstatusMessageState] = useState({})
   const [positionState, setpositionState] = useState(0)
@@ -24,8 +26,7 @@ export const FriendsListSideBar = (props) => {
   }
 
   const redirectToADM = (user, index) => {
-    const loggedInUser = props.user
-    console.log(loggedInUser)
+    const loggedInUser = user
     for (let index = 0; index < loggedInUser.DMS.length; index++) {
       let directMessage = loggedInUser.DMS[index]
       for (
@@ -77,8 +78,8 @@ export const FriendsListSideBar = (props) => {
 
   // renders the user's friendlist
   const renderUsers = () => {
-    if (props.user.username) {
-      return props.user.friends.accepted.map((user, index) => (
+    if (user.username) {
+      return user.friends.accepted.map((user, index) => (
         <div
           className={classes.userContainerContainer}
           onClick={() => redirectToADM(user, index)}
@@ -159,13 +160,11 @@ export const FriendsListSideBar = (props) => {
               alt=''
               style={{ width: '32px', height: '32px', borderRadius: '50%' }}
             />
-            {renderStatus(props.user)}
+            {renderStatus(user)}
           </div>
           <div className={classes.userNameStatusContainer}>
-            {props.user.username}
-            <div style={{ fontSize: '12px', color: '#8e9297' }}>
-              {props.user.tag}
-            </div>
+            {user.username}
+            <div style={{ fontSize: '12px', color: '#8e9297' }}>{user.tag}</div>
           </div>
         </div>
         <div className={classes.settingsContainer}>

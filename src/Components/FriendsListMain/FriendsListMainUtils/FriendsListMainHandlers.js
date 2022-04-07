@@ -1,11 +1,13 @@
+import { postRequest } from '../../../utils/Api'
+import { UpdateUserAction } from '../../../Redux/Action-creators/UserActions'
+import { UpdateUsersAction } from '../../../Redux/Action-creators/UsersActions'
 const addFriendHandler = (
   event,
   user,
   usernameState,
   users,
   seterrorState,
-  setusers,
-  setuser,
+  dispatch,
   uuidv4,
   socket
 ) => {
@@ -90,45 +92,65 @@ const addFriendHandler = (
             loggedInUser.DMS = [...loggedInUser.DMS, DMObj]
             foundUserCopyCopy.DMS = [...foundUserCopyCopy.DMS, DMObj]
           }
-          fetch(
+          const loggedInUserResponse = postRequest(
             `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
-            {
-              method: 'POST',
-              body: JSON.stringify(loggedInUser),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            }
+            loggedInUser
           )
-            .then((header) => {
-              return header.json()
-            })
-            .then((response) => {
-              if (response.error) {
-                seterrorState(response.msg)
-              }
-              setuser(loggedInUser)
-            })
+          if (loggedInUserResponse.error) {
+            seterrorState(loggedInUserResponse.msg)
+          } else {
+            dispatch(UpdateUserAction(loggedInUser))
+          }
+          // fetch(
+          //   `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
+          //   {
+          //     method: 'POST',
+          //     body: JSON.stringify(loggedInUser),
+          //     headers: {
+          //       'Content-Type': 'application/json',
+          //     },
+          //   }
+          // )
+          //   .then((header) => {
+          //     return header.json()
+          //   })
+          //   .then((response) => {
+          //     if (response.error) {
+          //       seterrorState(response.msg)
+          //     }
+          //     setuser(loggedInUser)
+          //   })
 
-          fetch(
+          const loggedInFriendResponse = postRequest(
             `http://localhost:8000/discord/discord/updateUser/${foundUserCopyCopy._id}`,
-            {
-              method: 'POST',
-              body: JSON.stringify(foundUserCopyCopy),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            }
+            foundUserCopyCopy
           )
-            .then((header) => {
-              return header.json()
-            })
-            .then((response) => {
-              if (response.error) {
-                seterrorState(response.msg)
-              }
-              setusers(usersCopy)
-            })
+          if (loggedInFriendResponse.error) {
+            seterrorState(loggedInFriendResponse.msg)
+          } else {
+            // setuser(foundUserCopyCopy)
+            dispatch(UpdateUsersAction(usersCopy))
+          }
+
+          // fetch(
+          //   `http://localhost:8000/discord/discord/updateUser/${foundUserCopyCopy._id}`,
+          //   {
+          //     method: 'POST',
+          //     body: JSON.stringify(foundUserCopyCopy),
+          //     headers: {
+          //       'Content-Type': 'application/json',
+          //     },
+          //   }
+          // )
+          //   .then((header) => {
+          //     return header.json()
+          //   })
+          //   .then((response) => {
+          //     if (response.error) {
+          //       seterrorState(response.msg)
+          //     }
+          //     setusers(usersCopy)
+          //   })
           socket.emit('add-friend-request', foundUser[0]._id, loggedInUser)
         } else {
           seterrorState('You have already blocked this user.')
@@ -151,8 +173,7 @@ const acceptFriendRequest = (
   user,
   index,
   users,
-  setuser,
-  setusers,
+  dispatch,
   seterrorState,
   currentUser,
   socket
@@ -199,45 +220,65 @@ const acceptFriendRequest = (
   usersCopy[loggedInUserIndex] = loggedInUser
   usersCopy[index] = foundFriend[0]
 
-  fetch(
+  const loggedInUserResponse = postRequest(
     `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
-    {
-      method: 'POST',
-      body: JSON.stringify(loggedInUser),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
+    loggedInUser
   )
-    .then((header) => {
-      return header.json()
-    })
-    .then((response) => {
-      if (response.error) {
-        seterrorState(response.msg)
-      }
-      setuser(loggedInUser)
-    })
 
-  fetch(
+  if (loggedInUserResponse.error) {
+    seterrorState(loggedInUserResponse.msg)
+  } else {
+    dispatch(UpdateUserAction(loggedInUser))
+  }
+  // fetch(
+  //   `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
+  //   {
+  //     method: 'POST',
+  //     body: JSON.stringify(loggedInUser),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }
+  // )
+  //   .then((header) => {
+  //     return header.json()
+  //   })
+  //   .then((response) => {
+  //     if (response.error) {
+  //       seterrorState(response.msg)
+  //     }
+  //     setuser(loggedInUser)
+  //   })
+
+  const loggedInUserFriendResponse = postRequest(
     `http://localhost:8000/discord/discord/updateUser/${foundFriend[0]._id}`,
-    {
-      method: 'POST',
-      body: JSON.stringify(foundFriend[0]),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
+    foundFriend[0]
   )
-    .then((header) => {
-      return header.json()
-    })
-    .then((response) => {
-      if (response.error) {
-        seterrorState(response.msg)
-      }
-      setusers(usersCopy)
-    })
+
+  if (loggedInUserFriendResponse.error) {
+    seterrorState(loggedInUserFriendResponse.msg)
+  } else {
+    dispatch(UpdateUsersAction(usersCopy))
+  }
+  // fetch(
+  //   `http://localhost:8000/discord/discord/updateUser/${foundFriend[0]._id}`,
+  //   {
+  //     method: 'POST',
+  //     body: JSON.stringify(foundFriend[0]),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }
+  // )
+  //   .then((header) => {
+  //     return header.json()
+  //   })
+  //   .then((response) => {
+  //     if (response.error) {
+  //       seterrorState(response.msg)
+  //     }
+  //     setusers(usersCopy)
+  //   })
   socket.emit('accept-friend-request', foundFriend[0]._id, loggedInUser)
 }
 
@@ -246,7 +287,7 @@ const unblockUserHandler = (
   user,
   index,
   users,
-  setuser,
+  dispatch,
   seterrorState,
   currentUser
 ) => {
@@ -269,25 +310,35 @@ const unblockUserHandler = (
   const usersCopy = [...users]
   usersCopy[loggedInUserIndex] = loggedInUser
 
-  fetch(
+  const loggedInUserResponse = postRequest(
     `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
-    {
-      method: 'POST',
-      body: JSON.stringify(loggedInUser),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
+    loggedInUser
   )
-    .then((header) => {
-      return header.json()
-    })
-    .then((response) => {
-      if (response.error) {
-        seterrorState(response.msg)
-      }
-      setuser(loggedInUser)
-    })
+
+  if (loggedInUserResponse.error) {
+    seterrorState(loggedInUserResponse.msg)
+  } else {
+    dispatch(UpdateUserAction(loggedInUser))
+  }
+  // fetch(
+  //   `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
+  //   {
+  //     method: 'POST',
+  //     body: JSON.stringify(loggedInUser),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }
+  // )
+  //   .then((header) => {
+  //     return header.json()
+  //   })
+  //   .then((response) => {
+  //     if (response.error) {
+  //       seterrorState(response.msg)
+  //     }
+  //     setuser(loggedInUser)
+  //   })
 }
 
 const removeUserFromFriendList = (
@@ -295,8 +346,7 @@ const removeUserFromFriendList = (
   currentUser,
   index,
   users,
-  setuser,
-  setusers,
+  dispatch,
   seterrorState,
   user,
   setopenModalProfile,
@@ -340,46 +390,69 @@ const removeUserFromFriendList = (
   usersCopy[loggedInUserIndex] = loggedInUser
   usersCopy[index] = foundFriend[0]
 
-  fetch(
+  const loggedInUserResponse = postRequest(
     `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
-    {
-      method: 'POST',
-      body: JSON.stringify(loggedInUser),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
+    loggedInUser
   )
-    .then((header) => {
-      return header.json()
-    })
-    .then((response) => {
-      if (response.error) {
-        seterrorState(response.msg)
-      }
-      setuser(loggedInUser)
-    })
 
-  fetch(
+  if (loggedInUserResponse.error) {
+    seterrorState(loggedInUserResponse.msg)
+  } else {
+    dispatch(UpdateUserAction(loggedInUser))
+  }
+
+  // fetch(
+  //   `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
+  //   {
+  //     method: 'POST',
+  //     body: JSON.stringify(loggedInUser),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }
+  // )
+  //   .then((header) => {
+  //     return header.json()
+  //   })
+  //   .then((response) => {
+  //     if (response.error) {
+  //       seterrorState(response.msg)
+  //     }
+  //     setuser(loggedInUser)
+  //   })
+
+  const loggedInUserFriendResponse = postRequest(
     `http://localhost:8000/discord/discord/updateUser/${foundFriend[0]._id}`,
-    {
-      method: 'POST',
-      body: JSON.stringify(foundFriend[0]),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
+    foundFriend[0]
   )
-    .then((header) => {
-      return header.json()
-    })
-    .then((response) => {
-      if (response.error) {
-        seterrorState(response.msg)
-      }
-      setusers(usersCopy)
-      setopenModalProfile({})
-    })
+
+  if (loggedInUserFriendResponse.error) {
+    seterrorState(loggedInUserFriendResponse.msg)
+  } else {
+    dispatch(UpdateUsersAction(usersCopy))
+  }
+  setopenModalProfile({})
+
+  // fetch(
+  //   `http://localhost:8000/discord/discord/updateUser/${foundFriend[0]._id}`,
+  //   {
+  //     method: 'POST',
+  //     body: JSON.stringify(foundFriend[0]),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }
+  // )
+  //   .then((header) => {
+  //     return header.json()
+  //   })
+  //   .then((response) => {
+  //     if (response.error) {
+  //       seterrorState(response.msg)
+  //     }
+  //     setusers(usersCopy)
+  //     setopenModalProfile({})
+  //   })
 
   socket.emit('remove-friend-request', foundFriend[0]._id, loggedInUser)
 }
@@ -389,8 +462,7 @@ const blockUserHandler = (
   currentUser,
   index,
   users,
-  setuser,
-  setusers,
+  dispatch,
   seterrorState,
   user,
   setopenModalProfile,
@@ -434,46 +506,68 @@ const blockUserHandler = (
   usersCopy[loggedInUserIndex] = loggedInUser
   usersCopy[index] = foundFriend[0]
 
-  fetch(
+  const loggedInUserResponse = postRequest(
     `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
-    {
-      method: 'POST',
-      body: JSON.stringify(loggedInUser),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
+    loggedInUser
   )
-    .then((header) => {
-      return header.json()
-    })
-    .then((response) => {
-      if (response.error) {
-        seterrorState(response.msg)
-      }
-      setuser(loggedInUser)
-    })
 
-  fetch(
+  if (loggedInUserResponse.error) {
+    seterrorState(loggedInUserResponse.msg)
+  } else {
+    dispatch(UpdateUserAction(loggedInUser))
+  }
+
+  const loggedInUserFriendResponse = postRequest(
     `http://localhost:8000/discord/discord/updateUser/${foundFriend[0]._id}`,
-    {
-      method: 'POST',
-      body: JSON.stringify(foundFriend[0]),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
+    foundFriend[0]
   )
-    .then((header) => {
-      return header.json()
-    })
-    .then((response) => {
-      if (response.error) {
-        seterrorState(response.msg)
-      }
-      setusers(usersCopy)
-      setopenModalProfile({})
-    })
+
+  if (loggedInUserFriendResponse.error) {
+    seterrorState(loggedInUserFriendResponse.msg)
+  } else {
+    dispatch(UpdateUsersAction(usersCopy))
+  }
+  setopenModalProfile({})
+  // fetch(
+  //   `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
+  //   {
+  //     method: 'POST',
+  //     body: JSON.stringify(loggedInUser),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }
+  // )
+  //   .then((header) => {
+  //     return header.json()
+  //   })
+  //   .then((response) => {
+  //     if (response.error) {
+  //       seterrorState(response.msg)
+  //     }
+  //     setuser(loggedInUser)
+  //   })
+
+  // fetch(
+  //   `http://localhost:8000/discord/discord/updateUser/${foundFriend[0]._id}`,
+  //   {
+  //     method: 'POST',
+  //     body: JSON.stringify(foundFriend[0]),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }
+  // )
+  //   .then((header) => {
+  //     return header.json()
+  //   })
+  //   .then((response) => {
+  //     if (response.error) {
+  //       seterrorState(response.msg)
+  //     }
+  //     setusers(usersCopy)
+  //     setopenModalProfile({})
+  //   })
 
   socket.emit('block-friend-request', foundFriend[0]._id, loggedInUser)
 }
@@ -484,8 +578,7 @@ const declineFriendRequest = (
   index,
   currentUser,
   users,
-  setuser,
-  setusers,
+  dispatch,
   seterrorState,
   socket
 ) => {
@@ -520,45 +613,68 @@ const declineFriendRequest = (
   const usersCopy = [...users]
   usersCopy[loggedInUserIndex] = loggedInUser
   usersCopy[friendIndex] = foundFriend[0]
-  fetch(
-    `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
-    {
-      method: 'POST',
-      body: JSON.stringify(loggedInUser),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  )
-    .then((header) => {
-      return header.json()
-    })
-    .then((response) => {
-      if (response.error) {
-        seterrorState(response.msg)
-      }
-      setuser(loggedInUser)
-    })
 
-  fetch(
-    `http://localhost:8000/discord/discord/updateUser/${foundFriend[0]._id}`,
-    {
-      method: 'POST',
-      body: JSON.stringify(foundFriend[0]),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
+  const loggedInUserResponse = postRequest(
+    `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
+    loggedInUser
   )
-    .then((header) => {
-      return header.json()
-    })
-    .then((response) => {
-      if (response.error) {
-        seterrorState(response.msg)
-      }
-      setusers(usersCopy)
-    })
+
+  if (loggedInUserResponse.error) {
+    seterrorState(loggedInUserResponse.msg)
+  } else {
+    dispatch(UpdateUserAction(loggedInUser))
+  }
+
+  const loggedInUserFriendResponse = postRequest(
+    `http://localhost:8000/discord/discord/updateUser/${foundFriend[0]._id}`,
+    foundFriend[0]
+  )
+
+  if (loggedInUserFriendResponse.error) {
+    seterrorState(loggedInUserFriendResponse.msg)
+  } else {
+    dispatch(UpdateUsersAction(usersCopy))
+  }
+
+  // fetch(
+  //   `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
+  //   {
+  //     method: 'POST',
+  //     body: JSON.stringify(loggedInUser),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }
+  // )
+  //   .then((header) => {
+  //     return header.json()
+  //   })
+  //   .then((response) => {
+  //     if (response.error) {
+  //       seterrorState(response.msg)
+  //     }
+  //     setuser(loggedInUser)
+  //   })
+
+  // fetch(
+  //   `http://localhost:8000/discord/discord/updateUser/${foundFriend[0]._id}`,
+  //   {
+  //     method: 'POST',
+  //     body: JSON.stringify(foundFriend[0]),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }
+  // )
+  //   .then((header) => {
+  //     return header.json()
+  //   })
+  //   .then((response) => {
+  //     if (response.error) {
+  //       seterrorState(response.msg)
+  //     }
+  //     setusers(usersCopy)
+  //   })
   socket.emit('decline-friend-request', foundFriend[0]._id, loggedInUser)
 }
 module.exports = {

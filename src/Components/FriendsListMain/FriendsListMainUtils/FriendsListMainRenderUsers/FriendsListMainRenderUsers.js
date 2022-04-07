@@ -17,7 +17,11 @@ import {
 import { FriendsListMainRenderProfileModal } from '../FriendsListMainRenderProfileModal/FriendsListMainRenderProfileModal'
 import { FriendListMainRenderStatus } from '../FriendListMainRenderStatus/FriendListMainRenderStatus'
 import { io } from 'socket.io-client'
+import { useDispatch, useSelector } from 'react-redux'
 export const FriendsListMainRenderUsers = (props) => {
+  const dispatch = useDispatch()
+  const reduxState = useSelector((state) => state)
+  const { user, users } = reduxState
   const socket = io('ws://localhost:8080')
   let location = useLocation()
 
@@ -43,26 +47,22 @@ export const FriendsListMainRenderUsers = (props) => {
   }
 
   const renderUsers = () => {
-    if (props.user.username && props.filteredFriendsArr) {
+    if (user.username && props.filteredFriendsArr) {
       // renders all friends regardless of the status
       if (props.friendStatusState.all || props.friendStatusState.online) {
-        return props.filteredFriendsArr.map((user, index) => (
+        return props.filteredFriendsArr.map((friend, index) => (
           <Link to={`${location.pathname}`}>
             <div
               className={classes.userContainer}
               onContextMenu={(event) =>
-                openModalProfileHandler(event, user, index)
+                openModalProfileHandler(event, friend, index)
               }
             >
               {props.openModalProfile && props.openModalProfile[index] ? (
                 <FriendsListMainRenderProfileModal
                   mouseCoordY={mouseCoordY}
                   mouseCoordX={mouseCoordX}
-                  friend={user}
-                  user={props.user}
-                  users={props.users}
-                  setuser={props.setuser}
-                  setusers={props.setusers}
+                  friend={friend}
                   index={index}
                   seterrorState={props.seterrorState}
                   setopenModalProfile={props.setopenModalProfile}
@@ -72,9 +72,9 @@ export const FriendsListMainRenderUsers = (props) => {
               <div className={classes.userProfile}>
                 <div className={classes.friendListUserAvatar}>
                   <img src={catto} alt='' />
-                  {<FriendListMainRenderStatus user={user} />}
+                  {<FriendListMainRenderStatus user={friend} />}
                 </div>
-                <div className={classes.friendUsername}>{user.username} </div>
+                <div className={classes.friendUsername}>{friend.username} </div>
               </div>
               <div className={classes.btnContainer}>
                 <div className={classes.msgButton}>
@@ -125,10 +125,10 @@ export const FriendsListMainRenderUsers = (props) => {
                       event,
                       user,
                       index,
-                      props.users,
-                      props.setuser,
+                      users,
+                      dispatch,
                       props.seterrorState,
-                      props.user
+                      user
                     )
                   }
                 >
@@ -171,11 +171,10 @@ export const FriendsListMainRenderUsers = (props) => {
                         event,
                         user,
                         index,
-                        props.users,
-                        props.setuser,
-                        props.setusers,
+                        users,
+                        dispatch,
                         props.seterrorState,
-                        props.user,
+                        user,
                         socket
                       )
                     }
@@ -196,10 +195,9 @@ export const FriendsListMainRenderUsers = (props) => {
                         event,
                         user,
                         index,
-                        props.user,
-                        props.users,
-                        props.setuser,
-                        props.setusers,
+                        user,
+                        users,
+                        dispatch,
                         props.seterrorState,
                         socket
                       )
@@ -224,10 +222,9 @@ export const FriendsListMainRenderUsers = (props) => {
                         event,
                         user,
                         index,
-                        props.user,
-                        props.users,
-                        props.setuser,
-                        props.setusers,
+                        user,
+                        users,
+                        dispatch,
                         props.seterrorState,
                         socket
                       )
@@ -269,12 +266,11 @@ export const FriendsListMainRenderUsers = (props) => {
               onSubmit={(event) =>
                 addFriendHandler(
                   event,
-                  props.user,
+                  user,
                   usernameState,
-                  props.users,
+                  users,
                   props.seterrorState,
-                  props.setusers,
-                  props.setuser,
+                  dispatch,
                   uuidv4,
                   socket
                 )

@@ -4,8 +4,9 @@ import { io } from 'socket.io-client'
 import { ChannelMainNav } from './ChannelMainComponents/ChannelMainNav/ChannelMainNav'
 import { ChannelMainMessages } from './ChannelMainComponents/ChannelMainMessages/ChannelMainMessages'
 import { ChannelMainForm } from './ChannelMainComponents/ChannelMainForm/ChannelMainForm'
-
+import { useSelector } from 'react-redux'
 export const ChannelMain = (props) => {
+  const user = useSelector((state) => state.user)
   const socket = io('ws://localhost:8080', {
     transports: ['websocket'],
     upgrade: false,
@@ -21,7 +22,7 @@ export const ChannelMain = (props) => {
     console.log('asd')
     if (channelId === props.channel._id) {
       setMessages((prevState) => {
-        if (props.user.username !== message.sender) {
+        if (user.username !== message.sender) {
           return [...prevState, message]
         } else {
           return [...prevState]
@@ -36,7 +37,7 @@ export const ChannelMain = (props) => {
       (channelId, editMsg, msgIndex) => {
         if (channelId === props.channel._id) {
           setMessages((prevState) => {
-            if (prevState[msgIndex].sender !== props.user.username) {
+            if (prevState[msgIndex].sender !== user.username) {
               prevState[msgIndex].msg = editMsg
               return [...prevState]
             } else {
@@ -78,10 +79,8 @@ export const ChannelMain = (props) => {
         channel={props.channel}
         server={props.server}
         channelIndex={props.channelIndex}
-        user={props.user}
       />
       <ChannelMainForm
-        user={props.user}
         setMessages={setMessages}
         server={props.server}
         channel={props.channel}
