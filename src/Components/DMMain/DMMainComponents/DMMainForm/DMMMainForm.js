@@ -52,24 +52,6 @@ export const DMMMainForm = (props) => {
     event.target[0].value = ''
 
     fetch(
-      `http://localhost:8000/discord/discord/updateUser/${props.friend._id}`,
-      {
-        method: 'POST',
-        body: JSON.stringify(props.friend),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response) {
-        }
-      })
-
-    fetch(
       `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
       {
         method: 'POST',
@@ -94,6 +76,7 @@ export const DMMMainForm = (props) => {
     console.log(props.chatBoxContainer)
 
     socket.emit('send-message', props.friend._id, props.dm._id, msgObject)
+    console.log(loggedInUser, 'important')
   }
 
   return (

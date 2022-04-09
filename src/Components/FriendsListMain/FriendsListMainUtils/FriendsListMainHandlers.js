@@ -185,6 +185,9 @@ export const acceptFriendRequest = (
   const foundFriend = users.filter(
     (friend) => friend.username === user.username
   )
+  console.log(users)
+  console.log(user)
+  console.log(foundFriend)
   socket.emit('dm room', foundFriend[0]._id)
   user.status = foundFriend[0].status
   loggedInUser.friends.accepted = [...loggedInUser.friends.accepted, user]

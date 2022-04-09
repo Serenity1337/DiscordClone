@@ -1,16 +1,22 @@
 import classes from './Login.module.scss'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import Input from '../../Components/Shared/Input'
 import Button from '../../Components/Shared/Button'
 import { postRequest } from '../../utils/Api'
 import { UpdateUserAction } from '../../Redux/Action-creators/UserActions'
-import { useDispatch } from 'react-redux'
+import { FetchUsersAction } from '../../Redux/Action-creators/UsersActions'
+import { useDispatch, useSelector } from 'react-redux'
 export const Login = () => {
   const dispatch = useDispatch()
+  const users = useSelector((state) => state.users)
   const [profile, setprofile] = useState({})
   const [error, seterror] = useState('')
   const [redirected, setredirected] = useState(false)
+
+  useEffect(() => {
+    dispatch(FetchUsersAction())
+  }, [])
 
   const profileHandler = (event) => {
     let profileCopy = { ...profile }
@@ -52,7 +58,8 @@ export const Login = () => {
           'cordCopyToken',
           JSON.stringify({ id: response.id, token: response.token })
         )
-        dispatch(UpdateUserAction(response.id))
+        const user = users.filter((currUser) => currUser._id === response.id)
+        dispatch(UpdateUserAction(user[0]))
         setredirected(true)
       } else {
         seterror('Please make sure the credentials are correct')

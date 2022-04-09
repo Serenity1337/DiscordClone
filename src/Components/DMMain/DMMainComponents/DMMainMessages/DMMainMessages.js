@@ -50,24 +50,6 @@ export const DMMainMessages = (props) => {
     friendClone.DMS[foundFriendDMIndex].messages = filteredMsgArr
 
     fetch(
-      `http://localhost:8000/discord/discord/updateUser/${props.friend._id}`,
-      {
-        method: 'POST',
-        body: JSON.stringify(friendClone),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response) {
-        }
-      })
-
-    fetch(
       `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
       {
         method: 'POST',

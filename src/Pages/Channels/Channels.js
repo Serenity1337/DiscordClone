@@ -12,10 +12,8 @@ export const Channels = () => {
 
   // getting the state
   const user = useSelector((state) => state.user)
+  console.log(user, 'test')
   const [addServerModalToggle, setaddServerModalToggle] = useState(false)
-  useEffect(() => {
-    socket.emit('dm room', `${user._id}`)
-  }, [])
 
   return (
     <div className={classes.appContainer}>

@@ -17,9 +17,9 @@ export const DMMainEditForm = (props) => {
   }, [])
   const editFormHandler = (event) => {
     event.preventDefault()
-    const foundFriendDMIndex = props.friend.DMS.findIndex(
-      (DM) => DM._id === props.dm._id
-    )
+    // const foundFriendDMIndex = props.friend.DMS.findIndex(
+    //   (DM) => DM._id === props.dm._id
+    // )
 
     let loggedInUser = { ...props.user }
 
@@ -29,28 +29,10 @@ export const DMMainEditForm = (props) => {
 
     loggedInUser.DMS[props.dmIndex].messages[foundUserMsgIndex].msg = editMsg
 
-    const friendClone = { ...props.friend }
-    friendClone.DMS[foundFriendDMIndex].messages[foundUserMsgIndex].msg =
-      editMsg
+    // const friendClone = { ...props.friend }
+    // friendClone.DMS[foundFriendDMIndex].messages[foundUserMsgIndex].msg =
+    //   editMsg
     event.target[0].value = ''
-
-    fetch(
-      `http://localhost:8000/discord/discord/updateUser/${props.friend._id}`,
-      {
-        method: 'POST',
-        body: JSON.stringify(friendClone),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response) {
-        }
-      })
 
     fetch(
       `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,

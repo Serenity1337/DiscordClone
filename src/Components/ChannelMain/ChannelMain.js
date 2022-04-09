@@ -16,10 +16,12 @@ export const ChannelMain = (props) => {
   useEffect(() => {
     setMessages(props.channel.messages)
     socket.emit('server room', props.server._id)
+    return () => {
+      socket.disconnect()
+    }
   }, [])
 
   socket.on('receive-channel-message', (channelId, message) => {
-    console.log('asd')
     if (channelId === props.channel._id) {
       setMessages((prevState) => {
         if (user.username !== message.sender) {
@@ -47,7 +49,6 @@ export const ChannelMain = (props) => {
         }
       }
     )
-    // return () => socket.off('receive-edit-message')
   })
   useEffect(() => {
     socket.on(
@@ -67,7 +68,6 @@ export const ChannelMain = (props) => {
         }
       }
     )
-    // return () => socket.off('receive-edit-message')
   })
   return (
     <div className={classes.DMMain}>

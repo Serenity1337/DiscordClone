@@ -1,12 +1,16 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import classes from './DMMain.module.scss'
 import { io } from 'socket.io-client'
-import { UserContext } from '../../Contexts/UserContext'
 import { DMMMainForm } from './DMMainComponents/DMMainForm/DMMMainForm'
 import { DMMainMessages } from './DMMainComponents/DMMainMessages/DMMainMessages'
 import { DMMainNav } from './DMMainComponents/DMMainNav/DMMainNav'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { UpdateUserAction } from '../../Redux/Action-creators/UserActions'
+import { postRequest } from '../../utils/Api'
 export const DMMain = (props) => {
+  const reduxState = useSelector((state) => state)
+  const { user, users } = reduxState
+  const dispatch = useDispatch()
   const socket = io('localhost:8080', {
     reconnection: true,
     reconnectionDelay: 1000,
@@ -16,20 +20,34 @@ export const DMMain = (props) => {
     pingTimeout: 1000 * 60 * 3,
   })
   const [friend, setFriend] = useState({})
-  const { user, setuser } = useContext(UserContext)
   const [messages, setmessages] = useState([])
   const [chatBoxContainer, setchatBoxContainer] = useState({})
   useEffect(() => {
+    console.log('im coming from dmmain')
     socket.emit('dm room', `${user._id}`)
     setmessages([...user.DMS[props.dmIndex].messages])
+    return () => {
+      socket.disconnect()
+      console.log('does this work from dmmain?')
+    }
   }, [])
 
   useEffect(() => {
     socket.on('receive-message', (dmId, message) => {
-      console.log('receiving')
       if (dmId === props.dm._id) {
         setmessages((prevState) => {
           if (message.sender !== user.username) {
+            const userCopy = { ...user }
+            const found = userCopy.DMS.findIndex(
+              (thisDm) => thisDm._id === dmId
+            )
+            userCopy.DMS[found].messages = [...prevState, message]
+
+            postRequest(
+              `http://localhost:8000/discord/discord/updateUser/${userCopy._id}`,
+              userCopy
+            )
+            dispatch(UpdateUserAction(userCopy))
             return [...prevState, message]
           } else {
             return [...prevState]
@@ -43,7 +61,7 @@ export const DMMain = (props) => {
             ...userClone.DMS[dmIndex].messages,
             message,
           ]
-          setuser(userClone)
+          dispatch(UpdateUserAction(userClone))
         }
       }
     })
@@ -54,8 +72,21 @@ export const DMMain = (props) => {
     socket.on('receive-edit-message', (dmId, editMsg, msgIndex) => {
       if (dmId === props.dm._id) {
         setmessages((prevState) => {
+          console.log(prevState[msgIndex], msgIndex)
           if (prevState[msgIndex].sender !== user.username) {
             prevState[msgIndex].msg = editMsg
+
+            const userCopy = { ...user }
+            const found = userCopy.DMS.findIndex(
+              (thisDm) => thisDm._id === dmId
+            )
+            userCopy.DMS[found].messages = [...prevState]
+
+            postRequest(
+              `http://localhost:8000/discord/discord/updateUser/${userCopy._id}`,
+              userCopy
+            )
+            dispatch(UpdateUserAction(userCopy))
             return [...prevState]
           } else {
             return [...prevState]
@@ -74,6 +105,17 @@ export const DMMain = (props) => {
             const clonePrevState = prevState.filter(
               (currMsgObj) => currMsgObj.id !== msgObj.id
             )
+            const userCopy = { ...user }
+            const found = userCopy.DMS.findIndex(
+              (thisDm) => thisDm._id === dmId
+            )
+            userCopy.DMS[found].messages = [...clonePrevState]
+
+            postRequest(
+              `http://localhost:8000/discord/discord/updateUser/${userCopy._id}`,
+              userCopy
+            )
+            dispatch(UpdateUserAction(userCopy))
             return [...clonePrevState]
           } else {
             return [...prevState]
@@ -89,12 +131,16 @@ export const DMMain = (props) => {
     const loggedInUserFriendString = props.dm.participants.filter(
       (userFriend) => userFriend !== user.username
     )
-    const loggedInUserFriend = props.users.filter(
+    const loggedInUserFriend = users.filter(
       (friendObject) => friendObject.username === loggedInUserFriendString[0]
     )
     setFriend(loggedInUserFriend[0])
     console.log(loggedInUserFriend)
     socket.emit('dm room', `${loggedInUserFriend[0]._id}`)
+    return () => {
+      socket.disconnect()
+      console.log('does this work from dmmain?')
+    }
   }, [])
 
   return (
@@ -106,7 +152,7 @@ export const DMMain = (props) => {
         friend={friend}
         messages={messages}
         setmessages={setmessages}
-        user={props.user}
+        user={user}
         setchatBoxContainer={setchatBoxContainer}
         dm={props.dm}
         dmIndex={props.dmIndex}
@@ -115,7 +161,7 @@ export const DMMain = (props) => {
       <DMMMainForm
         friend={friend}
         dm={props.dm}
-        user={props.user}
+        user={user}
         dmIndex={props.dmIndex}
         setmessages={setmessages}
         chatBoxContainer={chatBoxContainer}
