@@ -26,17 +26,6 @@ function App() {
     const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
     if (userToken) dispatch(FetchUserAction(userToken.id))
   }, [])
-
-  // useEffect(() => {
-  //   socket.emit('dm room', `${user._id}`)
-  //   console.log('this is coming from app')
-  //   return () => {
-  //     socket.disconnect()
-  //     console.log('does this work from app?')
-  //   }
-  // }, [])
-  console.log(servers)
-  console.log(user)
   return (
     <div className='app'>
       <Switch>

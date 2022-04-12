@@ -6,7 +6,8 @@ import { ChannelMainMessages } from './ChannelMainComponents/ChannelMainMessages
 import { ChannelMainForm } from './ChannelMainComponents/ChannelMainForm/ChannelMainForm'
 import { useSelector } from 'react-redux'
 export const ChannelMain = (props) => {
-  const user = useSelector((state) => state.user)
+  const reduxState = useSelector((state) => state)
+  const { user, users } = reduxState
   const socket = io('ws://localhost:8080', {
     transports: ['websocket'],
     upgrade: false,
@@ -14,25 +15,27 @@ export const ChannelMain = (props) => {
   const [messages, setMessages] = useState([])
 
   useEffect(() => {
-    setMessages(props.channel.messages)
     socket.emit('server room', props.server._id)
+    setMessages(props.channel.messages)
     return () => {
       socket.disconnect()
     }
   }, [])
-
-  socket.on('receive-channel-message', (channelId, message) => {
-    if (channelId === props.channel._id) {
-      setMessages((prevState) => {
-        if (user.username !== message.sender) {
-          return [...prevState, message]
-        } else {
-          return [...prevState]
-        }
-      })
-    }
+  useEffect(() => {
+    socket.on('receive-channel-message', (channelId, message) => {
+      if (channelId === props.channel._id) {
+        setMessages((prevState) => {
+          if (message.sender !== user.username) {
+            console.log('coming from here?')
+            console.log(user, message)
+            return [...prevState, message]
+          } else {
+            return [...prevState]
+          }
+        })
+      }
+    })
   })
-
   useEffect(() => {
     socket.on(
       'receive-edited-channel-message',

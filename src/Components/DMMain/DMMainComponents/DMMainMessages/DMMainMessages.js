@@ -5,7 +5,11 @@ import { TiDeleteOutline } from 'react-icons/ti'
 import { FiEdit2 } from 'react-icons/fi'
 import DMMainEditForm from '../DMMainEditForm'
 import { io } from 'socket.io-client'
+import { postRequest } from '../../../../utils/Api'
+import { useDispatch } from 'react-redux'
+import { UpdateUserAction } from '../../../../Redux/Action-creators/UserActions'
 export const DMMainMessages = (props) => {
+  const dispatch = useDispatch()
   const socket = io('localhost:8080', {
     reconnection: true,
     reconnectionDelay: 1000,
@@ -49,29 +53,44 @@ export const DMMainMessages = (props) => {
     const friendClone = { ...props.friend }
     friendClone.DMS[foundFriendDMIndex].messages = filteredMsgArr
 
-    fetch(
+    const response = postRequest(
       `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
-      {
-        method: 'POST',
-        body: JSON.stringify(loggedInUser),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+      loggedInUser
     )
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response) {
-          props.setmessages((prevState) => {
-            const clonePrevState = prevState.filter(
-              (msgObj) => msgObj.id !== dmObj.id
-            )
-            return [...clonePrevState]
-          })
-        }
-      })
+    response.then((res) => {
+      if (res) {
+        props.setmessages((prevState) => {
+          const clonePrevState = prevState.filter(
+            (msgObj) => msgObj.id !== dmObj.id
+          )
+          dispatch(UpdateUserAction(loggedInUser))
+          return [...clonePrevState]
+        })
+      }
+    })
+    // fetch(
+    //   `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
+    //   {
+    //     method: 'POST',
+    //     body: JSON.stringify(loggedInUser),
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   }
+    // )
+    //   .then((header) => {
+    //     return header.json()
+    //   })
+    //   .then((response) => {
+    //     if (response) {
+    //       props.setmessages((prevState) => {
+    //         const clonePrevState = prevState.filter(
+    //           (msgObj) => msgObj.id !== dmObj.id
+    //         )
+    //         return [...clonePrevState]
+    //       })
+    //     }
+    //   })
     socket.emit(
       'delete-message',
       props.friend._id,
