@@ -21,6 +21,7 @@ function App() {
   const socket = io('http://localhost:8080')
 
   useEffect(() => {
+    console.log('does it mount?')
     dispatch(FetchServersAction())
     dispatch(FetchUsersAction())
     const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))

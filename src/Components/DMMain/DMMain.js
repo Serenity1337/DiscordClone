@@ -34,6 +34,7 @@ export const DMMain = (props) => {
 
   useEffect(() => {
     socket.on('receive-message', (dmId, message) => {
+      console.log(user, 'layer1 dm')
       if (dmId === props.dm._id) {
         setmessages((prevState) => {
           if (message.sender !== user.username) {

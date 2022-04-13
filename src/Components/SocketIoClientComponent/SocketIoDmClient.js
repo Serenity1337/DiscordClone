@@ -33,6 +33,7 @@ export const SocketIoDmClient = () => {
             message,
           ]
           dispatch(UpdateUserAction(userClone))
+          console.log('im getting the message.', user)
           // props.setuser(userClone)
         }
       })

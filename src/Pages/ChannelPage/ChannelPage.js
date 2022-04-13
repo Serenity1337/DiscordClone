@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ChannelListSidebar } from '../../Components/ChannelListSideBar/ChannelListSidebar'
 import { ChannelMain } from '../../Components/ChannelMain/ChannelMain'
 import ServersSideBar from '../../Components/ServersSideBar'
@@ -12,7 +12,6 @@ export const ChannelPage = (props) => {
 
   useEffect(() => {
     setserver(props.server)
-    console.log('test')
   }, [])
   return (
     <div className={classes.appContainer}>

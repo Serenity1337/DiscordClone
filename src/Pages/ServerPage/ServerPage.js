@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { ChannelListSidebar } from '../../Components/ChannelListSideBar/ChannelListSidebar'
 import ServersSideBar from '../../Components/ServersSideBar'
 import AddChannelModal from '../../Modals/AddChannelModal'
 import AddServerModal from '../../Modals/AddServerModal'
 import classes from './ServerPage.module.scss'
 import { io } from 'socket.io-client'
+import { FetchServersAction } from '../../Redux/Action-creators/ServersActions'
+import { FetchUserAction } from '../../Redux/Action-creators/UserActions'
+import { FetchUsersAction } from '../../Redux/Action-creators/UsersActions'
 export const ServerPage = (props) => {
+  const dispatch = useDispatch()
   const socket = io('ws://localhost:8080', {
     transports: ['websocket'],
     upgrade: false,
@@ -14,6 +19,16 @@ export const ServerPage = (props) => {
   const [addChannelModalToggle, setaddChannelModalToggle] = useState(false)
   useEffect(() => {
     socket.emit('server room', props.server._id)
+    return () => {
+      socket.disconnect()
+    }
+  }, [])
+  useEffect(() => {
+    console.log('does it mount?')
+    dispatch(FetchServersAction())
+    dispatch(FetchUsersAction())
+    const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
+    if (userToken) dispatch(FetchUserAction(userToken.id))
   }, [])
   return (
     <div className={classes.appContainer}>
