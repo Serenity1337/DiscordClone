@@ -73,10 +73,8 @@ export const DMMMainForm = (props) => {
       })
 
     props.chatBoxContainer.scrollTo(0, props.chatBoxContainer.scrollHeight + 42)
-    console.log(props.chatBoxContainer)
 
     socket.emit('send-message', props.friend._id, props.dm._id, msgObject)
-    console.log(loggedInUser, 'important')
   }
 
   return (
@@ -84,7 +82,7 @@ export const DMMMainForm = (props) => {
       <form
         className={classes.MsgContainerUploadBtn}
         onSubmit={msgFormHandler}
-        autocomplete='off'
+        autoComplete='off'
       >
         <div className={classes.MsgUploadBtnContainer}>
           <div className={classes.MsgUploadBtn}>+</div>

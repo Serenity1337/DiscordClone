@@ -24,7 +24,6 @@ export const ServerPage = (props) => {
     }
   }, [])
   useEffect(() => {
-    console.log('does it mount?')
     dispatch(FetchServersAction())
     dispatch(FetchUsersAction())
     const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))

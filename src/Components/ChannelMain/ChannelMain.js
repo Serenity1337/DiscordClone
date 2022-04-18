@@ -35,11 +35,9 @@ export const ChannelMain = (props) => {
         })
       } else {
         const serverClone = { ...props.server }
-        console.log(serverClone, serverClone.channels[props.channelIndex])
         const found = props.server.channels.findIndex(
           (currChannel) => currChannel._id === receiveMessage.channelId
         )
-        console.log(found)
         serverClone.channels[found].messages = [
           ...serverClone.channels[found].messages,
           receiveMessage.message,

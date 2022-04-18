@@ -24,7 +24,9 @@ export const ChannelMainEditForm = (props) => {
     const foundMsgIndex = props.messages.findIndex(
       (msg) => msg.msg === props.channelObj.msg
     )
-    channelClone.messages[foundMsgIndex].msg = editMsg
+    const messagesClone = [...props.messages]
+    messagesClone[foundMsgIndex] = editMsg
+    channelClone.messages = messagesClone
     let serverClone = { ...props.server }
     serverClone.channels[props.channelIndex] = channelClone
     event.target[0].value = ''
@@ -33,35 +35,14 @@ export const ChannelMainEditForm = (props) => {
       `http://localhost:8000/discord/discord/updateServer/${props.server._id}`,
       serverClone
     )
-
-    if (serverResponse) {
-      props.setMessages((prevState) => {
-        prevState[foundMsgIndex].msg = editMsg
-        return [...prevState]
-      })
-    }
-
-    // fetch(
-    //   `http://localhost:8000/discord/discord/updateServer/${props.server._id}`,
-    //   {
-    //     method: 'POST',
-    //     body: JSON.stringify(serverClone),
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   }
-    // )
-    //   .then((header) => {
-    //     return header.json()
-    //   })
-    //   .then((response) => {
-    //     if (response) {
-    //       props.setMessages((prevState) => {
-    //         prevState[foundMsgIndex].msg = editMsg
-    //         return [...prevState]
-    //       })
-    //     }
-    //   })
+    serverResponse.then((res) => {
+      if (res) {
+        props.setMessages((prevState) => {
+          prevState[foundMsgIndex].msg = editMsg
+          return [...prevState]
+        })
+      }
+    })
 
     props.seteditMsgBool({
       ...props.editMsgBool,

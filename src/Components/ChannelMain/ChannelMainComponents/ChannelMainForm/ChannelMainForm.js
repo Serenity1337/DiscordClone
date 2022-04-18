@@ -35,37 +35,19 @@ export const ChannelMainForm = (props) => {
     serverClone.channels[props.channelIndex] = channelClone
     event.target[0].value = ''
 
-    // const serverResponse = postRequest(
-    //   `http://localhost:8000/discord/discord/updateServer/${props.server._id}`,
-    //   serverClone
-    // )
-
-    // if (serverResponse) {
-    //   props.setMessages((prevState) => {
-    //     return [...prevState, msgObject]
-    //   })
-    // }
-
-    fetch(
+    const serverResponse = postRequest(
       `http://localhost:8000/discord/discord/updateServer/${props.server._id}`,
-      {
-        method: 'POST',
-        body: JSON.stringify(serverClone),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+      serverClone
     )
-      .then((header) => {
-        return header.json()
-      })
-      .then((response) => {
-        if (response) {
-          props.setMessages((prevState) => {
-            return [...prevState, msgObject]
-          })
-        }
-      })
+
+    serverResponse.then((res) => {
+      if (res) {
+        props.setMessages((prevState) => {
+          const prevStateClone = [...prevState, msgObject]
+          return [...prevStateClone]
+        })
+      }
+    })
 
     socket.emit(
       'send-channel-message',
@@ -80,7 +62,7 @@ export const ChannelMainForm = (props) => {
       <form
         className={classes.MsgContainerUploadBtn}
         onSubmit={msgFormHandler}
-        autocomplete='off'
+        autoComplete='off'
       >
         <div className={classes.MsgUploadBtnContainer}>
           <div className={classes.MsgUploadBtn}>+</div>

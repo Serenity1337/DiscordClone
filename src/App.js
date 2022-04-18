@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { FetchServersAction } from './Redux/Action-creators/ServersActions'
 import { FetchUserAction } from './Redux/Action-creators/UserActions'
 import { FetchUsersAction } from './Redux/Action-creators/UsersActions'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import Register from './Pages/Register'
 import Login from './Pages/Login'
 import Channels from './Pages/Channels'
@@ -12,16 +12,12 @@ import DirectMessaging from './Pages/DirectMessaging'
 import { ChannelPage } from './Pages/ChannelPage/ChannelPage'
 import { ServerPage } from './Pages/ServerPage/ServerPage'
 import SocketIoDmClient from './Components/SocketIoClientComponent'
-import { SocketIoChannelClient } from './Components/SocketIoChannelsClient/SocketIoChannelClient'
-import { io } from 'socket.io-client'
 function App() {
   const dispatch = useDispatch()
   const reduxState = useSelector((state) => state)
   const { users, user, servers } = reduxState
-  const socket = io('http://localhost:8080')
 
   useEffect(() => {
-    console.log('does it mount?')
     dispatch(FetchServersAction())
     dispatch(FetchUsersAction())
     const userToken = JSON.parse(localStorage.getItem('cordCopyToken'))
@@ -62,6 +58,7 @@ function App() {
                 render={() => (
                   <ServerPage server={server} serverIndex={serverIndex} />
                 )}
+                key={server._id}
                 exact={true}
                 label='ServerPage'
               />
@@ -89,7 +86,6 @@ function App() {
           : null}
       </Switch>
       {user.username && users.length > 0 ? <SocketIoDmClient /> : null}
-      {/* {servers.length > 0 && user.DMS ? <SocketIoChannelClient /> : null}  */}
     </div>
   )
 }

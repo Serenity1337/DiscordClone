@@ -61,30 +61,6 @@ export const ChannelMainMessages = (props) => {
       })
     }
 
-    // fetch(
-    //   `http://localhost:8000/discord/discord/updateServer/${props.server._id}`,
-    //   {
-    //     method: 'POST',
-    //     body: JSON.stringify(serverClone),
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   }
-    // )
-    //   .then((header) => {
-    //     return header.json()
-    //   })
-    //   .then((response) => {
-    //     if (response) {
-    //       props.setMessages((prevState) => {
-    //         const clonePrevState = prevState.filter(
-    //           (msgObj) => msgObj.id !== channelObj.id
-    //         )
-    //         return [...clonePrevState]
-    //       })
-    //     }
-    //   })
-
     socket.emit(
       'delete-channel-message',
       props.server._id,
@@ -109,7 +85,10 @@ export const ChannelMainMessages = (props) => {
       <div className={classes.DMMainChatBoxContainerHorizontalLine}></div>
       {props.messages
         ? props.messages.map((channelObj, channelObjIndex) => (
-            <div className={classes.DMMainChatBoxContainerMsgContainer}>
+            <div
+              className={classes.DMMainChatBoxContainerMsgContainer}
+              key={channelObjIndex}
+            >
               <div className={classes.DMMainChatBoxContainerMsgContainerAvatar}>
                 <img src={catto} alt='' />
                 <div className={classes.DMMainChatBoxNameContainer}>

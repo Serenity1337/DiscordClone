@@ -1,6 +1,5 @@
 export const discordTag = () => {
   const randomNum = Math.floor(Math.random() * Math.floor(10000))
-  // console.log(`#${randomNum}`)
   if (randomNum / 1000 >= 1) {
     return `#${randomNum}`
   }

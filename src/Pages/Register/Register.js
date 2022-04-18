@@ -96,7 +96,6 @@ export const Register = () => {
             seterror('Email is already taken, please choose a different one')
           } else {
             dispatch(CreateUserAction(profileCopy))
-            console.log(users)
             setredirected(true)
           }
         })
@@ -113,6 +112,7 @@ export const Register = () => {
           {inputElements.map((inputElement) => {
             return (
               <Input
+                key={inputElement.label.text}
                 containerClass={inputElement.containerClass}
                 label={{
                   for: inputElement.label.for,

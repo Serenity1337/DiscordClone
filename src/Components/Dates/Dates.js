@@ -47,7 +47,9 @@ export const Dates = ({ setprofile, profile }) => {
         >
           <option value=''>Select</option>
           {dayDates.map((day, i) => (
-            <option value={day}>{day}</option>
+            <option value={day} key={day + i}>
+              {day}
+            </option>
           ))}
         </select>
         <select
@@ -58,7 +60,9 @@ export const Dates = ({ setprofile, profile }) => {
         >
           <option value=''>Select</option>
           {monthDates.map((month, i) => (
-            <option value={i + 1}>{month}</option>
+            <option value={i + 1} key={month}>
+              {month}
+            </option>
           ))}
         </select>
         <select
@@ -70,7 +74,9 @@ export const Dates = ({ setprofile, profile }) => {
         >
           <option value=''>Select</option>
           {yearDates.map((num, index) => (
-            <option value={num}>{num}</option>
+            <option value={num} key={num}>
+              {num}
+            </option>
           ))}
         </select>
       </div>

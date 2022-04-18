@@ -51,7 +51,7 @@ export const FriendsListMainRenderUsers = (props) => {
       // renders all friends regardless of the status
       if (props.friendStatusState.all || props.friendStatusState.online) {
         return props.filteredFriendsArr.map((friend, index) => (
-          <Link to={`${location.pathname}`}>
+          <Link to={`${location.pathname}`} key={friend._id}>
             <div
               className={classes.userContainer}
               onContextMenu={(event) =>
@@ -105,7 +105,7 @@ export const FriendsListMainRenderUsers = (props) => {
 
       if (props.friendStatusState.blocked) {
         return props.filteredFriendsArr.map((friend, index) => (
-          <Link to={`${location.pathname}`}>
+          <Link to={`${location.pathname}`} key={friend._id}>
             <div className={classes.userContainer}>
               <div className={classes.userProfile}>
                 <div className={classes.friendListUserAvatar}>
@@ -153,7 +153,7 @@ export const FriendsListMainRenderUsers = (props) => {
         props.filteredFriendsArr.length > 0
       ) {
         return props.filteredFriendsArr.map((friend, index) => (
-          <Link to={`${location.pathname}`}>
+          <Link to={`${location.pathname}`} key={friend._id}>
             <div className={classes.userContainer}>
               <div className={classes.userProfile}>
                 <div className={classes.friendListUserAvatar}>

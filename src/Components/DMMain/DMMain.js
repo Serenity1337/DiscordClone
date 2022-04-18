@@ -22,113 +22,86 @@ export const DMMain = (props) => {
   const [friend, setFriend] = useState({})
   const [messages, setmessages] = useState([])
   const [chatBoxContainer, setchatBoxContainer] = useState({})
-  useEffect(() => {
-    console.log('im coming from dmmain')
-    socket.emit('dm room', `${user._id}`)
-    setmessages([...user.DMS[props.dmIndex].messages])
-    return () => {
-      socket.disconnect()
-      console.log('does this work from dmmain?')
-    }
-  }, [])
 
-  useEffect(() => {
-    socket.on('receive-message', (dmId, message) => {
-      console.log(user, 'layer1 dm')
-      if (dmId === props.dm._id) {
-        setmessages((prevState) => {
-          if (message.sender !== user.username) {
-            const userCopy = { ...user }
-            const found = userCopy.DMS.findIndex(
-              (thisDm) => thisDm._id === dmId
-            )
-            userCopy.DMS[found].messages = [...prevState, message]
-
-            postRequest(
-              `http://localhost:8000/discord/discord/updateUser/${userCopy._id}`,
-              userCopy
-            )
-            dispatch(UpdateUserAction(userCopy))
-            return [...prevState, message]
-          } else {
-            return [...prevState]
-          }
-        })
-      } else {
+  const receiveDMMessageHandler = (dmId, message) => {
+    if (dmId === props.dm._id) {
+      setmessages((prevState) => {
         if (message.sender !== user.username) {
-          const userClone = { ...user }
-          const dmIndex = user.DMS.findIndex((thisDm) => thisDm._id === dmId)
-          userClone.DMS[dmIndex].messages = [
-            ...userClone.DMS[dmIndex].messages,
-            message,
-          ]
-          dispatch(UpdateUserAction(userClone))
+          const userCopy = { ...user }
+          const found = userCopy.DMS.findIndex((thisDm) => thisDm._id === dmId)
+          userCopy.DMS[found].messages = [...prevState, message]
+
+          postRequest(
+            `http://localhost:8000/discord/discord/updateUser/${userCopy._id}`,
+            userCopy
+          )
+          dispatch(UpdateUserAction(userCopy))
+          return [...prevState, message]
+        } else {
+          return [...prevState]
         }
+      })
+    } else {
+      if (message.sender !== user.username) {
+        const userClone = { ...user }
+        const dmIndex = user.DMS.findIndex((thisDm) => thisDm._id === dmId)
+        userClone.DMS[dmIndex].messages = [
+          ...userClone.DMS[dmIndex].messages,
+          message,
+        ]
+        dispatch(UpdateUserAction(userClone))
       }
-    })
-    // return () => socket.off('receive-message')
-  })
+    }
+  }
 
+  const receiveEditedDMMessage = (dmId, editMsg, msgIndex) => {
+    if (dmId === props.dm._id) {
+      setmessages((prevState) => {
+        if (prevState[msgIndex].sender !== user.username) {
+          prevState[msgIndex].msg = editMsg
+
+          const userCopy = { ...user }
+          const found = userCopy.DMS.findIndex((thisDm) => thisDm._id === dmId)
+          userCopy.DMS[found].messages = [...prevState]
+
+          postRequest(
+            `http://localhost:8000/discord/discord/updateUser/${userCopy._id}`,
+            userCopy
+          )
+          dispatch(UpdateUserAction(userCopy))
+          return [...prevState]
+        } else {
+          return [...prevState]
+        }
+      })
+    }
+  }
+
+  const receiveDMDeletedMessageHandler = (dmId, msgObj, msgIndex) => {
+    if (dmId === props.dm._id) {
+      setmessages((prevState) => {
+        if (prevState[msgIndex].sender !== user.username) {
+          const clonePrevState = [...prevState]
+          const filteredClonePrevState = clonePrevState.filter(
+            (currMsgObj) => currMsgObj.id !== msgObj.id
+          )
+          const userCopy = { ...user }
+          const found = userCopy.DMS.findIndex((thisDm) => thisDm._id === dmId)
+          userCopy.DMS[found].messages = [...filteredClonePrevState]
+
+          postRequest(
+            `http://localhost:8000/discord/discord/updateUser/${userCopy._id}`,
+            userCopy
+          )
+          dispatch(UpdateUserAction(userCopy))
+          return [...filteredClonePrevState]
+        } else {
+          return [...prevState]
+        }
+      })
+    }
+  }
   useEffect(() => {
-    socket.on('receive-edit-message', (dmId, editMsg, msgIndex) => {
-      if (dmId === props.dm._id) {
-        setmessages((prevState) => {
-          console.log(prevState[msgIndex], msgIndex)
-          if (prevState[msgIndex].sender !== user.username) {
-            prevState[msgIndex].msg = editMsg
-
-            const userCopy = { ...user }
-            const found = userCopy.DMS.findIndex(
-              (thisDm) => thisDm._id === dmId
-            )
-            userCopy.DMS[found].messages = [...prevState]
-
-            postRequest(
-              `http://localhost:8000/discord/discord/updateUser/${userCopy._id}`,
-              userCopy
-            )
-            dispatch(UpdateUserAction(userCopy))
-            return [...prevState]
-          } else {
-            return [...prevState]
-          }
-        })
-      }
-      // }
-    })
-    // return () => socket.off('receive-edit-message')
-  })
-  useEffect(() => {
-    socket.on('receive-deleted-message', (dmId, msgObj, msgIndex) => {
-      if (dmId === props.dm._id) {
-        setmessages((prevState) => {
-          if (prevState[msgIndex].sender !== user.username) {
-            const clonePrevState = prevState.filter(
-              (currMsgObj) => currMsgObj.id !== msgObj.id
-            )
-            const userCopy = { ...user }
-            const found = userCopy.DMS.findIndex(
-              (thisDm) => thisDm._id === dmId
-            )
-            userCopy.DMS[found].messages = [...clonePrevState]
-
-            postRequest(
-              `http://localhost:8000/discord/discord/updateUser/${userCopy._id}`,
-              userCopy
-            )
-            dispatch(UpdateUserAction(userCopy))
-            return [...clonePrevState]
-          } else {
-            return [...prevState]
-          }
-        })
-      }
-    })
-    // return () => socket.off('receive-edit-message')
-  })
-  useEffect(() => {
-    console.log(props.dm)
-    console.log(props.users)
     const loggedInUserFriendString = props.dm.participants.filter(
       (userFriend) => userFriend !== user.username
     )
@@ -136,11 +109,29 @@ export const DMMain = (props) => {
       (friendObject) => friendObject.username === loggedInUserFriendString[0]
     )
     setFriend(loggedInUserFriend[0])
-    console.log(loggedInUserFriend)
     socket.emit('dm room', `${loggedInUserFriend[0]._id}`)
     return () => {
       socket.disconnect()
-      console.log('does this work from dmmain?')
+    }
+  }, [])
+  useEffect(() => {
+    socket.emit('dm room', `${user._id}`)
+    setmessages([...user.DMS[props.dmIndex].messages])
+
+    socket.on('receive-message', (dmId, message) => {
+      receiveDMMessageHandler(dmId, message)
+    })
+
+    socket.on('receive-edit-message', (dmId, editMsg, msgIndex) => {
+      receiveEditedDMMessage(dmId, editMsg, msgIndex)
+    })
+
+    socket.on('receive-deleted-message', (dmId, msgObj, msgIndex) => {
+      receiveDMDeletedMessageHandler(dmId, msgObj, msgIndex)
+    })
+
+    return () => {
+      socket.disconnect()
     }
   }, [])
 

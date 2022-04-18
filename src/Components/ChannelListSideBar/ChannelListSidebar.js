@@ -58,6 +58,7 @@ export const ChannelListSidebar = (props) => {
               <Link
                 className={classes.channel}
                 to={`/channels/${props.server._id}/${channel._id}`}
+                key={channel._id}
               >
                 <div className={classes.hashtag}>#</div>
                 {channel.channelName}

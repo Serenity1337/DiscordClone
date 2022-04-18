@@ -68,29 +68,6 @@ export const DMMainMessages = (props) => {
         })
       }
     })
-    // fetch(
-    //   `http://localhost:8000/discord/discord/updateUser/${loggedInUser._id}`,
-    //   {
-    //     method: 'POST',
-    //     body: JSON.stringify(loggedInUser),
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   }
-    // )
-    //   .then((header) => {
-    //     return header.json()
-    //   })
-    //   .then((response) => {
-    //     if (response) {
-    //       props.setmessages((prevState) => {
-    //         const clonePrevState = prevState.filter(
-    //           (msgObj) => msgObj.id !== dmObj.id
-    //         )
-    //         return [...clonePrevState]
-    //       })
-    //     }
-    //   })
     socket.emit(
       'delete-message',
       props.friend._id,
@@ -117,7 +94,7 @@ export const DMMainMessages = (props) => {
         ? props.messages.map((dmObj, dmObjIndex) => (
             <div
               className={classes.DMMainChatBoxContainerMsgContainer}
-              key={dmObj._id}
+              key={dmObj.id}
             >
               <div className={classes.DMMainChatBoxContainerMsgContainerAvatar}>
                 <img src={catto} alt='' />

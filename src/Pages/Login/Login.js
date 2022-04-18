@@ -77,6 +77,7 @@ export const Login = () => {
           {inputElements.map((inputElement) => {
             return (
               <Input
+                key={inputElement.label.text}
                 containerClass={inputElement.containerClass}
                 label={{
                   for: inputElement.label.for,
