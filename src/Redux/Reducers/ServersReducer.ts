@@ -11,7 +11,6 @@ export const ServersReducer = (state: Servers = initialState, action: CreateServ
     case ServerActionTypes.UPDATE_SERVERS:
       return action.payload
     case ServerActionTypes.FETCH_SERVERS:
-      console.log(action.payload, 'comes from servers reducer', state)
       return action.payload
     default:
       return state

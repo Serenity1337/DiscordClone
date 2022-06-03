@@ -85,7 +85,6 @@ export const getRequest = (link:string) => {
 }
 // todo: fix the type here, no idea what to do with this fetch
 export const postRequest = (link:string, payload:{}):any => {
-  console.log(payload, 'payload')
   return fetch(`${link}`, {
     method: 'POST',
     body: JSON.stringify(payload),

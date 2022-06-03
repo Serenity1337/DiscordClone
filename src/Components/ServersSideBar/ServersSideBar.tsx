@@ -13,13 +13,11 @@ type DisplayStateType = {
 
 export const ServersSideBar = (props: {setaddServerModalToggle: Function}) => {
   const servers = useSelector((state:RootState) => state.servers) as Servers
-  console.log(servers, '???')
   const [displayState, setdisplayState] = useState<DisplayStateType>({})
   const [positionState, setpositionState] = useState(0)
   const displayName = (event:React.MouseEvent<HTMLAnchorElement>, server:Server, index:number) => {
     setdisplayState({ [index]: true })
     setpositionState(event.currentTarget.getBoundingClientRect().top + 10)
-    console.log(servers, 'testasd')
   }
   const removeName = (event:React.MouseEvent<HTMLAnchorElement>, server:Server, index:number) => {
     setdisplayState({ [index]: false })

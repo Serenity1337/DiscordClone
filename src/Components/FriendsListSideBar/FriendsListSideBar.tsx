@@ -83,9 +83,7 @@ export const FriendsListSideBar = () => {
 
   // renders the user's friendlist
   const renderUsers = () => {
-    console.log(user)
     if (user.friends ) {
-      console.log(user.friends, 'asd')
       if (user.friends.accepted) {
         
         return user.friends.accepted.map((user, index) => (

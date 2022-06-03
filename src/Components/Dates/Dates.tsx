@@ -42,7 +42,6 @@ export const Dates = (props: Props) => {
     let profileCopy:User = { ...profile }
     profileCopy.birthday[value] = event.target.value
     setprofile(profileCopy)
-    console.log(event.target.name)
   }
   return (
     <div className={classes.inputContainer}>

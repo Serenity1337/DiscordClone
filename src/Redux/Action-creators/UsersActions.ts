@@ -67,7 +67,6 @@ export const FetchUsersAction = () => {
     const response = await getRequest(
       `http://localhost:8000/discord/discord/getAllUsers`
     )
-    console.log(response, 'comes from users actions')
     dispatch<FetchUsersActionType>({ type: UsersActionTypes.FETCH_USERS, payload: response })
   }
 }

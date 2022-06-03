@@ -8,7 +8,6 @@ export const UsersReducer = (state: Users = initialState , action: CreateUserAct
     case UsersActionTypes.UPDATE_USERS:
       return action.payload
     case UsersActionTypes.FETCH_USERS:
-      console.log(action.payload, 'comes from reducer users', state)
       return action.payload
     default:
       return state

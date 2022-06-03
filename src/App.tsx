@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { FetchServersAction, Servers } from './Redux/Action-creators/ServersActions'
 import { FetchUserAction } from './Redux/Action-creators/UserActions'
 import { FetchUsersAction, User, Users } from './Redux/Action-creators/UsersActions'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import Register from './Pages/Register'
 import Login from './Pages/Login'
 import {RootState} from './Redux/Reducers'
@@ -21,12 +21,10 @@ function App() {
   const servers = state.servers as Servers
   // const user = useSelector((state:RootState) => state.user) as User
   // const servers = useSelector((state:RootState) => state.servers) as Servers
-  console.log(state)
   useEffect(() => {
     dispatch(FetchServersAction())
     dispatch(FetchUsersAction())
     const userToken = JSON.parse(localStorage.getItem('cordCopyToken') || '{}')
-    console.log(user)
     if (userToken ) {
       if (userToken.id)
       dispatch(FetchUserAction(userToken.id))
@@ -89,6 +87,7 @@ function App() {
               ))
             )
           : null}
+          {user ? <Redirect from="*" to="/channels/@me" /> : <Redirect from='*' to='/login' />}
       </Switch>
       {user.username && users.length > 0 ? <SocketIoDmClient /> : null}
     </div>

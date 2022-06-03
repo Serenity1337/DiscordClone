@@ -60,7 +60,6 @@ export const FetchServersAction = () => {
     const response = await getRequest(
       `http://localhost:8000/discord/discord/getAllServers`
     )
-    console.log(response, 'comes from serversActions')
     dispatch<FetchServersActionType>({ type: ServerActionTypes.FETCH_SERVERS, payload: response })
   }
 }
